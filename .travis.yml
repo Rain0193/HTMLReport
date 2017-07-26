@@ -7,4 +7,4 @@ dist: precise
 
 script:
 
-- python tests/HTMLReport_test.py
+- pytho HTMLReport_test.py
