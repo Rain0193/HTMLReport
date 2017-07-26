@@ -1,6 +1,10 @@
 anguage: python
 python: 3.5
 
+
+dist: precise
+
+
 script:
 
 - python tests/HTMLReport_test.py
