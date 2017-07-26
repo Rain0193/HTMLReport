@@ -1,10 +1,2 @@
-env:
-- TOXENV=py35
-- TOXENV=py34
-- TOXENV=py3
-
-
-language: python
+anguage: python
 python: 3.5
-
-script: tox -e ${TOXENV}
