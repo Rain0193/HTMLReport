@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='HTMLReport',
-    version='0.0.2',
+    version='0.0.4',
     description="Python3 THML报告生成",
     long_description=__doc__,
     author="刘士",

@@ -9,3 +9,30 @@
 $ pip install HTMLReport
 ```
 这是安装HTMLReport的首选方法，因为它将始终安装最新的稳定版本。如果您没有安装[pip](https://pip.pypa.io/)，则该[Python安装指南](http://docs.python-guide.org/en/latest/starting/installation/ "Python安装指南")可以指导您完成该过程。
+
+# 使用方法
+```py
+import unittest
+import HTMLReport
+
+
+# 测试套件
+suite = unittest.TestSuite()
+# 测试用例加载器
+loader = unittest.TestLoader()
+# 把测试用例加载到测试套件中
+suite.addTests(loader.loadTestsFromTestCase(TestStringMethods))
+
+# 测试用例执行器
+runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
+                               output_path='report',  # 保存文件夹名，默认“report”
+                               verbosity=2,  # 控制台输出详细程度，默认 2
+                               title='测试报告',  # 报告标题，默认“测试报告”
+                               description='无测试描述',  # 报告描述，默认“无测试描述”
+                               thread_count=2,  # 是否多线程测试（无序执行），默认 1
+                               sequential_execution=True  # 是否按照套件添加(addTests)顺序执行，
+                               # 会等待一个addTests执行完成，再执行下一个，默认 False
+                               )
+# 执行测试用例套件
+runner.run(suite)
+```

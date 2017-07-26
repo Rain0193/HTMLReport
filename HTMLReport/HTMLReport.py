@@ -1,6 +1,7 @@
 import datetime
 import io
 import os
+import queue
 import random
 import sys
 import time
@@ -116,14 +117,16 @@ class TestRunner(TemplateMixin):
     测试执行器
     """
 
-    def __init__(self, report_file_name='test', output_path=None, title=None, description=None, verbosity=2,
-                 thread_count=1):
+    def __init__(self, report_file_name: str = 'test', output_path: str = None, title: str = None,
+                 description: str = None, verbosity: int = 2, thread_count: int = 1,
+                 sequential_execution: bool = False):
         self.output_path = output_path or "report"
         self.title = title or self.DEFAULT_TITLE
         self.description = description or self.DEFAULT_DESCRIPTION
         self.report_file_name = report_file_name
         self.verbosity = verbosity
         self.thread_count = thread_count
+        self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
 
@@ -133,9 +136,31 @@ class TestRunner(TemplateMixin):
         """
         result = _TestResult(self.verbosity)
 
-        with ThreadPoolExecutor(self.thread_count) as pool:
+        if self.sequential_execution:
+            test_case_queue = queue.Queue()
+            L = []
+            tmp_key = None
             for test_case in test:
-                pool.submit(test_case, result)
+                tmp_class_name = test_case.__class__
+                if tmp_key == tmp_class_name:
+                    L.append(test_case)
+                else:
+                    tmp_key = tmp_class_name
+                    if len(L) != 0:
+                        test_case_queue.put(L.copy())
+                        L.clear()
+                    L.append(test_case)
+            if len(L) != 0:
+                test_case_queue.put(L.copy())
+            while not test_case_queue.empty():
+                tmp_list = test_case_queue.get()
+                with ThreadPoolExecutor(self.thread_count) as pool:
+                    for test_case in tmp_list:
+                        pool.submit(test_case, result)
+        else:
+            with ThreadPoolExecutor(self.thread_count) as pool:
+                for test_case in test:
+                    pool.submit(test_case, result)
 
         self.stopTime = datetime.datetime.now()
         self.generateReport(result)
