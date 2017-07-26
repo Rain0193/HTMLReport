@@ -1,4 +1,5 @@
 import datetime
+import io
 import os
 import random
 import sys
@@ -29,7 +30,7 @@ class _TestResult(TestResult):
     def __init__(self, verbosity=2):
         TestResult.__init__(self)
         super().__init__(verbosity)
-        self.outputBuffer = os.io.BytesIO()
+        self.outputBuffer = io.BytesIO()
         self.stdout0 = None
         self.stderr0 = None
         self.success_count = 0

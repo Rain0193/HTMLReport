@@ -3,12 +3,12 @@ from setuptools import setup
 
 setup(
     name='HTMLReport',
-    version='0.0.1',
+    version='0.0.2',
     description="Python3 THML报告生成",
     long_description=__doc__,
     author="刘士",
     author_email='liushilive@outlook.com',
-    url='',
+    url='https://github.com/liushilive/HTMLReport',
     packages=[
         'HTMLReport',
     ],

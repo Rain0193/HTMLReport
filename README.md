@@ -9,14 +9,3 @@
 $ pip install HTMLReport
 ```
 这是安装HTMLReport的首选方法，因为它将始终安装最新的稳定版本。如果您没有安装[pip](https://pip.pypa.io/)，则该[Python安装指南](http://docs.python-guide.org/en/latest/starting/installation/ "Python安装指南")可以指导您完成该过程。
-
-# 用法
-```py
-
-```
-
-# 控制台输出：
-
-
-# 测试结果：
-
