@@ -1,6 +1,9 @@
+env:
+- TOXENV=py35
+- TOXENV=py34
+- TOXENV=py33
 
-
-
-dist: precise
+install: pip install -U tox
 language: python
 python: 3.5
+script: tox -e ${TOXENV}
