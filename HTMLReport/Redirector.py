@@ -1,3 +1,6 @@
+import sys
+
+
 class OutputRedirector(object):
     """
     将输出进行重定向
@@ -7,7 +10,10 @@ class OutputRedirector(object):
         self.fp = fp
 
     def write(self, s):
-        self.fp.write(s)
+        if type('') == type(s):
+            self.fp.write(s.encode('utf-8'))
+        else:
+            self.fp.write(s)
 
     def writelines(self, lines):
         self.fp.writelines(lines)

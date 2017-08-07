@@ -5,6 +5,7 @@ import HTMLReport
 
 class TestStringMethods(unittest.TestCase):
     def test_upper(self):
+        print('测试执行', '123')
         self.assertEqual('foo'.upper(), 'FOO')
 
     def test_isupper(self):
@@ -43,7 +44,7 @@ if __name__ == '__main__':
                                    title='测试报告',  # 报告标题，默认“测试报告”
                                    description='无测试描述',  # 报告描述，默认“无测试描述”
                                    thread_count=2,  # 是否多线程测试（无序执行），默认 1
-                                   sequential_execution=True  # 是否按照套件添加(addTests)顺序执行，
+                                   sequential_execution=False  # 是否按照套件添加(addTests)顺序执行，
                                    # 会等待一个addTests执行完成，再执行下一个，默认 False
                                    )
     # 执行测试用例套件

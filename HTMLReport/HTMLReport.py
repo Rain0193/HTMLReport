@@ -14,7 +14,7 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = "0.0.1"
+__version__ = "0.1.1"
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -50,13 +50,13 @@ class _TestResult(TestResult):
 
     def startTest(self, test):
         TestResult.startTest(self, test)
-        # just one buffer for both stdout and stderr
+        # 仅为stdout和stderr提供一个缓冲区
         stdout_redirector.fp = self.outputBuffer
         stderr_redirector.fp = self.outputBuffer
         self.stdout0 = sys.stdout
         self.stderr0 = sys.stderr
-        sys.stdout = stdout_redirector
-        sys.stderr = stderr_redirector
+        # sys.stdout = stdout_redirector
+        # sys.stderr = stderr_redirector
 
     def complete_output(self):
         """
