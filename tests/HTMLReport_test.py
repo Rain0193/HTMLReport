@@ -3,11 +3,11 @@ import unittest
 import HTMLReport
 
 
-class TestStringMethods(unittest.TestCase):
-    def test_upper(self):
-        print('测试执行', '123')
-        self.assertEqual('foo'.upper(), 'FOO')
+def parse_int(s):
+    return int(s)
 
+
+class test_1th(unittest.TestCase):
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
         self.assertFalse('Foo'.isupper())
@@ -29,13 +29,24 @@ class TestStringMethods(unittest.TestCase):
         pass
 
 
+class test_2th(unittest.TestCase):
+    def test_bad_int(self):
+        self.assertRaises(ValueError, parse_int, 'N/A')
+        self.assertRegex(parse_int.foobar, __)
+
+    def test_upper(self):
+        print('测试执行', '123')
+        self.assertEqual('foo'.upper(), 'FOO')
+
+
 if __name__ == '__main__':
     # 测试套件
     suite = unittest.TestSuite()
     # 测试用例加载器
     loader = unittest.TestLoader()
     # 把测试用例加载到测试套件中
-    suite.addTests(loader.loadTestsFromTestCase(TestStringMethods))
+    suite.addTests(loader.loadTestsFromTestCase(test_1th))
+    suite.addTests(loader.loadTestsFromTestCase(test_2th))
 
     # 测试用例执行器
     runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
@@ -49,3 +60,4 @@ if __name__ == '__main__':
                                    )
     # 执行测试用例套件
     runner.run(suite)
+    # unittest.main()

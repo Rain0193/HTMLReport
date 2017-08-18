@@ -6,6 +6,7 @@ class TemplateMixin(object):
         0: 'pass',
         1: 'fail',
         2: 'error',
+        3: 'skip',
     }
 
     DEFAULT_TITLE = '测试报告'
@@ -60,6 +61,10 @@ function showClassDetail(cid, count) {
         if (!tr) {
             tid = 'p' + tid0;
             tr = document.getElementById(tid);
+            if (tr === null){
+                tid = 's' + tid0;
+                tr = document.getElementById(tid);
+            }
         }
         id_list[i] = tid;
         if (tr.className) {
@@ -68,12 +73,14 @@ function showClassDetail(cid, count) {
     }
     for (var i = 0; i < count; i++) {
         tid = id_list[i];
-        if (toHide) {
-            document.getElementById('div_'+tid).style.display = 'none'
+        if (toHide && tid.indexOf('p') !== -1) {
             document.getElementById(tid).className = 'hiddenRow';
         }
         else {
             document.getElementById(tid).className = '';
+        }
+        if (tid.indexOf('f') !== -1) {
+            document.getElementById('div_'+tid).style.display = 'none'
         }
     }
 }
@@ -171,7 +178,6 @@ a.popup_link:hover {
     font-size: 8pt;
 }
 
-}
 /* -- report ------------------------------------------------------------------------ */
 #show_detail_line {
     margin-top: 3ex;
@@ -245,6 +251,7 @@ a.popup_link:hover {
     <td>Pass</td>
     <td>Fail</td>
     <td>Error</td>
+    <td>Skip</td>
     <td>View</td>
 </tr>
 %(test_list)s
@@ -254,6 +261,7 @@ a.popup_link:hover {
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
+    <td>%(skip)s</td>
     <td>&nbsp;</td>
 </tr>
 </table>
@@ -266,6 +274,7 @@ a.popup_link:hover {
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
+    <td>%(skip)s</td>
     <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">Detail</a></td>
 </tr>
 """  # variables: (style, desc, count, Pass, fail, error, cid)
@@ -273,7 +282,7 @@ a.popup_link:hover {
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='5' align='center'>
+    <td colspan='6' align='center'>
 
     <!--css div popup start-->
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_%(tid)s')" >
@@ -297,7 +306,7 @@ a.popup_link:hover {
     REPORT_TEST_NO_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='5' align='center'>%(status)s</td>
+    <td colspan='6' align='center'>%(status)s</td>
 </tr>
 """  # variables: (tid, Class, style, desc, status)
 

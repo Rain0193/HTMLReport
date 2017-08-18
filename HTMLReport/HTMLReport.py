@@ -14,14 +14,14 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
 #   >>> logging.basicConfig(stream=HTMLReport.stderr_redirector)
 
-stdout_redirector = OutputRedirector(sys.stdout)
-stderr_redirector = OutputRedirector(sys.stderr)
+# stdout_redirector = OutputRedirector(sys.stdout)
+# stderr_redirector = OutputRedirector(sys.stderr)
 
 
 class _TestResult(TestResult):
@@ -36,23 +36,36 @@ class _TestResult(TestResult):
         self.stderr0 = None
         self.success_count = 0
         self.failure_count = 0
+        self.skip_count = 0
         self.error_count = 0
         self.verbosity = verbosity
 
         # 返回结果是一个4个属性的元组的列表
         # (
-        #   result code (0: success; 1: fail; 2: error),
+        #   result code (0: success; 1: fail; 2: error; 3: skip),
         #   TestCase object,
         #   Test output (byte string),
         #   stack trace,
         # )
         self.result = []
 
+    def addSkip(self, test, reason):
+        self.skip_count += 1
+        TestResult.addSkip(self, test, reason)
+        output = self.complete_output()
+        self.result.append((3, test, output, ''))
+        if self.verbosity > 1:
+            sys.stderr.write('SKIP\t')
+            sys.stderr.write(str(test))
+            sys.stderr.write("\n")
+        else:
+            sys.stderr.write('S\t')
+
     def startTest(self, test):
         TestResult.startTest(self, test)
         # 仅为stdout和stderr提供一个缓冲区
-        stdout_redirector.fp = self.outputBuffer
-        stderr_redirector.fp = self.outputBuffer
+        # stdout_redirector.fp = self.outputBuffer
+        # stderr_redirector.fp = self.outputBuffer
         self.stdout0 = sys.stdout
         self.stderr0 = sys.stderr
         # sys.stdout = stdout_redirector
@@ -79,11 +92,11 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((0, test, output, ''))
         if self.verbosity > 1:
-            sys.stderr.write('ok ')
+            sys.stderr.write('OK\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('.')
+            sys.stderr.write('.\t')
 
     def addError(self, test, err):
         self.error_count += 1
@@ -92,11 +105,11 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
         if self.verbosity > 1:
-            sys.stderr.write('E  ')
+            sys.stderr.write('E\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('E')
+            sys.stderr.write('E\t')
 
     def addFailure(self, test, err):
         self.failure_count += 1
@@ -105,11 +118,11 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
         if self.verbosity > 1:
-            sys.stderr.write('F  ')
+            sys.stderr.write('F\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('F')
+            sys.stderr.write('F\t')
 
 
 class TestRunner(TemplateMixin):
@@ -214,6 +227,8 @@ class TestRunner(TemplateMixin):
             status.append('Failure %s' % result.failure_count)
         if result.error_count:
             status.append('Error %s' % result.error_count)
+        if result.skip_count:
+            status.append('Skip %s' % result.skip_count)
         if status:
             status = ' '.join(status)
         else:
@@ -272,14 +287,16 @@ class TestRunner(TemplateMixin):
         rows = []
         sortedResult = self.sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
-            np = nf = ne = 0
+            np = nf = ne = ns = 0
             for n, t, o, e in cls_results:
                 if n == 0:
                     np += 1
                 elif n == 1:
                     nf += 1
-                else:
+                elif n == 2:
                     ne += 1
+                elif n == 3:
+                    ns += 1
 
             # format class description
             if cls.__module__ == "__main__":
@@ -290,12 +307,13 @@ class TestRunner(TemplateMixin):
             desc = doc and '%s: %s' % (name, doc) or name
 
             row = self.REPORT_CLASS_TMPL % dict(
-                style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'passClass',
+                style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'skipClass',
                 desc=desc,
-                count=np + nf + ne,
+                count=np + nf + ne + ns,
                 Pass=np,
                 fail=nf,
                 error=ne,
+                skip=ns,
                 cid='c%s' % (cid + 1),
             )
             rows.append(row)
@@ -305,28 +323,29 @@ class TestRunner(TemplateMixin):
 
         report = self.REPORT_TMPL % dict(
             test_list=''.join(rows),
-            count=str(result.success_count + result.failure_count + result.error_count),
+            count=str(result.success_count + result.failure_count + result.error_count + result.skip_count),
             Pass=str(result.success_count),
             fail=str(result.failure_count),
+            skip=str(result.skip_count),
             error=str(result.error_count),
         )
         return report
 
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
-        # e.g. 'pt1.1', 'ft1.1', etc
         has_output = bool(o or e)
-        tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
+        # 0: success; 1: fail; 2: error; 3: skip
+        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
         desc = doc and ('%s: %s' % (name, doc)) or name
-        tmpl = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
+        temp = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
 
         script = self.REPORT_TEST_OUTPUT_TMPL % dict(
             id=tid,
             output=saxutils.escape(o.decode('utf-8') + e),
         )
 
-        row = tmpl % dict(
+        row = temp % dict(
             tid=tid,
             Class=(n == 0 and 'hiddenRow' or 'none'),
             style=n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'none'),

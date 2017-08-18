@@ -1,6 +1,3 @@
-import sys
-
-
 class OutputRedirector(object):
     """
     将输出进行重定向
