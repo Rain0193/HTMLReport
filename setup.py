@@ -44,7 +44,7 @@ Links:
 
 setup(
     name='HTMLReport',
-    version='0.1.3',
+    version='0.1.4',
     description="Python3 THML报告生成",
     long_description=__doc__,
     author="刘士",

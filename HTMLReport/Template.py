@@ -133,7 +133,7 @@ function showOutput(id, name) {
 
     STYLESHEET_TMPL = """
 <style type="text/css" media="screen">
-body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
 table       { font-size: 100%; }
 pre         { word-wrap:break-word;word-break:break-all;overflow:auto; }
 
@@ -201,9 +201,11 @@ a.popup_link:hover {
 .passClass  { background-color: #6c6; }
 .failClass  { background-color: #c60; }
 .errorClass { background-color: #c00; }
-.passCase   { color: #6c6; }
+.skipClass  { background-color: #c95; }
+.passCase   { }
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
+.skipCase   { color: #c95; font-weight: bold; }
 .hiddenRow  { display: none; }
 .testcase   { margin-left: 2em; }
 

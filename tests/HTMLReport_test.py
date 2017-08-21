@@ -39,6 +39,18 @@ class test_2th(unittest.TestCase):
         self.assertEqual('foo'.upper(), 'FOO')
 
 
+class test_3th(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        print("setUpClass")
+
+    def test_True(self):
+        self.assertTrue(True)
+
+    def test_False(self):
+        self.assertFalse(False)
+
+
 if __name__ == '__main__':
     # 测试套件
     suite = unittest.TestSuite()
@@ -47,6 +59,7 @@ if __name__ == '__main__':
     # 把测试用例加载到测试套件中
     suite.addTests(loader.loadTestsFromTestCase(test_1th))
     suite.addTests(loader.loadTestsFromTestCase(test_2th))
+    suite.addTests(loader.loadTestsFromTestCase(test_3th))
 
     # 测试用例执行器
     runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”

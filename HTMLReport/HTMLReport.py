@@ -10,11 +10,11 @@ from concurrent.futures import ThreadPoolExecutor
 from unittest import TestResult
 from xml.sax import saxutils
 
-from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = "0.1.3"
+__version__ = "0.1.4"
+
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -307,7 +307,7 @@ class TestRunner(TemplateMixin):
             desc = doc and '%s: %s' % (name, doc) or name
 
             row = self.REPORT_CLASS_TMPL % dict(
-                style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'skipClass',
+                style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or np > 0 and 'passClass' or 'skipClass',
                 desc=desc,
                 count=np + nf + ne + ns,
                 Pass=np,
@@ -348,7 +348,8 @@ class TestRunner(TemplateMixin):
         row = temp % dict(
             tid=tid,
             Class=(n == 0 and 'hiddenRow' or 'none'),
-            style=n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'none'),
+            style=(n == 0 and 'passCase' or n == 2 and 'errorCase' or
+                   n == 1 and 'failCase' or n == 3 and 'skipCase' or 'none'),
             desc=desc,
             script=script,
             status=self.STATUS[n],
