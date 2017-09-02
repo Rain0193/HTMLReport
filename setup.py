@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 
-
 """
 ===============================
 HTMLReport
@@ -41,10 +40,10 @@ Links:
 ---------
 * `Github <https://github.com/liushilive/HTMLReport>`_
 """
-
+__version__ = '0.1.6'
 setup(
     name='HTMLReport',
-    version='0.1.4',
+    version=__version__,
     description="Python3 THML报告生成",
     long_description=__doc__,
     author="刘士",
@@ -54,7 +53,7 @@ setup(
         'HTMLReport',
     ],
     package_dir={'HTMLReport':
-                 'HTMLReport'},
+                     'HTMLReport'},
     include_package_data=True,
     license="MIT license",
     zip_safe=False,

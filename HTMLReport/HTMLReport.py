@@ -9,19 +9,20 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from unittest import TestResult
 from xml.sax import saxutils
+from setup import __version__
 
+from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = "0.1.4"
-
+__version__ = __version__
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
 #   >>> logging.basicConfig(stream=HTMLReport.stderr_redirector)
 
-# stdout_redirector = OutputRedirector(sys.stdout)
-# stderr_redirector = OutputRedirector(sys.stderr)
+stdout_redirector = OutputRedirector(sys.stdout)
+stderr_redirector = OutputRedirector(sys.stderr)
 
 
 class _TestResult(TestResult):
