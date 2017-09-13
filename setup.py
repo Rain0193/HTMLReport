@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from setuptools import setup
-from HTMLReport.HTMLReport import __version__
+from HTMLReport.HTMLReport import __version__, __author__
 
-"""
+doc = """
 ===============================
 HTMLReport
 ===============================
@@ -28,7 +28,7 @@ Usage:
                                    verbosity=2,  # 控制台输出详细程度，默认 2
                                    title='测试报告',  # 报告标题，默认“测试报告”
                                    description='无测试描述',  # 报告描述，默认“无测试描述”
-                                   thread_count=2,  # 是否多线程测试（无序执行），默认 1
+                                   thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
                                    sequential_execution=True  # 是否按照套件添加(addTests)顺序执行，
                                    # 会等待一个addTests执行完成，再执行下一个，默认 False
                                    )
@@ -41,20 +41,17 @@ Links:
 ---------
 * `Github <https://github.com/liushilive/HTMLReport>`_
 """
-__version__ = __version__
+
 setup(
     name='HTMLReport',
     version=__version__,
     description="Python3 THML报告生成",
-    long_description=__doc__,
-    author="刘士",
+    long_description=open('README.md',encoding='utf8').read(),
+    author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',
-    packages=[
-        'HTMLReport',
-    ],
-    package_dir={'HTMLReport':
-                     'HTMLReport'},
+    packages=['HTMLReport'],
+    package_dir={'HTMLReport': 'HTMLReport'},
     include_package_data=True,
     license="MIT license",
     zip_safe=False,

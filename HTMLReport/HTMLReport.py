@@ -14,7 +14,7 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.1.7'
+__version__ = '0.2.0'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
