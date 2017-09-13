@@ -7,13 +7,12 @@ class OutputRedirector(object):
         self.fp = fp
 
     def write(self, s):
-        if type('') == type(s):
-            self.fp.write(s.encode('utf-8'))
-        else:
-            self.fp.write(s)
+        self.fp.write(s)
+        self.flush()
 
     def writelines(self, lines):
         self.fp.writelines(lines)
+        self.flush()
 
     def flush(self):
         self.fp.flush()

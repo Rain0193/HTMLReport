@@ -9,25 +9,25 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from unittest import TestResult
 from xml.sax import saxutils
-from setup import __version__
 
 from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = __version__
+__version__ = '0.1.7'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
 #   >>> logging.basicConfig(stream=HTMLReport.stderr_redirector)
-
 stdout_redirector = OutputRedirector(sys.stdout)
 stderr_redirector = OutputRedirector(sys.stderr)
 
 
 class _TestResult(TestResult):
-    # 定义继承自 unittest.TestResult 的 类。
-    # 这里重写了 unittest.TestResult 的多个方法，比如 startTest(self, test) 等等
+    """
+    定义继承自 unittest.TestResult 的 类。
+    这里重写了 unittest.TestResult 的多个方法，比如 startTest(self, test) 等等
+    """
 
     def __init__(self, verbosity=2):
         TestResult.__init__(self)
@@ -40,14 +40,15 @@ class _TestResult(TestResult):
         self.skip_count = 0
         self.error_count = 0
         self.verbosity = verbosity
-
-        # 返回结果是一个4个属性的元组的列表
-        # (
-        #   result code (0: success; 1: fail; 2: error; 3: skip),
-        #   TestCase object,
-        #   Test output (byte string),
-        #   stack trace,
-        # )
+        """
+        返回结果是一个4个属性的元组的列表
+        (
+          result code (0: success; 1: fail; 2: error; 3: skip),
+          TestCase object,
+          Test output (byte string),
+          stack trace,
+        )
+        """
         self.result = []
 
     def addSkip(self, test, reason):
@@ -56,7 +57,7 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((3, test, output, ''))
         if self.verbosity > 1:
-            sys.stderr.write('SKIP\t')
+            sys.stderr.write('Skip\t')
             sys.stderr.write(str(test))
             sys.stderr.write("\n")
         else:
@@ -65,12 +66,12 @@ class _TestResult(TestResult):
     def startTest(self, test):
         TestResult.startTest(self, test)
         # 仅为stdout和stderr提供一个缓冲区
-        # stdout_redirector.fp = self.outputBuffer
-        # stderr_redirector.fp = self.outputBuffer
+        stdout_redirector.fp = self.outputBuffer
+        stderr_redirector.fp = self.outputBuffer
         self.stdout0 = sys.stdout
         self.stderr0 = sys.stderr
-        # sys.stdout = stdout_redirector
-        # sys.stderr = stderr_redirector
+        sys.stdout = stdout_redirector
+        sys.stderr = stderr_redirector
 
     def complete_output(self):
         """
@@ -93,11 +94,11 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((0, test, output, ''))
         if self.verbosity > 1:
-            sys.stderr.write('OK\t')
+            sys.stderr.write('Pass\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('.\t')
+            sys.stderr.write('P\t')
 
     def addError(self, test, err):
         self.error_count += 1
@@ -106,7 +107,7 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
         if self.verbosity > 1:
-            sys.stderr.write('E\t')
+            sys.stderr.write('Error\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
@@ -119,7 +120,7 @@ class _TestResult(TestResult):
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
         if self.verbosity > 1:
-            sys.stderr.write('F\t')
+            sys.stderr.write('Fail\t')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
@@ -135,22 +136,13 @@ class TestRunner(TemplateMixin):
                  description: str = None, verbosity: int = 2, thread_count: int = 1,
                  sequential_execution: bool = False):
         """
-        runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
-                                   output_path='report',  # 保存文件夹名，默认“report”
-                                   verbosity=2,  # 控制台输出详细程度，默认 2
-                                   title='测试报告',  # 报告标题，默认“测试报告”
-                                   description='无测试描述',  # 报告描述，默认“无测试描述”
-                                   thread_count=2,  # 是否多线程测试（无序执行），默认 1
-                                   sequential_execution=True  # 是否按照套件添加(addTests)顺序执行，
-                                   # 会等待一个addTests执行完成，再执行下一个，默认 False
-                                   )
-        :param report_file_name: 报告文件名
-        :param output_path:保存文件夹名
-        :param title:报告标题
-        :param description:报告描述
-        :param verbosity:控制台输出详细程度
-        :param thread_count:是否多线程测试（无序执行）
-        :param sequential_execution:是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
+        :param report_file_name: 报告文件名，默认“test”
+        :param output_path: 保存文件夹名，默认“report”
+        :param title: 报告标题，默认“测试报告”
+        :param description: # 报告描述，默认“无测试描述”
+        :param verbosity: 控制台输出详细程度，默认 2
+        :param thread_count: 并发线程数量（无序执行测试），默认数量 1
+        :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
         """
         self.output_path = output_path or "report"
         self.title = title or self.DEFAULT_TITLE
@@ -167,32 +159,37 @@ class TestRunner(TemplateMixin):
         运行给定的测试用例或测试套件。
         """
         result = _TestResult(self.verbosity)
-
-        if self.sequential_execution:
-            test_case_queue = queue.Queue()
-            L = []
-            tmp_key = None
-            for test_case in test:
-                tmp_class_name = test_case.__class__
-                if tmp_key == tmp_class_name:
-                    L.append(test_case)
-                else:
-                    tmp_key = tmp_class_name
-                    if len(L) != 0:
-                        test_case_queue.put(L.copy())
-                        L.clear()
-                    L.append(test_case)
-            if len(L) != 0:
-                test_case_queue.put(L.copy())
-            while not test_case_queue.empty():
-                tmp_list = test_case_queue.get()
-                with ThreadPoolExecutor(self.thread_count) as pool:
-                    for test_case in tmp_list:
-                        pool.submit(test_case, result)
+        print("并发线程数：", end='')
+        if self.thread_count <= 1:
+            print(1)
+            test(result)
         else:
-            with ThreadPoolExecutor(self.thread_count) as pool:
+            print(self.thread_count)
+            if self.sequential_execution:
+                test_case_queue = queue.Queue()
+                L = []
+                tmp_key = None
                 for test_case in test:
-                    pool.submit(test_case, result)
+                    tmp_class_name = test_case.__class__
+                    if tmp_key == tmp_class_name:
+                        L.append(test_case)
+                    else:
+                        tmp_key = tmp_class_name
+                        if len(L) != 0:
+                            test_case_queue.put(L.copy())
+                            L.clear()
+                        L.append(test_case)
+                if len(L) != 0:
+                    test_case_queue.put(L.copy())
+                while not test_case_queue.empty():
+                    tmp_list = test_case_queue.get()
+                    with ThreadPoolExecutor(self.thread_count) as pool:
+                        for test_case in tmp_list:
+                            pool.submit(test_case, result)
+            else:
+                with ThreadPoolExecutor(self.thread_count) as pool:
+                    for test_case in test:
+                        pool.submit(test_case, result)
 
         self.stopTime = datetime.datetime.now()
         self.generateReport(result)

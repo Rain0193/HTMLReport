@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from setuptools import setup
+from HTMLReport.HTMLReport import __version__
 
 """
 ===============================
@@ -40,7 +41,7 @@ Links:
 ---------
 * `Github <https://github.com/liushilive/HTMLReport>`_
 """
-__version__ = '0.1.6'
+__version__ = __version__
 setup(
     name='HTMLReport',
     version=__version__,

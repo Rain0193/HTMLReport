@@ -9,12 +9,12 @@ def parse_int(s):
 
 class test_1th(unittest.TestCase):
     def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
+        self.assertTrue('FOO'.isupper(), "真")
+        self.assertFalse('Foo'.isupper(), '假')
 
     def test_split(self):
         s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
+        self.assertEqual(s.split(), ['hello', 'world'], "相等")
         with self.assertRaises(TypeError):
             s.split(2)
 
@@ -22,7 +22,7 @@ class test_1th(unittest.TestCase):
         raise ValueError
 
     def test_fail(self):
-        self.assertEqual(1, 2)
+        self.assertEqual(1, 2, "相等")
 
     @unittest.skip("This is a skipped test.")
     def test_skip(self):
@@ -39,10 +39,10 @@ class test_2th(unittest.TestCase):
         self.assertEqual('foo'.upper(), 'FOO')
 
 
-class test_3th(unittest.TestCase):
+class test_第三个测试(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        print("setUpClass")
+        print("setUpClass执行")
 
     def test_True(self):
         self.assertTrue(True)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # 把测试用例加载到测试套件中
     suite.addTests(loader.loadTestsFromTestCase(test_1th))
     suite.addTests(loader.loadTestsFromTestCase(test_2th))
-    suite.addTests(loader.loadTestsFromTestCase(test_3th))
+    suite.addTests(loader.loadTestsFromTestCase(test_第三个测试))
 
     # 测试用例执行器
     runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
@@ -67,10 +67,9 @@ if __name__ == '__main__':
                                    verbosity=2,  # 控制台输出详细程度，默认 2
                                    title='测试报告',  # 报告标题，默认“测试报告”
                                    description='无测试描述',  # 报告描述，默认“无测试描述”
-                                   thread_count=2,  # 是否多线程测试（无序执行），默认 1
-                                   sequential_execution=False  # 是否按照套件添加(addTests)顺序执行，
+                                   thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
+                                   sequential_execution=True  # 是否按照套件添加(addTests)顺序执行，
                                    # 会等待一个addTests执行完成，再执行下一个，默认 False
                                    )
     # 执行测试用例套件
     runner.run(suite)
-    # unittest.main()
