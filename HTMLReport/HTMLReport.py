@@ -14,7 +14,7 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -132,11 +132,11 @@ class TestRunner(TemplateMixin):
     测试执行器
     """
 
-    def __init__(self, report_file_name: str = 'test', output_path: str = None, title: str = None,
+    def __init__(self, report_file_name: str = None, output_path: str = None, title: str = None,
                  description: str = None, verbosity: int = 2, thread_count: int = 1,
                  sequential_execution: bool = False):
         """
-        :param report_file_name: 报告文件名，默认“test”
+        :param report_file_name: 报告文件名，默认“test+时间戳”
         :param output_path: 保存文件夹名，默认“report”
         :param title: 报告标题，默认“测试报告”
         :param description: # 报告描述，默认“无测试描述”
@@ -147,7 +147,10 @@ class TestRunner(TemplateMixin):
         self.output_path = output_path or "report"
         self.title = title or self.DEFAULT_TITLE
         self.description = description or self.DEFAULT_DESCRIPTION
-        self.report_file_name = report_file_name
+        self.report_file_name = '{}.html'.format(
+            report_file_name or 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'),
+                                                    str(random.randint(1, 999))))
+
         self.verbosity = verbosity
         self.thread_count = thread_count
         self.sequential_execution = sequential_execution
@@ -253,8 +256,8 @@ class TestRunner(TemplateMixin):
             ending=ending,
         )
 
-        self.report_file_name = '{}_{}_{}.html'.format(self.report_file_name, time.strftime('%Y_%m_%d_%H_%M_%S'),
-                                                       str(random.randint(1, 999)))
+        # self.report_file_name = '{}_{}_{}.html'.format(self.report_file_name, time.strftime('%Y_%m_%d_%H_%M_%S'),
+        #                                                str(random.randint(1, 999)))
         current_dir = os.getcwd()
         dir_to = os.path.join(current_dir, self.output_path)
         if not os.path.exists(dir_to):
