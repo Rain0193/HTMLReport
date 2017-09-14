@@ -46,7 +46,7 @@ setup(
     name='HTMLReport',
     version=__version__,
     description="Python3 THML报告生成",
-    long_description=open('README.md',encoding='utf8').read(),
+    long_description=doc,
     author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',
