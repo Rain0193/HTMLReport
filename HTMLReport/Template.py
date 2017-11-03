@@ -249,12 +249,12 @@ a.popup_link:hover {
 </colgroup>
 <tr id='header_row'>
     <td>Test Group/Test case</td>
-    <td>Count</td>
-    <td>Pass</td>
-    <td>Fail</td>
-    <td>Error</td>
-    <td>Skip</td>
-    <td>View</td>
+    <td>计数</td>
+    <td>通过</td>
+    <td>失败</td>
+    <td>错误</td>
+    <td>跳过</td>
+    <td>查看</td>
 </tr>
 %(test_list)s
 <tr id='total_row'>
