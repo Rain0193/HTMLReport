@@ -14,7 +14,7 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -32,7 +32,7 @@ class _TestResult(TestResult):
     def __init__(self, verbosity=2):
         TestResult.__init__(self)
         super().__init__(verbosity)
-        self.outputBuffer = io.BytesIO()
+        self.outputBuffer = io.StringIO()
         self.stdout0 = None
         self.stderr0 = None
         self.success_count = 0
@@ -65,6 +65,8 @@ class _TestResult(TestResult):
 
     def startTest(self, test):
         TestResult.startTest(self, test)
+
+    def complete_std_in(self):
         # 仅为stdout和stderr提供一个缓冲区
         stdout_redirector.fp = self.outputBuffer
         stderr_redirector.fp = self.outputBuffer
@@ -96,6 +98,10 @@ class _TestResult(TestResult):
         if self.verbosity > 1:
             sys.stderr.write('Pass\t')
             sys.stderr.write(str(test))
+            doc = test._testMethodDoc
+            if doc:
+                sys.stderr.write("\t")
+                sys.stderr.write(doc)
             sys.stderr.write('\n')
         else:
             sys.stderr.write('P\t')
@@ -109,6 +115,10 @@ class _TestResult(TestResult):
         if self.verbosity > 1:
             sys.stderr.write('Error\t')
             sys.stderr.write(str(test))
+            doc = test._testMethodDoc
+            if doc:
+                sys.stderr.write("\t")
+                sys.stderr.write(doc)
             sys.stderr.write('\n')
         else:
             sys.stderr.write('E\t')
@@ -122,6 +132,10 @@ class _TestResult(TestResult):
         if self.verbosity > 1:
             sys.stderr.write('Fail\t')
             sys.stderr.write(str(test))
+            doc = test._testMethodDoc
+            if doc:
+                sys.stderr.write("\t")
+                sys.stderr.write(doc)
             sys.stderr.write('\n')
         else:
             sys.stderr.write('F\t')
@@ -161,14 +175,35 @@ class TestRunner(TemplateMixin):
         """
         运行给定的测试用例或测试套件。
         """
+
+        def _isnotsuite(te):
+            try:
+                iter(te)
+            except TypeError:
+                return True
+            return False
+
         result = _TestResult(self.verbosity)
-        print("并发线程数：", end='')
+
+        print("预计并发线程数：", end='')
         if self.thread_count <= 1:
             print(1)
+            result.complete_std_in()
             test(result)
         else:
+            # 参数为多线程模式
             print(self.thread_count)
-            if self.sequential_execution:
+
+            tag = False
+            for ie in test:
+                tag = _isnotsuite(ie)
+                pass
+            if tag:
+                print('注意：多线程不支持 @classmethod 装饰器！采用单线程模式工作！')
+                result.complete_std_in()
+                test(result)
+            elif self.sequential_execution:
+                # 执行套件添加顺序
                 test_case_queue = queue.Queue()
                 L = []
                 tmp_key = None
@@ -190,13 +225,14 @@ class TestRunner(TemplateMixin):
                         for test_case in tmp_list:
                             pool.submit(test_case, result)
             else:
+                # 无序执行
                 with ThreadPoolExecutor(self.thread_count) as pool:
                     for test_case in test:
                         pool.submit(test_case, result)
 
         self.stopTime = datetime.datetime.now()
         self.generateReport(result)
-        print('\n运行时间: %s' % (self.stopTime - self.startTime), file=sys.stderr)
+        print('\n测试结束！\n运行时间: %s' % (self.stopTime - self.startTime), file=sys.stderr)
         return result
 
     @staticmethod
@@ -235,9 +271,9 @@ class TestRunner(TemplateMixin):
         else:
             status = 'none'
         return [
-            ('Start Time', startTime),
-            ('Duration', duration),
-            ('Status', status),
+            ('启动时间', startTime),
+            ('运行时长', duration),
+            ('结果', status),
         ]
 
     def generateReport(self, result):
@@ -343,7 +379,7 @@ class TestRunner(TemplateMixin):
 
         script = self.REPORT_TEST_OUTPUT_TMPL % dict(
             id=tid,
-            output=saxutils.escape(o.decode('utf-8') + e),
+            output=saxutils.escape(o + e),
         )
 
         row = temp % dict(

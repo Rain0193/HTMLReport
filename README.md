@@ -2,6 +2,7 @@
 
 `HTMLReport`是一个单元测试测试运行器，可以将测试结果保存在Html文件中，用于人性化的结果显示。<br><br>仅支持**Python 3.x**
 
+> 多线程不支持 @classmethod 装饰器！采用单线程模式工作！
 
 # 安装
 要安装HTMLReport，请在终端中运行此命令

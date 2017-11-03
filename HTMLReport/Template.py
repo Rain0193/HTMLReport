@@ -233,10 +233,10 @@ a.popup_link:hover {
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line'>Show
-<a href='javascript:showCase(0)'>Summary</a>
-<a href='javascript:showCase(1)'>Failed</a>
-<a href='javascript:showCase(2)'>All</a>
+<p id='show_detail_line'>筛选
+<a href='javascript:showCase(0)'>摘要</a>
+<a href='javascript:showCase(1)'>失败</a>
+<a href='javascript:showCase(2)'>全部</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -258,7 +258,7 @@ a.popup_link:hover {
 </tr>
 %(test_list)s
 <tr id='total_row'>
-    <td>Total</td>
+    <td>合计</td>
     <td>%(count)s</td>
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
@@ -277,7 +277,7 @@ a.popup_link:hover {
     <td>%(fail)s</td>
     <td>%(error)s</td>
     <td>%(skip)s</td>
-    <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">细节</a></td>
 </tr>
 """  # variables: (style, desc, count, Pass, fail, error, cid)
 
