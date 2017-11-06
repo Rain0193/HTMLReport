@@ -14,7 +14,7 @@ from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -176,13 +176,6 @@ class TestRunner(TemplateMixin):
         运行给定的测试用例或测试套件。
         """
 
-        def _isnotsuite(te):
-            try:
-                iter(te)
-            except TypeError:
-                return True
-            return False
-
         result = _TestResult(self.verbosity)
 
         print("预计并发线程数：", end='')
@@ -193,16 +186,9 @@ class TestRunner(TemplateMixin):
         else:
             # 参数为多线程模式
             print(self.thread_count)
-
-            tag = False
-            for ie in test:
-                tag = _isnotsuite(ie)
-                pass
-            if tag:
-                print('注意：多线程不支持 @classmethod 装饰器！采用单线程模式工作！')
-                result.complete_std_in()
-                test(result)
-            elif self.sequential_execution:
+            print('注意：不支持 @classmethod 装饰器多线程运行！如果包含有该装饰器，请采用单线程工作！')
+            result.complete_std_in()
+            if self.sequential_execution:
                 # 执行套件添加顺序
                 test_case_queue = queue.Queue()
                 L = []
