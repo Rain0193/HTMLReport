@@ -7,14 +7,15 @@ import sys
 import time
 import unittest
 from concurrent.futures import ThreadPoolExecutor
-from unittest import TestResult
+from unittest import TestResult, util
+from unittest.suite import _isnotsuite, _call_if_exists, _DebugResult, _ErrorHolder
 from xml.sax import saxutils
 
 from HTMLReport.Redirector import OutputRedirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -171,6 +172,151 @@ class TestRunner(TemplateMixin):
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
 
+    ################################
+
+    def _handleClassSetUp(self, test, result):
+        previousClass = getattr(result, '_previousTestClass', None)
+        currentClass = test.__class__
+        if currentClass == previousClass:
+            return
+        if result._moduleSetUpFailed:
+            return
+        if getattr(currentClass, "__unittest_skip__", False):
+            return
+
+        try:
+            currentClass._classSetupFailed = False
+        except TypeError:
+            # test may actually be a function
+            # so its class will be a builtin-type
+            pass
+
+        setUpClass = getattr(currentClass, 'setUpClass', None)
+        if setUpClass is not None:
+            _call_if_exists(result, '_setupStdout')
+            try:
+                setUpClass()
+            except Exception as e:
+                if isinstance(result, _DebugResult):
+                    raise
+                currentClass._classSetupFailed = True
+                className = util.strclass(currentClass)
+                errorName = 'setUpClass (%s)' % className
+                self._addClassOrModuleLevelException(result, e, errorName)
+            finally:
+                _call_if_exists(result, '_restoreStdout')
+
+    def _get_previous_module(self, result):
+        previousModule = None
+        previousClass = getattr(result, '_previousTestClass', None)
+        if previousClass is not None:
+            previousModule = previousClass.__module__
+        return previousModule
+
+    def _handleModuleFixture(self, test, result):
+        previousModule = self._get_previous_module(result)
+        currentModule = test.__class__.__module__
+        if currentModule == previousModule:
+            return
+
+        self._handleModuleTearDown(result)
+
+        result._moduleSetUpFailed = False
+        try:
+            module = sys.modules[currentModule]
+        except KeyError:
+            return
+        setUpModule = getattr(module, 'setUpModule', None)
+        if setUpModule is not None:
+            _call_if_exists(result, '_setupStdout')
+            try:
+                setUpModule()
+            except Exception as e:
+                if isinstance(result, _DebugResult):
+                    raise
+                result._moduleSetUpFailed = True
+                errorName = 'setUpModule (%s)' % currentModule
+                self._addClassOrModuleLevelException(result, e, errorName)
+            finally:
+                _call_if_exists(result, '_restoreStdout')
+
+    def _addClassOrModuleLevelException(self, result, exception, errorName):
+        error = _ErrorHolder(errorName)
+        addSkip = getattr(result, 'addSkip', None)
+        if addSkip is not None and isinstance(exception, unittest.case.SkipTest):
+            addSkip(error, str(exception))
+        else:
+            result.addError(error, sys.exc_info())
+
+    def _handleModuleTearDown(self, result):
+        previousModule = self._get_previous_module(result)
+        if previousModule is None:
+            return
+        if result._moduleSetUpFailed:
+            return
+
+        try:
+            module = sys.modules[previousModule]
+        except KeyError:
+            return
+
+        tearDownModule = getattr(module, 'tearDownModule', None)
+        if tearDownModule is not None:
+            _call_if_exists(result, '_setupStdout')
+            try:
+                tearDownModule()
+            except Exception as e:
+                if isinstance(result, _DebugResult):
+                    raise
+                errorName = 'tearDownModule (%s)' % previousModule
+                self._addClassOrModuleLevelException(result, e, errorName)
+            finally:
+                _call_if_exists(result, '_restoreStdout')
+
+    def _tearDownPreviousClass(self, test, result):
+        previousClass = getattr(result, '_previousTestClass', None)
+        currentClass = test.__class__
+        if currentClass == previousClass:
+            return
+        if getattr(previousClass, '_classSetupFailed', False):
+            return
+        if getattr(result, '_moduleSetUpFailed', False):
+            return
+        if getattr(previousClass, "__unittest_skip__", False):
+            return
+
+        tearDownClass = getattr(previousClass, 'tearDownClass', None)
+        if tearDownClass is not None:
+            _call_if_exists(result, '_setupStdout')
+            try:
+                tearDownClass()
+            except Exception as e:
+                if isinstance(result, _DebugResult):
+                    raise
+                className = util.strclass(previousClass)
+                errorName = 'tearDownClass (%s)' % className
+                self._addClassOrModuleLevelException(result, e, errorName)
+            finally:
+                _call_if_exists(result, '_restoreStdout')
+
+    def _threadPoolExecutorTestCase(self, tmp_list, result):
+        """多线程运行"""
+        with ThreadPoolExecutor(self.thread_count) as pool:
+            for test_case in tmp_list:
+                if _isnotsuite(test_case):
+                    self._tearDownPreviousClass(test_case, result)
+                    self._handleModuleFixture(test_case, result)
+                    self._handleClassSetUp(test_case, result)
+                    result._previousTestClass = test_case.__class__
+
+                    if (getattr(test_case.__class__, '_classSetupFailed', False) or
+                            getattr(result, '_moduleSetUpFailed', False)):
+                        continue
+
+                pool.submit(test_case, result)
+
+    ################################
+
     def run(self, test):
         """
         运行给定的测试用例或测试套件。
@@ -186,8 +332,8 @@ class TestRunner(TemplateMixin):
         else:
             # 参数为多线程模式
             print(self.thread_count)
-            print('注意：不支持 @classmethod 装饰器多线程运行！如果包含有该装饰器，请采用单线程工作！')
             result.complete_std_in()
+
             if self.sequential_execution:
                 # 执行套件添加顺序
                 test_case_queue = queue.Queue()
@@ -207,22 +353,18 @@ class TestRunner(TemplateMixin):
                     test_case_queue.put(L.copy())
                 while not test_case_queue.empty():
                     tmp_list = test_case_queue.get()
-                    with ThreadPoolExecutor(self.thread_count) as pool:
-                        for test_case in tmp_list:
-                            pool.submit(test_case, result)
+                    self._threadPoolExecutorTestCase(tmp_list, result)
             else:
                 # 无序执行
-                with ThreadPoolExecutor(self.thread_count) as pool:
-                    for test_case in test:
-                        pool.submit(test_case, result)
+                self._threadPoolExecutorTestCase(test, result)
 
         self.stopTime = datetime.datetime.now()
-        self.generateReport(result)
+        self._generateReport(result)
         print('\n测试结束！\n运行时间: %s' % (self.stopTime - self.startTime), file=sys.stderr)
         return result
 
     @staticmethod
-    def sortResult(result_list):
+    def _sortResult(result_list):
         # unittest似乎不以任何特定的顺序运行。
         # 在这里，至少我们想把它们按类分组。
         remap = {}
@@ -236,7 +378,7 @@ class TestRunner(TemplateMixin):
         r = [(cls, remap[cls]) for cls in classes]
         return r
 
-    def getReportAttributes(self, result):
+    def _getReportAttributes(self, result):
         """
         返回报告属性作为一个列表 (name, value).
         覆盖这个以添加自定义属性。
@@ -262,8 +404,8 @@ class TestRunner(TemplateMixin):
             ('结果', status),
         ]
 
-    def generateReport(self, result):
-        report_attr = self.getReportAttributes(result)
+    def _generateReport(self, result):
+        report_attr = self._getReportAttributes(result)
         generator = 'HTMLReport %s' % __version__
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attr)
@@ -308,7 +450,7 @@ class TestRunner(TemplateMixin):
 
     def _generate_report(self, result):
         rows = []
-        sortedResult = self.sortResult(result.result)
+        sortedResult = self._sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
             np = nf = ne = ns = 0
             for n, t, o, e in cls_results:
@@ -383,16 +525,3 @@ class TestRunner(TemplateMixin):
 
     def _generate_ending(self):
         return self.ENDING_TMPL
-
-
-class TestProgram(unittest.TestProgram):
-    # 这里继承自 unittest.TestProgram 类，重写了 runTests 方法。
-    # 用于命令行执行测试
-    def runTests(self):
-        if self.testRunner is None:
-            self.testRunner = TestRunner(verbosity=self.verbosity)
-        unittest.TestProgram.runTests(self)
-
-
-if __name__ == "__main__":
-    TestProgram(module=None)
