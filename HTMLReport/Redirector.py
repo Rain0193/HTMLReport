@@ -1,4 +1,4 @@
-class OutputRedirector(object):
+class Output_Redirector(object):
     """
     将输出进行重定向
     """

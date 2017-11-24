@@ -16,31 +16,47 @@ class TemplateMixin(object):
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>%(title)s</title>
-    <meta name="generator" content="%(generator)s"/>
+    <title>{title}</title>
+    <meta name="generator" content="{generator}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    %(stylesheet)s
+    {stylesheet}
 </head>
 <body>
-<script language="javascript" type="text/javascript"><!--
+<script language="javascript" type="text/javascript">{js}</script>
+
+{heading}
+{report}
+{ending}
+
+</body>
+</html>
+"""
+    JS = r"""
 output_list = Array();
 
-/* level - 0:Summary; 1:Failed; 2:All */
 function showCase(level) {
     trs = document.getElementsByTagName("tr");
     for (var i = 0; i < trs.length; i++) {
         tr = trs[i];
         id = tr.id;
-        if (id.substr(0,2) == 'ft') {
-            if (level < 1) {
-                tr.className = 'hiddenRow';
-            }
-            else {
+        if (id.substr(0,2) === 'st') {
+            if (level === 4 || level === 3) {
                 tr.className = '';
             }
+            else {
+                tr.className = 'hiddenRow';
+            }
         }
-        if (id.substr(0,2) == 'pt') {
-            if (level > 1) {
+        if (id.substr(0,2) === 'ft') {
+            if (level === 4 || level === 2) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+        if (id.substr(0,2) === 'pt') {
+            if (level === 4 || level === 1) {
                 tr.className = '';
             }
             else {
@@ -121,17 +137,9 @@ function showOutput(id, name) {
     d.close();
 }
 */
---></script>
-
-%(heading)s
-%(report)s
-%(ending)s
-
-</body>
-</html>
 """
 
-    STYLESHEET_TMPL = """
+    STYLESHEET_TMPL = r"""
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
 table       { font-size: 100%; }
@@ -217,26 +225,28 @@ a.popup_link:hover {
 </style>
 """
 
-    HEADING_TMPL = """<div class='heading'>
-<h1>%(title)s</h1>
-%(parameters)s
-<p class='description'>%(description)s</p>
+    HEADING_TMPL = r"""<div class='heading'>
+<h1>{title}</h1>
+{parameters}
+<p class='description'>{description}</p>
 </div>
 
 """  # variables: (title, parameters, description)
 
-    HEADING_ATTRIBUTE_TMPL = """<p class='attribute'><strong>%(name)s:</strong> %(value)s</p>
+    HEADING_ATTRIBUTE_TMPL = r"""<p class='attribute'><strong>{name}：</strong> {value}</p>
 """  # variables: (name, value)
 
     # ------------------------------------------------------------------------
     # Report
     #
 
-    REPORT_TMPL = """
+    REPORT_TMPL = r"""
 <p id='show_detail_line'>筛选
 <a href='javascript:showCase(0)'>摘要</a>
-<a href='javascript:showCase(1)'>失败</a>
-<a href='javascript:showCase(2)'>全部</a>
+<a href='javascript:showCase(1)'>通过</a>
+<a href='javascript:showCase(2)'>失败</a>
+<a href='javascript:showCase(3)'>跳过</a>
+<a href='javascript:showCase(4)'>全部</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -256,47 +266,47 @@ a.popup_link:hover {
     <td>跳过</td>
     <td>查看</td>
 </tr>
-%(test_list)s
+{test_list}
 <tr id='total_row'>
     <td>合计</td>
-    <td>%(count)s</td>
-    <td>%(Pass)s</td>
-    <td>%(fail)s</td>
-    <td>%(error)s</td>
-    <td>%(skip)s</td>
+    <td>{count}</td>
+    <td>{Pass}</td>
+    <td>{fail}</td>
+    <td>{error}</td>
+    <td>{skip}</td>
     <td>&nbsp;</td>
 </tr>
 </table>
 """  # variables: (test_list, count, Pass, fail, error)
 
     REPORT_CLASS_TMPL = r"""
-<tr class='%(style)s'>
-    <td>%(desc)s</td>
-    <td>%(count)s</td>
-    <td>%(Pass)s</td>
-    <td>%(fail)s</td>
-    <td>%(error)s</td>
-    <td>%(skip)s</td>
-    <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">细节</a></td>
+<tr class='{style}'>
+    <td>{desc}</td>
+    <td>{count}</td>
+    <td>{Pass}</td>
+    <td>{fail}</td>
+    <td>{error}</td>
+    <td>{skip}</td>
+    <td><a href="javascript:showClassDetail('{cid}',{count})">细节</a></td>
 </tr>
 """  # variables: (style, desc, count, Pass, fail, error, cid)
 
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
-<tr id='%(tid)s' class='%(Class)s'>
-    <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
+<tr id='{tid}' class='{Class}'>
+    <td class='{style}'><div class='testcase'>{desc}</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_%(tid)s')" >
-        %(status)s</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')" >
+        {status}</a>
 
-    <div id='div_%(tid)s' class="popup_window">
+    <div id='div_{tid}' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_%(tid)s').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
-        %(script)s
+        {script}
         </pre>
     </div>
     <!--css div popup end-->
@@ -306,18 +316,18 @@ a.popup_link:hover {
 """  # variables: (tid, Class, style, desc, status)
 
     REPORT_TEST_NO_OUTPUT_TMPL = r"""
-<tr id='%(tid)s' class='%(Class)s'>
-    <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='6' align='center'>%(status)s</td>
+<tr id='{tid}' class='{Class}'>
+    <td class='{style}'><div class='testcase'>{desc}</div></td>
+    <td colspan='6' align='center'>{status}</td>
 </tr>
 """  # variables: (tid, Class, style, desc, status)
 
     REPORT_TEST_OUTPUT_TMPL = r"""
-%(id)s: %(output)s
+{id}: {output}
 """  # variables: (id, output)
 
     # ------------------------------------------------------------------------
     # ENDING
     #
 
-    ENDING_TMPL = """<div id='ending'>&nbsp;</div>"""
+    ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""

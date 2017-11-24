@@ -5,23 +5,22 @@ import queue
 import random
 import sys
 import time
-import unittest
 from concurrent.futures import ThreadPoolExecutor
-from unittest import TestResult, util
-from unittest.suite import _isnotsuite, _call_if_exists, _DebugResult, _ErrorHolder
+from unittest import TestResult, TestSuite
+from unittest.suite import _isnotsuite
 from xml.sax import saxutils
 
-from HTMLReport.Redirector import OutputRedirector
+from HTMLReport.Redirector import Output_Redirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.4.3'
+__version__ = '0.4.4'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
 #   >>> logging.basicConfig(stream=HTMLReport.stderr_redirector)
-stdout_redirector = OutputRedirector(sys.stdout)
-stderr_redirector = OutputRedirector(sys.stderr)
+stdout_redirector = Output_Redirector(sys.stdout)
+stderr_redirector = Output_Redirector(sys.stderr)
 
 
 class _TestResult(TestResult):
@@ -142,7 +141,7 @@ class _TestResult(TestResult):
             sys.stderr.write('F\t')
 
 
-class TestRunner(TemplateMixin):
+class TestRunner(TemplateMixin, TestSuite):
     """
     测试执行器
     """
@@ -159,6 +158,7 @@ class TestRunner(TemplateMixin):
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
         :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
         """
+        super().__init__()
         self.output_path = output_path or "report"
         self.title = title or self.DEFAULT_TITLE
         self.description = description or self.DEFAULT_DESCRIPTION
@@ -171,133 +171,6 @@ class TestRunner(TemplateMixin):
         self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
-
-    ################################
-
-    def _handleClassSetUp(self, test, result):
-        previousClass = getattr(result, '_previousTestClass', None)
-        currentClass = test.__class__
-        if currentClass == previousClass:
-            return
-        if result._moduleSetUpFailed:
-            return
-        if getattr(currentClass, "__unittest_skip__", False):
-            return
-
-        try:
-            currentClass._classSetupFailed = False
-        except TypeError:
-            # test may actually be a function
-            # so its class will be a builtin-type
-            pass
-
-        setUpClass = getattr(currentClass, 'setUpClass', None)
-        if setUpClass is not None:
-            _call_if_exists(result, '_setupStdout')
-            try:
-                setUpClass()
-            except Exception as e:
-                if isinstance(result, _DebugResult):
-                    raise
-                currentClass._classSetupFailed = True
-                className = util.strclass(currentClass)
-                errorName = 'setUpClass (%s)' % className
-                self._addClassOrModuleLevelException(result, e, errorName)
-            finally:
-                _call_if_exists(result, '_restoreStdout')
-
-    def _get_previous_module(self, result):
-        previousModule = None
-        previousClass = getattr(result, '_previousTestClass', None)
-        if previousClass is not None:
-            previousModule = previousClass.__module__
-        return previousModule
-
-    def _handleModuleFixture(self, test, result):
-        previousModule = self._get_previous_module(result)
-        currentModule = test.__class__.__module__
-        if currentModule == previousModule:
-            return
-
-        self._handleModuleTearDown(result)
-
-        result._moduleSetUpFailed = False
-        try:
-            module = sys.modules[currentModule]
-        except KeyError:
-            return
-        setUpModule = getattr(module, 'setUpModule', None)
-        if setUpModule is not None:
-            _call_if_exists(result, '_setupStdout')
-            try:
-                setUpModule()
-            except Exception as e:
-                if isinstance(result, _DebugResult):
-                    raise
-                result._moduleSetUpFailed = True
-                errorName = 'setUpModule (%s)' % currentModule
-                self._addClassOrModuleLevelException(result, e, errorName)
-            finally:
-                _call_if_exists(result, '_restoreStdout')
-
-    def _addClassOrModuleLevelException(self, result, exception, errorName):
-        error = _ErrorHolder(errorName)
-        addSkip = getattr(result, 'addSkip', None)
-        if addSkip is not None and isinstance(exception, unittest.case.SkipTest):
-            addSkip(error, str(exception))
-        else:
-            result.addError(error, sys.exc_info())
-
-    def _handleModuleTearDown(self, result):
-        previousModule = self._get_previous_module(result)
-        if previousModule is None:
-            return
-        if result._moduleSetUpFailed:
-            return
-
-        try:
-            module = sys.modules[previousModule]
-        except KeyError:
-            return
-
-        tearDownModule = getattr(module, 'tearDownModule', None)
-        if tearDownModule is not None:
-            _call_if_exists(result, '_setupStdout')
-            try:
-                tearDownModule()
-            except Exception as e:
-                if isinstance(result, _DebugResult):
-                    raise
-                errorName = 'tearDownModule (%s)' % previousModule
-                self._addClassOrModuleLevelException(result, e, errorName)
-            finally:
-                _call_if_exists(result, '_restoreStdout')
-
-    def _tearDownPreviousClass(self, test, result):
-        previousClass = getattr(result, '_previousTestClass', None)
-        currentClass = test.__class__
-        if currentClass == previousClass:
-            return
-        if getattr(previousClass, '_classSetupFailed', False):
-            return
-        if getattr(result, '_moduleSetUpFailed', False):
-            return
-        if getattr(previousClass, "__unittest_skip__", False):
-            return
-
-        tearDownClass = getattr(previousClass, 'tearDownClass', None)
-        if tearDownClass is not None:
-            _call_if_exists(result, '_setupStdout')
-            try:
-                tearDownClass()
-            except Exception as e:
-                if isinstance(result, _DebugResult):
-                    raise
-                className = util.strclass(previousClass)
-                errorName = 'tearDownClass (%s)' % className
-                self._addClassOrModuleLevelException(result, e, errorName)
-            finally:
-                _call_if_exists(result, '_restoreStdout')
 
     def _threadPoolExecutorTestCase(self, tmp_list, result):
         """多线程运行"""
@@ -360,7 +233,7 @@ class TestRunner(TemplateMixin):
 
         self.stopTime = datetime.datetime.now()
         self._generateReport(result)
-        print('\n测试结束！\n运行时间: %s' % (self.stopTime - self.startTime), file=sys.stderr)
+        print('\n测试结束！\n运行时间: {}'.format(self.stopTime - self.startTime), file=sys.stderr)
         return result
 
     @staticmethod
@@ -387,17 +260,17 @@ class TestRunner(TemplateMixin):
         duration = str(self.stopTime - self.startTime)
         status = []
         if result.success_count:
-            status.append('Pass %s' % result.success_count)
+            status.append('通过：{}'.format(result.success_count))
         if result.failure_count:
-            status.append('Failure %s' % result.failure_count)
+            status.append('失败：{}'.format(result.failure_count))
         if result.error_count:
-            status.append('Error %s' % result.error_count)
+            status.append('错误：{}'.format(result.error_count))
         if result.skip_count:
-            status.append('Skip %s' % result.skip_count)
+            status.append('跳过：{}'.format(result.skip_count))
         if status:
-            status = ' '.join(status)
+            status = "&nbsp;&nbsp;&nbsp;&nbsp;".join(status)
         else:
-            status = 'none'
+            status = '空'
         return [
             ('启动时间', startTime),
             ('运行时长', duration),
@@ -406,29 +279,29 @@ class TestRunner(TemplateMixin):
 
     def _generateReport(self, result):
         report_attr = self._getReportAttributes(result)
-        generator = 'HTMLReport %s' % __version__
+        generator = 'HTMLReport {}'.format(__version__)
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attr)
         report = self._generate_report(result)
         ending = self._generate_ending()
-        output = self.HTML_TMPL % dict(
+        js = self._generate_js()
+        output = self.HTML_TMPL.format(
             title=saxutils.escape(self.title),
+            js=js,
             generator=generator,
             stylesheet=stylesheet,
             heading=heading,
             report=report,
-            ending=ending,
+            ending=ending
         )
 
-        # self.report_file_name = '{}_{}_{}.html'.format(self.report_file_name, time.strftime('%Y_%m_%d_%H_%M_%S'),
-        #                                                str(random.randint(1, 999)))
         current_dir = os.getcwd()
         dir_to = os.path.join(current_dir, self.output_path)
         if not os.path.exists(dir_to):
             os.makedirs(dir_to)
         path_file = os.path.join(dir_to, self.report_file_name)
-        with open(path_file, 'wb') as report_file:
-            report_file.write(output.encode('utf8'))
+        with open(path_file, 'w', encoding="utf8") as report_file:
+            report_file.write(output)
 
     def _generate_stylesheet(self):
         return self.STYLESHEET_TMPL
@@ -436,12 +309,12 @@ class TestRunner(TemplateMixin):
     def _generate_heading(self, report_attrs):
         a_lines = []
         for name, value in report_attrs:
-            line = self.HEADING_ATTRIBUTE_TMPL % dict(
-                name=saxutils.escape(name),
-                value=saxutils.escape(value),
+            line = self.HEADING_ATTRIBUTE_TMPL.format(
+                name=name,
+                value=value,
             )
             a_lines.append(line)
-        heading = self.HEADING_TMPL % dict(
+        heading = self.HEADING_TMPL.format(
             title=saxutils.escape(self.title),
             parameters=''.join(a_lines),
             description=saxutils.escape(self.description),
@@ -467,11 +340,11 @@ class TestRunner(TemplateMixin):
             if cls.__module__ == "__main__":
                 name = cls.__name__
             else:
-                name = "%s.%s" % (cls.__module__, cls.__name__)
+                name = "{}.{}".format(cls.__module__, cls.__name__)
             doc = cls.__doc__ and cls.__doc__.split("\n")[0] or ""
-            desc = doc and '%s: %s' % (name, doc) or name
+            desc = doc and '{}: {}'.format(name, doc) or name
 
-            row = self.REPORT_CLASS_TMPL % dict(
+            row = self.REPORT_CLASS_TMPL.format(
                 style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or np > 0 and 'passClass' or 'skipClass',
                 desc=desc,
                 count=np + nf + ne + ns,
@@ -479,45 +352,45 @@ class TestRunner(TemplateMixin):
                 fail=nf,
                 error=ne,
                 skip=ns,
-                cid='c%s' % (cid + 1),
+                cid='c{}'.format(cid + 1),
             )
             rows.append(row)
 
             for tid, (n, t, o, e) in enumerate(cls_results):
                 self._generate_report_test(rows, cid, tid, n, t, o, e)
 
-        report = self.REPORT_TMPL % dict(
+        report = self.REPORT_TMPL.format(
             test_list=''.join(rows),
             count=str(result.success_count + result.failure_count + result.error_count + result.skip_count),
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             skip=str(result.skip_count),
-            error=str(result.error_count),
+            error=str(result.error_count)
         )
         return report
 
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
         has_output = bool(o or e)
         # 0: success; 1: fail; 2: error; 3: skip
-        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
+        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't{}.{}'.format(cid + 1, tid + 1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
-        desc = doc and ('%s: %s' % (name, doc)) or name
+        desc = doc and ('{}: {}'.format(name, doc)) or name
         temp = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
 
-        script = self.REPORT_TEST_OUTPUT_TMPL % dict(
+        script = self.REPORT_TEST_OUTPUT_TMPL.format(
             id=tid,
             output=saxutils.escape(o + e),
         )
 
-        row = temp % dict(
+        row = temp.format(
             tid=tid,
             Class=(n == 0 and 'hiddenRow' or 'none'),
             style=(n == 0 and 'passCase' or n == 2 and 'errorCase' or
                    n == 1 and 'failCase' or n == 3 and 'skipCase' or 'none'),
             desc=desc,
             script=script,
-            status=self.STATUS[n],
+            status=self.STATUS[n]
         )
         rows.append(row)
         if not has_output:
@@ -525,3 +398,6 @@ class TestRunner(TemplateMixin):
 
     def _generate_ending(self):
         return self.ENDING_TMPL
+
+    def _generate_js(self):
+        return self.JS
