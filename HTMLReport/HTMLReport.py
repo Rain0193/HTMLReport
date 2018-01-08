@@ -14,7 +14,7 @@ from HTMLReport.Redirector import Output_Redirector
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.4.4'
+__version__ = '0.4.7'
 
 # 日志输出
 #   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
@@ -164,7 +164,7 @@ class TestRunner(TemplateMixin, TestSuite):
         self.description = description or self.DEFAULT_DESCRIPTION
         self.report_file_name = '{}.html'.format(
             report_file_name or 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'),
-                                                    str(random.randint(1, 999))))
+                                                    random.randint(1, 999)))
 
         self.verbosity = verbosity
         self.thread_count = thread_count
@@ -233,7 +233,14 @@ class TestRunner(TemplateMixin, TestSuite):
 
         self.stopTime = datetime.datetime.now()
         self._generateReport(result)
-        print('\n测试结束！\n运行时间: {}'.format(self.stopTime - self.startTime), file=sys.stderr)
+        print('\n测试结束！\n运行时间: {}\n共计执行用例：{count}\n\t成功：{Pass}\n\t失败：{fail}\n\t跳过：{skip}\n\t异常：{error}'.format(
+            self.stopTime - self.startTime,
+            count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+            Pass=result.success_count,
+            fail=result.failure_count,
+            skip=result.skip_count,
+            error=result.error_count
+        ), file=sys.stderr)
         return result
 
     @staticmethod
@@ -361,11 +368,11 @@ class TestRunner(TemplateMixin, TestSuite):
 
         report = self.REPORT_TMPL.format(
             test_list=''.join(rows),
-            count=str(result.success_count + result.failure_count + result.error_count + result.skip_count),
-            Pass=str(result.success_count),
-            fail=str(result.failure_count),
-            skip=str(result.skip_count),
-            error=str(result.error_count)
+            count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+            Pass=result.success_count,
+            fail=result.failure_count,
+            skip=result.skip_count,
+            error=result.error_count
         )
         return report
 

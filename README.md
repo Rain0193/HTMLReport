@@ -37,3 +37,7 @@ runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默
 # 执行测试用例套件
 runner.run(suite)
 ```
+
+Links:
+---------
+* [https://github.com/liushilive/HTMLReport](https://github.com/liushilive/HTMLReport "Github")

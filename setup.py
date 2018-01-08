@@ -4,24 +4,41 @@ from setuptools import setup
 from HTMLReport.HTMLReport import __version__, __author__
 
 doc = """
-===============================
 HTMLReport
-===============================
-这个报告灵感来源于``HtmlTestRunner by tungwaiyip``.
-Usage:
---------------
-.. code-block:: python
+==========
+
+``HTMLReport``\ 是一个单元测试测试运行器，可以将测试结果保存在Html文件中，用于人性化的结果显示。仅支持\ **Python
+3.x**
+
+    多线程不支持 @classmethod 装饰器！采用单线程模式工作！
+
+安装
+====
+
+要安装HTMLReport，请在终端中运行此命令
+
+.. code:: py
+
+    $ pip install HTMLReport
+
+这是安装HTMLReport的首选方法，因为它将始终安装最新的稳定版本。如果您没有安装\ `pip <https://pip.pypa.io/>`__\ ，则该\ `Python安装指南 <http://docs.python-guide.org/en/latest/starting/installation/>`__\ 可以指导您完成该过程。
+
+使用方法
+========
+
+.. code:: py
+
     import unittest
     import HTMLReport
-    
-    
+
+
     # 测试套件
     suite = unittest.TestSuite()
     # 测试用例加载器
     loader = unittest.TestLoader()
     # 把测试用例加载到测试套件中
     suite.addTests(loader.loadTestsFromTestCase(TestStringMethods))
-    
+
     # 测试用例执行器
     runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
                                    output_path='report',  # 保存文件夹名，默认“report”
@@ -34,18 +51,17 @@ Usage:
                                    )
     # 执行测试用例套件
     runner.run(suite)
-        
-使用非常简单。
 
 Links:
----------
-* `Github <https://github.com/liushilive/HTMLReport>`_
+------
+
+-  https://github.com/liushilive/HTMLReport
 """
 
 setup(
     name='HTMLReport',
     version=__version__,
-    description="Python3 THML报告生成",
+    description="Python3 Unittest HTML报告生成",
     long_description=doc,
     author=__author__,
     author_email='liushilive@outlook.com',
