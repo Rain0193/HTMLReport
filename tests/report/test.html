@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>一个简单的测试报告</title>
-    <meta name="generator" content="HTMLReport 0.4.4"/>
+    <meta name="generator" content="HTMLReport 0.5.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
 <style type="text/css" media="screen">
@@ -202,8 +202,8 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>一个简单的测试报告</h1>
-<p class='attribute'><strong>启动时间：</strong> 2018-01-08 18:30:42</p>
-<p class='attribute'><strong>运行时长：</strong> 0:00:00.003001</p>
+<p class='attribute'><strong>启动时间：</strong> 2018-03-09 01:23:33</p>
+<p class='attribute'><strong>运行时长：</strong> 0:00:00.006988</p>
 <p class='attribute'><strong>结果：</strong> 通过：4&nbsp;&nbsp;&nbsp;&nbsp;失败：3&nbsp;&nbsp;&nbsp;&nbsp;错误：1&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
 
 <p class='description'>随意描述</p>
@@ -263,7 +263,7 @@ function showOutput(id, name) {
         <pre>
         
 ft1.1: Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 25, in test_error
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 29, in test_error
     raise ValueError
 ValueError
 
@@ -275,38 +275,33 @@ ValueError
     </td>
 </tr>
 
-<tr id='pt1.2' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
-    <td colspan='6' align='center'>pass</td>
-</tr>
-
-<tr id='st1.3' class='none'>
+<tr id='st1.2' class='none'>
     <td class='skipCase'><div class='testcase'>test_skip: 测试跳过</div></td>
     <td colspan='6' align='center'>skip</td>
 </tr>
 
-<tr id='pt1.4' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
     <td colspan='6' align='center'>pass</td>
 </tr>
 
-<tr id='ft1.5' class='none'>
+<tr id='ft1.4' class='none'>
     <td class='failCase'><div class='testcase'>test_fail: 测试失败</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.5')" >
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.4')" >
         fail</a>
 
-    <div id='div_ft1.5' class="popup_window">
+    <div id='div_ft1.4' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.5').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.4').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
         
-ft1.5: Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 29, in test_fail
+ft1.4: Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 34, in test_fail
     self.assertEqual(1, 2, "相等")
 AssertionError: 1 != 2 : 相等
 
@@ -316,6 +311,11 @@ AssertionError: 1 != 2 : 相等
     <!--css div popup end-->
 
     </td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
+    <td colspan='6' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
@@ -364,7 +364,7 @@ AssertionError: 1 != 2 : 相等
         <pre>
         
 ft3.1: Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 64, in test_False
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 71, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
@@ -392,7 +392,7 @@ AssertionError: True is not false : 2
         <pre>
         
 ft3.2: Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_True
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 66, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 

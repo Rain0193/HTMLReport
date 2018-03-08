@@ -1,144 +1,20 @@
 import datetime
-import io
+import logging
 import os
 import queue
 import random
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
-from unittest import TestResult, TestSuite
+from unittest import TestSuite
 from unittest.suite import _isnotsuite
 from xml.sax import saxutils
 
-from HTMLReport.Redirector import Output_Redirector
+from HTMLReport.Result import Result
 from HTMLReport.Template import TemplateMixin
 
 __author__ = "刘士"
-__version__ = '0.4.7'
-
-# 日志输出
-#   >>> logging.basicConfig(stream=HTMLReport.stdout_redirector)
-#   >>> logging.basicConfig(stream=HTMLReport.stderr_redirector)
-stdout_redirector = Output_Redirector(sys.stdout)
-stderr_redirector = Output_Redirector(sys.stderr)
-
-
-class _TestResult(TestResult):
-    """
-    定义继承自 unittest.TestResult 的 类。
-    这里重写了 unittest.TestResult 的多个方法，比如 startTest(self, test) 等等
-    """
-
-    def __init__(self, verbosity=2):
-        TestResult.__init__(self)
-        super().__init__(verbosity)
-        self.outputBuffer = io.StringIO()
-        self.stdout0 = None
-        self.stderr0 = None
-        self.success_count = 0
-        self.failure_count = 0
-        self.skip_count = 0
-        self.error_count = 0
-        self.verbosity = verbosity
-        """
-        返回结果是一个4个属性的元组的列表
-        (
-          result code (0: success; 1: fail; 2: error; 3: skip),
-          TestCase object,
-          Test output (byte string),
-          stack trace,
-        )
-        """
-        self.result = []
-
-    def addSkip(self, test, reason):
-        self.skip_count += 1
-        TestResult.addSkip(self, test, reason)
-        output = self.complete_output()
-        self.result.append((3, test, output, ''))
-        if self.verbosity > 1:
-            sys.stderr.write('Skip\t')
-            sys.stderr.write(str(test))
-            sys.stderr.write("\n")
-        else:
-            sys.stderr.write('S\t')
-
-    def startTest(self, test):
-        TestResult.startTest(self, test)
-
-    def complete_std_in(self):
-        # 仅为stdout和stderr提供一个缓冲区
-        stdout_redirector.fp = self.outputBuffer
-        stderr_redirector.fp = self.outputBuffer
-        self.stdout0 = sys.stdout
-        self.stderr0 = sys.stderr
-        sys.stdout = stdout_redirector
-        sys.stderr = stderr_redirector
-
-    def complete_output(self):
-        """
-        断开输出重定向和返回缓冲区。
-        可多次调用
-        """
-        if self.stdout0:
-            sys.stdout = self.stdout0
-            sys.stderr = self.stderr0
-            self.stdout0 = None
-            self.stderr0 = None
-        return self.outputBuffer.getvalue()
-
-    def stopTest(self, test):
-        self.complete_output()
-
-    def addSuccess(self, test):
-        self.success_count += 1
-        TestResult.addSuccess(self, test)
-        output = self.complete_output()
-        self.result.append((0, test, output, ''))
-        if self.verbosity > 1:
-            sys.stderr.write('Pass\t')
-            sys.stderr.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write('\n')
-        else:
-            sys.stderr.write('P\t')
-
-    def addError(self, test, err):
-        self.error_count += 1
-        TestResult.addError(self, test, err)
-        _, _exc_str = self.errors[-1]
-        output = self.complete_output()
-        self.result.append((2, test, output, _exc_str))
-        if self.verbosity > 1:
-            sys.stderr.write('Error\t')
-            sys.stderr.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write('\n')
-        else:
-            sys.stderr.write('E\t')
-
-    def addFailure(self, test, err):
-        self.failure_count += 1
-        TestResult.addFailure(self, test, err)
-        _, _exc_str = self.failures[-1]
-        output = self.complete_output()
-        self.result.append((1, test, output, _exc_str))
-        if self.verbosity > 1:
-            sys.stderr.write('Fail\t')
-            sys.stderr.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write('\n')
-        else:
-            sys.stderr.write('F\t')
+__version__ = '0.5.0'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -159,18 +35,23 @@ class TestRunner(TemplateMixin, TestSuite):
         :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
         """
         super().__init__()
-        self.output_path = output_path or "report"
+
         self.title = title or self.DEFAULT_TITLE
         self.description = description or self.DEFAULT_DESCRIPTION
-        self.report_file_name = '{}.html'.format(
-            report_file_name or 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'),
-                                                    random.randint(1, 999)))
 
         self.verbosity = verbosity
         self.thread_count = thread_count
         self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
+
+        dir_to = os.path.join(os.getcwd(), output_path or "report")
+        if not os.path.exists(dir_to):
+            os.makedirs(dir_to)
+
+        random_name = 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'), random.randint(1, 999))
+        self.path_file = os.path.join(dir_to, '{}.html'.format(report_file_name or random_name))
+        self.log_file_name = os.path.join(dir_to, "{}.log".format(report_file_name or random_name))
 
     def _threadPoolExecutorTestCase(self, tmp_list, result):
         """多线程运行"""
@@ -195,18 +76,36 @@ class TestRunner(TemplateMixin, TestSuite):
         运行给定的测试用例或测试套件。
         """
 
-        result = _TestResult(self.verbosity)
+        # 创建一个根日志记录器
+        root_logger = logging.getLogger()
+        # 设置日志记录器的日志级别
+        root_logger.setLevel(logging.NOTSET)
+        # 创建一个处理程序类，将格式化的日志记录写入文件中
+        handler = logging.FileHandler(self.log_file_name, encoding='utf8')
+        # 使用制定的格式字符串格式化日志文本
+        formatter = logging.Formatter(
+            "[%(asctime)s %(threadName)s_%(thread)-6d %(levelname)-8s %(filename)s (%(lineno)d)]: %(message)s")
+        # 为处理程序设置格式化方式
+        handler.setFormatter(formatter)
+        # 向这个日志记录器添加指定的处理程序
+        root_logger.addHandler(handler)
+        console = logging.StreamHandler()
+        console.setLevel(logging.ERROR)
+        formatter = logging.Formatter('%(message)s')
+        console.setFormatter(formatter)
+        root_logger.addHandler(console)
+
+        result = Result(self.verbosity)
 
         print("预计并发线程数：", end='')
         if self.thread_count <= 1:
             print(1)
-            result.complete_std_in()
+            logging.info("预计并发线程数：1")
             test(result)
         else:
             # 参数为多线程模式
             print(self.thread_count)
-            result.complete_std_in()
-
+            logging.info("预计并发线程数：" + str(self.thread_count))
             if self.sequential_execution:
                 # 执行套件添加顺序
                 test_case_queue = queue.Queue()
@@ -233,14 +132,17 @@ class TestRunner(TemplateMixin, TestSuite):
 
         self.stopTime = datetime.datetime.now()
         self._generateReport(result)
-        print('\n测试结束！\n运行时间: {}\n共计执行用例：{count}\n\t成功：{Pass}\n\t失败：{fail}\n\t跳过：{skip}\n\t异常：{error}'.format(
-            self.stopTime - self.startTime,
+        s = '\n测试结束！\n运行时间: {time}\n共计执行用例数量：{count}\n执行成功用例数量：{Pass}' \
+            '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}'.format(
+            time=self.stopTime - self.startTime,
             count=result.success_count + result.failure_count + result.error_count + result.skip_count,
             Pass=result.success_count,
             fail=result.failure_count,
             skip=result.skip_count,
             error=result.error_count
-        ), file=sys.stderr)
+        )
+        print(s, file=sys.stdout)
+        logging.info(s)
         return result
 
     @staticmethod
@@ -302,12 +204,7 @@ class TestRunner(TemplateMixin, TestSuite):
             ending=ending
         )
 
-        current_dir = os.getcwd()
-        dir_to = os.path.join(current_dir, self.output_path)
-        if not os.path.exists(dir_to):
-            os.makedirs(dir_to)
-        path_file = os.path.join(dir_to, self.report_file_name)
-        with open(path_file, 'w', encoding="utf8") as report_file:
+        with open(self.path_file, 'w', encoding="utf8") as report_file:
             report_file.write(output)
 
     def _generate_stylesheet(self):
