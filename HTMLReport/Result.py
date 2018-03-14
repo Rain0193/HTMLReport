@@ -1,6 +1,8 @@
-import logging
-import sys
+from io import StringIO
 from unittest import TestResult
+
+from HTMLReport.log.HandlerFactory import HandlerFactory
+from HTMLReport.log.logger import GeneralLogger
 
 
 class Result(TestResult):
@@ -12,14 +14,14 @@ class Result(TestResult):
     def __init__(self, verbosity=2):
         TestResult.__init__(self)
         super().__init__(verbosity)
-        # self.outputBuffer = io.StringIO()
-        # self.stdout0 = None
-        # self.stderr0 = None
         self.success_count = 0
         self.failure_count = 0
         self.skip_count = 0
         self.error_count = 0
-        self.verbosity = verbosity
+        self.stderr_steams = StringIO()
+        self.stderr_steams.write("\n")
+        self.stdout_steams = StringIO()
+        self.stdout_steams.write("\n")
         """
         返回结果是一个4个属性的元组的列表
         (
@@ -34,74 +36,64 @@ class Result(TestResult):
     def addSkip(self, test, reason):
         self.skip_count += 1
         TestResult.addSkip(self, test, reason)
-        self.result.append((3, test, "", ''))
-        if self.verbosity > 1:
-            sys.stderr.write('Skip\t')
-            sys.stderr.write(str(test))
+        self.stderr_steams.write('Skip\t')
+        self.stderr_steams.write(str(test))
+        doc = test._testMethodDoc
+        if doc:
+            self.stderr_steams.write("\t")
+            self.stderr_steams.write(doc)
+        self.stderr_steams.write("\n")
 
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write("\n")
-        else:
-            sys.stderr.write('S\t')
-        logging.info("跳过测试：{}".format(test))
+        GeneralLogger().get_logger().info("跳过测试：{}".format(test))
+        self.result.append((3, test, HandlerFactory.get_stream_value(), ''))
 
     def startTest(self, test):
         # self.complete_std_in()
-        logging.info("开始测试：{}".format(test))
+        GeneralLogger().get_logger(True)
+        GeneralLogger().get_logger().info("开始测试：{}".format(test))
         TestResult.startTest(self, test)
 
     def stopTest(self, test):
-        logging.info("测试结束：{}".format(test))
+        GeneralLogger().get_logger().info("测试结束：{}".format(test))
+        HandlerFactory.get_stream_value()
 
     def addSuccess(self, test):
         self.success_count += 1
         TestResult.addSuccess(self, test)
-        self.result.append((0, test, "", ''))
-        if self.verbosity > 1:
-            sys.stdout.write('Pass\t')
-            sys.stdout.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stdout.write("\t")
-                sys.stdout.write(doc)
-            sys.stdout.write('\n')
-        else:
-            sys.stdout.write('P\t')
-        logging.info("测试执行通过：{}".format(test))
+        self.stdout_steams.write('Pass\t')
+        self.stdout_steams.write(str(test))
+        doc = test._testMethodDoc
+        if doc:
+            self.stdout_steams.write("\t")
+            self.stdout_steams.write(doc)
+        self.stdout_steams.write('\n')
+        GeneralLogger().get_logger().info("测试执行通过：{}".format(test))
+        self.result.append((0, test, HandlerFactory.get_stream_value(), ''))
 
     def addError(self, test, err):
         self.error_count += 1
         TestResult.addError(self, test, err)
         _, _exc_str = self.errors[-1]
-        self.result.append((2, test, "", _exc_str))
-        if self.verbosity > 1:
-            sys.stderr.write('Error\t')
-            sys.stderr.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write('\n')
-        else:
-            sys.stderr.write('E\t')
-        logging.info("测试产生错误：\t{}".format(test))
+        self.stderr_steams.write('Error\t')
+        self.stderr_steams.write(str(test))
+        doc = test._testMethodDoc
+        if doc:
+            self.stderr_steams.write("\t")
+            self.stderr_steams.write(doc)
+        self.stderr_steams.write('\n')
+        GeneralLogger().get_logger().error("测试产生错误：\t{}".format(test))
+        self.result.append((2, test, HandlerFactory.get_stream_value(), _exc_str))
 
     def addFailure(self, test, err):
         self.failure_count += 1
         TestResult.addFailure(self, test, err)
         _, _exc_str = self.failures[-1]
-        self.result.append((1, test, "", _exc_str))
-        if self.verbosity > 1:
-            sys.stderr.write('Fail\t')
-            sys.stderr.write(str(test))
-            doc = test._testMethodDoc
-            if doc:
-                sys.stderr.write("\t")
-                sys.stderr.write(doc)
-            sys.stderr.write('\n')
-        else:
-            sys.stderr.write('F\t')
-        logging.info("测试未通过：{}".format(test))
+        self.stderr_steams.write('Fail\t')
+        self.stderr_steams.write(str(test))
+        doc = test._testMethodDoc
+        if doc:
+            self.stderr_steams.write("\t")
+            self.stderr_steams.write(doc)
+        self.stderr_steams.write('\n')
+        GeneralLogger().get_logger().warning("测试未通过：{}".format(test))
+        self.result.append((1, test, HandlerFactory.get_stream_value(), _exc_str))

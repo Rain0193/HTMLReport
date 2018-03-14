@@ -1,7 +1,8 @@
-import unittest
 import logging
+import unittest
 
 import HTMLReport
+from HTMLReport import GeneralLogger
 
 
 def parse_int(s):
@@ -11,13 +12,13 @@ def parse_int(s):
 class test_1th(unittest.TestCase):
     def test_isupper(self):
         """测试isupper"""
-        logging.info("测试isupper")
+        GeneralLogger().get_logger().info("测试isupper")
         self.assertTrue('FOO'.isupper(), "真")
         self.assertFalse('Foo'.isupper(), '假')
 
     def test_split(self):
         """测试split"""
-        logging.info("测试split")
+        GeneralLogger().get_logger().info("测试split")
         s = 'hello world'
         self.assertEqual(s.split(), ['hello', 'world'], "相等")
         with self.assertRaises(TypeError):
@@ -25,25 +26,25 @@ class test_1th(unittest.TestCase):
 
     def test_error(self):
         """测试错误"""
-        logging.info("测试错误")
+        GeneralLogger().get_logger().error("测试错误")
         raise ValueError
 
     def test_fail(self):
         """测试失败"""
-        logging.info("测试失败")
+        GeneralLogger().get_logger().info("测试失败")
         self.assertEqual(1, 2, "相等")
 
     @unittest.skip("This is a skipped test.")
     def test_skip(self):
         """测试跳过"""
-        logging.info("测试跳过")
+        GeneralLogger().get_logger().warning("测试跳过")
         pass
 
 
 class test_2th(unittest.TestCase):
     def test_bad_int(self):
         """测试异常类型"""
-        logging.info("测试异常类型")
+        GeneralLogger().get_logger().info("测试异常类型")
         self.assertRaises(ValueError, parse_int, 'N/A')
 
     def test_upper(self):
@@ -82,9 +83,8 @@ if __name__ == '__main__':
     suite.addTests(loader.loadTestsFromTestCase(test_第三个测试))
 
     # 测试用例执行器
-    runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
+    runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test+时间戳”
                                    output_path='report',  # 保存文件夹名，默认“report”
-                                   verbosity=2,  # 控制台输出详细程度，默认 2
                                    title='一个简单的测试报告',  # 报告标题，默认“测试报告”
                                    description='随意描述',  # 报告描述，默认“无测试描述”
                                    thread_count=10,  # 并发线程数量（无序执行测试），默认数量 1

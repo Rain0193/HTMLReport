@@ -1,9 +1,7 @@
 import datetime
-import logging
 import os
 import queue
 import random
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from unittest import TestSuite
@@ -12,9 +10,11 @@ from xml.sax import saxutils
 
 from HTMLReport.Result import Result
 from HTMLReport.Template import TemplateMixin
+from HTMLReport.log.HandlerFactory import *
+from HTMLReport.log.logger import GeneralLogger
 
 __author__ = "刘士"
-__version__ = '0.5.0'
+__version__ = '1.0.0'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -22,15 +22,16 @@ class TestRunner(TemplateMixin, TestSuite):
     测试执行器
     """
 
-    def __init__(self, report_file_name: str = None, output_path: str = None, title: str = None,
-                 description: str = None, verbosity: int = 2, thread_count: int = 1,
+    def __init__(self, report_file_name: str = None, log_file_name: str = None, output_path: str = None,
+                 title: str = None,
+                 description: str = None, thread_count: int = 1,
                  sequential_execution: bool = False):
         """
         :param report_file_name: 报告文件名，默认“test+时间戳”
-        :param output_path: 保存文件夹名，默认“report”
+        :param log_file_name: 日志文件名，如果未命令，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
+        :param output_path: 报告保存文件夹名，默认“report”
         :param title: 报告标题，默认“测试报告”
         :param description: # 报告描述，默认“无测试描述”
-        :param verbosity: 控制台输出详细程度，默认 2
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
         :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
         """
@@ -39,7 +40,6 @@ class TestRunner(TemplateMixin, TestSuite):
         self.title = title or self.DEFAULT_TITLE
         self.description = description or self.DEFAULT_DESCRIPTION
 
-        self.verbosity = verbosity
         self.thread_count = thread_count
         self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
@@ -51,7 +51,12 @@ class TestRunner(TemplateMixin, TestSuite):
 
         random_name = 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'), random.randint(1, 999))
         self.path_file = os.path.join(dir_to, '{}.html'.format(report_file_name or random_name))
-        self.log_file_name = os.path.join(dir_to, "{}.log".format(report_file_name or random_name))
+        self.log_file_name = os.path.join(dir_to, "{}.log".format(log_file_name or report_file_name or random_name))
+
+        GeneralLogger().set_log_path(self.log_file_name)
+        GeneralLogger().set_log_by_thread_log(True)
+        GeneralLogger().set_log_level(LOG_LEVEL_NOTSET)
+        self.main_logger = GeneralLogger().get_logger()
 
     def _threadPoolExecutorTestCase(self, tmp_list, result):
         """多线程运行"""
@@ -71,41 +76,22 @@ class TestRunner(TemplateMixin, TestSuite):
 
     ################################
 
-    def run(self, test):
+    def run(self, test, debug=False):
         """
         运行给定的测试用例或测试套件。
         """
 
-        # 创建一个根日志记录器
-        root_logger = logging.getLogger()
-        # 设置日志记录器的日志级别
-        root_logger.setLevel(logging.NOTSET)
-        # 创建一个处理程序类，将格式化的日志记录写入文件中
-        handler = logging.FileHandler(self.log_file_name, encoding='utf8')
-        # 使用制定的格式字符串格式化日志文本
-        formatter = logging.Formatter(
-            "[%(asctime)s %(threadName)s_%(thread)-6d %(levelname)-8s %(filename)s (%(lineno)d)]: %(message)s")
-        # 为处理程序设置格式化方式
-        handler.setFormatter(formatter)
-        # 向这个日志记录器添加指定的处理程序
-        root_logger.addHandler(handler)
-        console = logging.StreamHandler()
-        console.setLevel(logging.ERROR)
-        formatter = logging.Formatter('%(message)s')
-        console.setFormatter(formatter)
-        root_logger.addHandler(console)
+        result = Result()
 
-        result = Result(self.verbosity)
-
-        print("预计并发线程数：", end='')
+        # print("预计并发线程数：", end='')
         if self.thread_count <= 1:
-            print(1)
-            logging.info("预计并发线程数：1")
+            # print(1)
+            self.main_logger.info("预计并发线程数：1")
             test(result)
         else:
             # 参数为多线程模式
-            print(self.thread_count)
-            logging.info("预计并发线程数：" + str(self.thread_count))
+            # print(self.thread_count)
+            self.main_logger.info("预计并发线程数：" + str(self.thread_count))
             if self.sequential_execution:
                 # 执行套件添加顺序
                 test_case_queue = queue.Queue()
@@ -133,16 +119,19 @@ class TestRunner(TemplateMixin, TestSuite):
         self.stopTime = datetime.datetime.now()
         self._generateReport(result)
         s = '\n测试结束！\n运行时间: {time}\n共计执行用例数量：{count}\n执行成功用例数量：{Pass}' \
-            '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}'.format(
-            time=self.stopTime - self.startTime,
-            count=result.success_count + result.failure_count + result.error_count + result.skip_count,
-            Pass=result.success_count,
-            fail=result.failure_count,
-            skip=result.skip_count,
-            error=result.error_count
-        )
-        print(s, file=sys.stdout)
-        logging.info(s)
+            '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}' \
+            .format(time=self.stopTime - self.startTime,
+                    count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+                    Pass=result.success_count,
+                    fail=result.failure_count,
+                    skip=result.skip_count,
+                    error=result.error_count
+                    )
+        if result.stdout_steams.getvalue().strip():
+            self.main_logger.info(result.stdout_steams.getvalue())
+        if result.stderr_steams.getvalue().strip():
+            self.main_logger.error(result.stderr_steams.getvalue())
+        self.main_logger.info(s)
         return result
 
     @staticmethod

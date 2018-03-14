@@ -27,7 +27,6 @@ suite.addTests(loader.loadTestsFromTestCase(TestStringMethods))
 # 测试用例执行器
 runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test”
                                output_path='report',  # 保存文件夹名，默认“report”
-                               verbosity=2,  # 控制台输出详细程度，默认 2
                                title='测试报告',  # 报告标题，默认“测试报告”
                                description='无测试描述',  # 报告描述，默认“无测试描述”
                                thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
