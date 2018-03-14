@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from setuptools import setup
+import sys
+
+from setuptools import setup, find_packages
+
 from HTMLReport.HTMLReport import __version__, __author__
 
 doc = """
@@ -57,6 +60,9 @@ Links:
 -  https://github.com/liushilive/HTMLReport
 """
 
+if sys.version_info < (3, 5):
+    raise RuntimeError('本模块最低支持 Python 3.5')
+
 setup(
     name='HTMLReport',
     version=__version__,
@@ -65,7 +71,7 @@ setup(
     author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',
-    packages=['HTMLReport'],
+    packages=find_packages(),
     package_dir={'HTMLReport': 'HTMLReport'},
     include_package_data=True,
     license="MIT license",
