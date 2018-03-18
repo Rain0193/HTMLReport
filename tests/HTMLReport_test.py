@@ -83,7 +83,7 @@ if __name__ == '__main__':
     suite.addTests(loader.loadTestsFromTestCase(test_第三个测试))
 
     # 测试用例执行器
-    runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，默认“test+时间戳”
+    runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如果未赋值，将采用“test+时间戳”
                                    output_path='report',  # 保存文件夹名，默认“report”
                                    title='一个简单的测试报告',  # 报告标题，默认“测试报告”
                                    description='随意描述',  # 报告描述，默认“无测试描述”

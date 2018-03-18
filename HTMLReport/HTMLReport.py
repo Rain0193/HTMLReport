@@ -14,7 +14,7 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.logger import GeneralLogger
 
 __author__ = "刘士"
-__version__ = '1.0.5'
+__version__ = '1.0.7'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -27,8 +27,8 @@ class TestRunner(TemplateMixin, TestSuite):
                  description: str = None, thread_count: int = 1,
                  sequential_execution: bool = False):
         """
-        :param report_file_name: 报告文件名，默认“test+时间戳”
-        :param log_file_name: 日志文件名，如果未命令，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
+        :param report_file_name: 报告文件名，如果未赋值，将采用“test+时间戳”
+        :param log_file_name: 日志文件名，如果未赋值，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
         :param output_path: 报告保存文件夹名，默认“report”
         :param title: 报告标题，默认“测试报告”
         :param description: # 报告描述，默认“无测试描述”
@@ -44,14 +44,17 @@ class TestRunner(TemplateMixin, TestSuite):
         self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
-
-        dir_to = os.path.join(os.getcwd(), output_path or "report")
+        relative_dir = os.path.join(output_path or "report")
+        dir_to = os.path.join(os.getcwd(), relative_dir)
         if not os.path.exists(dir_to):
             os.makedirs(dir_to)
 
         random_name = 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'), random.randint(1, 999))
-        self.path_file = os.path.join(dir_to, '{}.html'.format(report_file_name or random_name))
-        self.log_file_name = os.path.join(dir_to, "{}.log".format(log_file_name or report_file_name or random_name))
+        self.log_name = "{}.log".format(log_file_name or report_file_name or random_name)
+        report_name = '{}.html'.format(report_file_name or random_name)
+        self.path_file = os.path.join(dir_to, report_name)
+        self.log_file_name = os.path.join(dir_to, self.log_name)
+        # self.relative_log_dir = os.path.join(relative_dir, log_name)
 
         GeneralLogger().set_log_path(self.log_file_name)
         GeneralLogger().set_log_by_thread_log(True)
@@ -117,7 +120,10 @@ class TestRunner(TemplateMixin, TestSuite):
                 self._threadPoolExecutorTestCase(test, result)
 
         self.stopTime = datetime.datetime.now()
-        self._generateReport(result)
+        if result.stdout_steams.getvalue().strip():
+            self.main_logger.info(result.stdout_steams.getvalue())
+        if result.stderr_steams.getvalue().strip():
+            self.main_logger.error(result.stderr_steams.getvalue())
         s = '\n测试结束！\n运行时间: {time}\n共计执行用例数量：{count}\n执行成功用例数量：{Pass}' \
             '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}' \
             .format(time=self.stopTime - self.startTime,
@@ -127,10 +133,7 @@ class TestRunner(TemplateMixin, TestSuite):
                     skip=result.skip_count,
                     error=result.error_count
                     )
-        if result.stdout_steams.getvalue().strip():
-            self.main_logger.info(result.stdout_steams.getvalue())
-        if result.stderr_steams.getvalue().strip():
-            self.main_logger.error(result.stderr_steams.getvalue())
+        self._generateReport(result)
         self.main_logger.info(s)
         return result
 
@@ -180,7 +183,9 @@ class TestRunner(TemplateMixin, TestSuite):
         generator = 'HTMLReport {}'.format(__version__)
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attr)
+        log_file = self._generate_log(self.log_name)
         report = self._generate_report(result)
+
         ending = self._generate_ending()
         js = self._generate_js()
         output = self.HTML_TMPL.format(
@@ -189,6 +194,7 @@ class TestRunner(TemplateMixin, TestSuite):
             generator=generator,
             stylesheet=stylesheet,
             heading=heading,
+            log=log_file,
             report=report,
             ending=ending
         )
@@ -294,3 +300,6 @@ class TestRunner(TemplateMixin, TestSuite):
 
     def _generate_js(self):
         return self.JS
+
+    def _generate_log(self, log_file):
+        return self.REPORT_LOG_FILE.format(log_file=log_file)

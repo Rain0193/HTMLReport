@@ -25,6 +25,7 @@ class TemplateMixin(object):
 <script language="javascript" type="text/javascript">{js}</script>
 
 {heading}
+{log}
 {report}
 {ending}
 
@@ -331,3 +332,7 @@ a.popup_link:hover {
     #
 
     ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
+
+    REPORT_LOG_FILE = r"""
+    <a href='{log_file}'>下载日志文件</a>
+    """
