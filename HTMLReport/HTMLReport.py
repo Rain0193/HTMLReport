@@ -10,11 +10,12 @@ from xml.sax import saxutils
 
 from HTMLReport.Result import Result
 from HTMLReport.Template import TemplateMixin
+from HTMLReport.images import SaveImages
 from HTMLReport.log.HandlerFactory import *
-from HTMLReport.log.logger import GeneralLogger
+from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = "刘士"
-__version__ = '1.0.7'
+__version__ = '1.1.0'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -44,14 +45,16 @@ class TestRunner(TemplateMixin, TestSuite):
         self.sequential_execution = sequential_execution
         self.startTime = datetime.datetime.now()
         self.stopTime = datetime.datetime.now()
-        relative_dir = os.path.join(output_path or "report")
-        dir_to = os.path.join(os.getcwd(), relative_dir)
+
+        SaveImages.report_path = report_path = os.path.join(output_path or "report")
+        dir_to = os.path.join(os.getcwd(), report_path)
         if not os.path.exists(dir_to):
             os.makedirs(dir_to)
 
         random_name = 'test_{}_{}'.format(time.strftime('%Y_%m_%d_%H_%M_%S'), random.randint(1, 999))
-        self.log_name = "{}.log".format(log_file_name or report_file_name or random_name)
         report_name = '{}.html'.format(report_file_name or random_name)
+
+        self.log_name = "{}.log".format(log_file_name or report_file_name or random_name)
         self.path_file = os.path.join(dir_to, report_name)
         self.log_file_name = os.path.join(dir_to, self.log_name)
         # self.relative_log_dir = os.path.join(relative_dir, log_name)
@@ -143,12 +146,18 @@ class TestRunner(TemplateMixin, TestSuite):
         # 在这里，至少我们想把它们按类分组。
         remap = {}
         classes = []
-        for n, t, o, e in result_list:
+        for dic in result_list:
+            n = dic.get('result_code')
+            t = dic.get('testCase_object')
+            o = dic.get('test_output')
+            e = dic.get('stack_trace')
+            i = dic.get('image_paths')
+
             cls = t.__class__
             if cls not in remap:
                 remap[cls] = []
                 classes.append(cls)
-            remap[cls].append((n, t, o, e))
+            remap[cls].append((n, t, o, e, i))
         r = [(cls, remap[cls]) for cls in classes]
         return r
 
@@ -225,7 +234,7 @@ class TestRunner(TemplateMixin, TestSuite):
         sortedResult = self._sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
             np = nf = ne = ns = 0
-            for n, t, o, e in cls_results:
+            for n, t, o, e, i in cls_results:
                 if n == 0:
                     np += 1
                 elif n == 1:
@@ -255,8 +264,8 @@ class TestRunner(TemplateMixin, TestSuite):
             )
             rows.append(row)
 
-            for tid, (n, t, o, e) in enumerate(cls_results):
-                self._generate_report_test(rows, cid, tid, n, t, o, e)
+            for tid, (n, t, o, e, i) in enumerate(cls_results):
+                self._generate_report_test(rows, cid, tid, n, t, o, e, i)
 
         report = self.REPORT_TMPL.format(
             test_list=''.join(rows),
@@ -268,7 +277,7 @@ class TestRunner(TemplateMixin, TestSuite):
         )
         return report
 
-    def _generate_report_test(self, rows, cid, tid, n, t, o, e):
+    def _generate_report_test(self, rows, cid, tid, n, t, o, e, i):
         has_output = bool(o or e)
         # 0: success; 1: fail; 2: error; 3: skip
         tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't{}.{}'.format(cid + 1, tid + 1)
@@ -276,7 +285,9 @@ class TestRunner(TemplateMixin, TestSuite):
         doc = t.shortDescription() or ""
         desc = doc and ('{}: {}'.format(name, doc)) or name
         temp = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
-
+        imgs = ""
+        for img in i:
+            imgs += (self._generate_img(img))
         script = self.REPORT_TEST_OUTPUT_TMPL.format(
             id=tid,
             output=saxutils.escape(o + e),
@@ -289,6 +300,7 @@ class TestRunner(TemplateMixin, TestSuite):
                    n == 1 and 'failCase' or n == 3 and 'skipCase' or 'none'),
             desc=desc,
             script=script,
+            img=imgs,
             status=self.STATUS[n]
         )
         rows.append(row)
@@ -302,4 +314,7 @@ class TestRunner(TemplateMixin, TestSuite):
         return self.JS
 
     def _generate_log(self, log_file):
-        return self.REPORT_LOG_FILE.format(log_file=log_file)
+        return self.REPORT_LOG_FILE_TMPL.format(log_file=log_file)
+
+    def _generate_img(self, href):
+        return self.REPORT_IMG_TMPL.format(img_src=href)

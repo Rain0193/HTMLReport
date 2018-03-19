@@ -1,7 +1,9 @@
+import base64
 import logging
 import unittest
 
 import HTMLReport
+from HTMLReport import AddImage
 from HTMLReport import GeneralLogger
 
 
@@ -27,6 +29,11 @@ class test_1th(unittest.TestCase):
     def test_error(self):
         """测试错误"""
         GeneralLogger().get_logger().error("测试错误")
+        with open("baidu.png", 'rb') as f:
+            image = base64.b64encode(f.read())
+            AddImage(image)
+            AddImage(image)
+            AddImage(image)
         raise ValueError
 
     def test_fail(self):
@@ -49,7 +56,7 @@ class test_2th(unittest.TestCase):
 
     def test_upper(self):
         """测试相等"""
-        logging.info('测试执行')
+        GeneralLogger().get_logger().critical('测试执行')
         self.assertEqual('foo'.upper(), 'FOO')
 
 

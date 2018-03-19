@@ -43,6 +43,35 @@ runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如
 runner.run(suite)
 ```
 
+为测试报告中添加过程日志，在多线程下，在报告中会分别记录每个线程的日志，同时会产生与测试报告同名的测试log文件。
+
+```python
+from HTMLReport import GeneralLogger
+
+
+GeneralLogger().get_logger().info("测试")
+GeneralLogger().get_logger().debug("测试")
+GeneralLogger().get_logger().warning("测试")
+GeneralLogger().get_logger().error("测试")
+GeneralLogger().get_logger().critical("测试")
+```
+
+为测试报告添加图片信息,请将图片信息编码为base64编码。
+
+如采用的是selenium截屏，请使用 `get_screenshot_as_base64()` 方法获取 base64 encoded string 作为参数传入。
+
+本库会自动将图片保存在报告路径下的`images`目录下，并嵌入到报告中。
+
+```python
+from HTMLReport import AddImage
+
+with open("baidu.png", 'rb') as f:
+    image = base64.b64encode(f.read())
+    AddImage(image)
+```
+
+如果您有其他的需求，请发邮件给我：<liushilive@outlook.com> ， 祝您使用愉快！
+
 Links:
 
 ---------

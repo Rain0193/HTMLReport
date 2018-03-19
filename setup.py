@@ -2,9 +2,18 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 from HTMLReport.HTMLReport import __version__, __author__
+
+try:
+    from pypandoc import convert
+
+    read_md = lambda f: convert(f, 'rst')
+except ImportError:
+    print("warning: pypandoc module not found, could not convert Markdown to RST")
+    read_md = lambda f: open(f, 'r').read()
 
 doc = """
 HTMLReport
@@ -67,7 +76,8 @@ setup(
     name='HTMLReport',
     version=__version__,
     description="Python3 Unittest HTML报告生成",
-    long_description=doc,
+    # long_description=doc,
+    long_description=read_md('README.md'),
     author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',

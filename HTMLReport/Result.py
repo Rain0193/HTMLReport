@@ -1,8 +1,10 @@
+import threading
 from io import StringIO
 from unittest import TestResult
 
+from HTMLReport.images import SaveImages
 from HTMLReport.log.HandlerFactory import HandlerFactory
-from HTMLReport.log.logger import GeneralLogger
+from HTMLReport.log.Logger import GeneralLogger
 
 
 class Result(TestResult):
@@ -23,15 +25,38 @@ class Result(TestResult):
         self.stdout_steams = StringIO()
         self.stdout_steams.write("\n")
         """
-        返回结果是一个4个属性的元组的列表
+        返回结果是一个5个属性的字典的列表
         (
-          result code (0: success; 1: fail; 2: error; 3: skip),
-          TestCase object,
-          Test output (byte string),
-          stack trace,
+          result_code (0: success; 1: fail; 2: error; 3: skip),
+          testCase_object,
+          test_output (byte string),
+          stack_trace,
+          image_paths list,
         )
         """
         self.result = []
+        self.result_tmp = {}
+        self.image_paths = {}
+
+    def startTest(self, test):
+        GeneralLogger().get_logger(True)
+        GeneralLogger().get_logger().info("开始测试：{}".format(test))
+        self.result_tmp[str(threading.current_thread().ident)] = {'result_code': 0,
+                                                                  'testCase_object': test,
+                                                                  'test_output': '',
+                                                                  'stack_trace': '',
+                                                                  'image_paths': []
+                                                                  }
+        TestResult.startTest(self, test)
+
+    def stopTest(self, test):
+        GeneralLogger().get_logger().info("测试结束：{}".format(test))
+
+        current_id = str(threading.current_thread().ident)
+        if current_id in SaveImages.imageList:
+            self.result_tmp[current_id]["image_paths"] = SaveImages.imageList.pop(current_id)
+        self.result_tmp[current_id]['test_output'] = HandlerFactory.get_stream_value()
+        self.result.append(self.result_tmp.pop(current_id))
 
     def addSkip(self, test, reason):
         self.skip_count += 1
@@ -45,17 +70,9 @@ class Result(TestResult):
         self.stderr_steams.write("\n")
 
         GeneralLogger().get_logger().info("跳过测试：{}".format(test))
-        self.result.append((3, test, HandlerFactory.get_stream_value(), ''))
 
-    def startTest(self, test):
-        # self.complete_std_in()
-        GeneralLogger().get_logger(True)
-        GeneralLogger().get_logger().info("开始测试：{}".format(test))
-        TestResult.startTest(self, test)
-
-    def stopTest(self, test):
-        GeneralLogger().get_logger().info("测试结束：{}".format(test))
-        HandlerFactory.get_stream_value()
+        current_id = str(threading.current_thread().ident)
+        self.result_tmp[current_id]["result_code"] = 3
 
     def addSuccess(self, test):
         self.success_count += 1
@@ -68,7 +85,9 @@ class Result(TestResult):
             self.stdout_steams.write(doc)
         self.stdout_steams.write('\n')
         GeneralLogger().get_logger().info("测试执行通过：{}".format(test))
-        self.result.append((0, test, HandlerFactory.get_stream_value(), ''))
+
+        current_id = str(threading.current_thread().ident)
+        self.result_tmp[current_id]["result_code"] = 0
 
     def addError(self, test, err):
         self.error_count += 1
@@ -82,7 +101,10 @@ class Result(TestResult):
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
         GeneralLogger().get_logger().error("测试产生错误：\t{}".format(test))
-        self.result.append((2, test, HandlerFactory.get_stream_value(), _exc_str))
+
+        current_id = str(threading.current_thread().ident)
+        self.result_tmp[current_id]["result_code"] = 2
+        self.result_tmp[current_id]["stack_trace"] = _exc_str
 
     def addFailure(self, test, err):
         self.failure_count += 1
@@ -96,4 +118,7 @@ class Result(TestResult):
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
         GeneralLogger().get_logger().warning("测试未通过：{}".format(test))
-        self.result.append((1, test, HandlerFactory.get_stream_value(), _exc_str))
+
+        current_id = str(threading.current_thread().ident)
+        self.result_tmp[current_id]["result_code"] = 1
+        self.result_tmp[current_id]["stack_trace"] = _exc_str

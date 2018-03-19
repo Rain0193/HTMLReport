@@ -1,2 +1,3 @@
 from .HTMLReport import TestRunner
-from .log.logger import GeneralLogger
+from .images.SaveImages import AddImage
+from .log.Logger import GeneralLogger

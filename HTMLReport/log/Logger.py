@@ -9,68 +9,6 @@ class InfoOrLessCritical(logging.Filter):
         return record.levelno < LOG_LEVEL_WARNING
 
 
-# class HandlerFactory(object):
-#     handlers = {}
-#     starems = {}
-#
-#     @classmethod
-#     def get_std_out_handler(cls):
-#         if 'std_out_handler' not in cls.handlers:
-#             std_out_handler = logging.StreamHandler(sys.stdout)
-#             std_out_handler.setFormatter(logging.Formatter(_LOGGER_FORMAT))
-#             std_out_handler.addFilter(InfoOrLessCritical())
-#             cls.handlers['std_out_handler'] = std_out_handler
-#
-#         return cls.handlers['std_out_handler']
-#
-#     @classmethod
-#     def get_std_err_handler(cls):
-#         if 'std_err_handler' not in cls.handlers:
-#             std_err_handler = logging.StreamHandler(sys.stderr)
-#             std_err_handler.setFormatter(logging.Formatter(_LOGGER_FORMAT))
-#             std_err_handler.setLevel(LOG_LEVEL_WARNING)
-#             cls.handlers['std_err_handler'] = std_err_handler
-#
-#         return cls.handlers['std_err_handler']
-#
-#     @classmethod
-#     def get_rotating_file_handler(cls, log_path, max_bytes, backup_count):
-#         if 'rotating_file_handler' not in cls.handlers:
-#             cls.handlers['rotating_file_handler'] = {}
-#
-#         if log_path not in cls.handlers['rotating_file_handler']:
-#             rotating_file_handler = logging.handlers.RotatingFileHandler(
-#                 log_path, 'a', max_bytes, backup_count, encoding='utf8')
-#             rotating_file_handler.setFormatter(logging.Formatter(_LOGGER_FORMAT))
-#             cls.handlers['rotating_file_handler'][log_path] = rotating_file_handler
-#
-#         return cls.handlers['rotating_file_handler'][log_path]
-#
-#     @classmethod
-#     def get_rotating_stream_handler(cls, steam_name, steam):
-#         if 'rotating_stream_handler' not in cls.handlers:
-#             cls.handlers['rotating_stream_handler'] = {}
-#         if steam_name not in cls.handlers['rotating_stream_handler']:
-#             rotating_stream_handler = logging.StreamHandler(steam)
-#             rotating_stream_handler.setFormatter(logging.Formatter(_LOGGER_FORMAT))
-#             cls.handlers['rotating_stream_handler'][steam_name] = rotating_stream_handler
-#         return cls.handlers['rotating_stream_handler'][steam_name]
-#
-#     @classmethod
-#     def get_stream_handler(cls):
-#         if 'rotating_stream_handler' not in cls.handlers:
-#             cls.handlers['rotating_stream_handler'] = {}
-#         steam_id = str(threading.current_thread().ident)
-#         if steam_id not in cls.handlers['rotating_stream_handler']:
-#             steam = StringIO()
-#             cls.starems[steam_id] = steam
-#             rotating_stream_handler = logging.StreamHandler(steam)
-#             rotating_stream_handler.setFormatter(logging.Formatter(_LOGGER_FORMAT))
-#             cls.handlers['rotating_stream_handler'][steam_id] = rotating_stream_handler
-#
-#         return cls.handlers['rotating_stream_handler'][steam_id]
-
-
 # logger for this module
 logger = logging.getLogger(__name__)
 
@@ -94,6 +32,7 @@ class GeneralLogger(object):
         logging.getLogger().setLevel(LOG_LEVEL_NOTSET)
         logging.getLogger().addHandler(HandlerFactory.get_std_out_handler())
         logging.getLogger().addHandler(HandlerFactory.get_std_err_handler())
+        logging.getLogger().addHandler(HandlerFactory.get_stream_handler())
         # 默认日志设置
         # logger.info("日志程序初始化...")
         self._loggers = {}

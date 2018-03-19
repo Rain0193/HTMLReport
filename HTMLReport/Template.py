@@ -307,8 +307,9 @@ a.popup_link:hover {
            [x]</a>
         </div>
         <pre>
-        {script}
+            {script}
         </pre>
+        <div>{img}</div>
     </div>
     <!--css div popup end-->
 
@@ -333,6 +334,10 @@ a.popup_link:hover {
 
     ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
 
-    REPORT_LOG_FILE = r"""
-    <a href='{log_file}'>下载日志文件</a>
+    REPORT_LOG_FILE_TMPL = r"""
+<a href='{log_file}'>下载日志文件</a>
+"""
+
+    REPORT_IMG_TMPL = r"""
+<img src='{img_src}' style="width: 500px;">
     """
