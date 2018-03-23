@@ -1,5 +1,4 @@
 import base64
-import logging
 import unittest
 
 import HTMLReport
@@ -41,7 +40,7 @@ class test_1th(unittest.TestCase):
         GeneralLogger().get_logger().info("测试失败")
         self.assertEqual(1, 2, "相等")
 
-    @unittest.skip("This is a skipped test.")
+    @unittest.skip("这是一个跳过的测试")
     def test_skip(self):
         """测试跳过"""
         GeneralLogger().get_logger().warning("测试跳过")

@@ -81,10 +81,8 @@ class HandlerFactory(object):
     @classmethod
     def get_stream_value(cls):
         steam_id = str(threading.current_thread().ident)
-        # logging.getLogger(steam_id)
         if steam_id in cls.streams:
             stream = cls.streams[steam_id].getvalue()
-            # cls.streams[steam_id] = StringIO()
             cls.streams[steam_id].truncate(0)
             cls.streams[steam_id].seek(0)
             return stream

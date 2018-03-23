@@ -69,7 +69,7 @@ class Result(TestResult):
             self.stderr_steams.write(doc)
         self.stderr_steams.write("\n")
 
-        GeneralLogger().get_logger().info("跳过测试：{}".format(test))
+        GeneralLogger().get_logger().info("跳过测试：\t{}\n{}".format(test, reason))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 3
@@ -100,7 +100,7 @@ class Result(TestResult):
             self.stderr_steams.write("\t")
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
-        GeneralLogger().get_logger().error("测试产生错误：\t{}".format(test))
+        GeneralLogger().get_logger().error("测试产生错误：\t{}\n{}".format(test, _exc_str))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 2
@@ -117,7 +117,7 @@ class Result(TestResult):
             self.stderr_steams.write("\t")
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
-        GeneralLogger().get_logger().warning("测试未通过：{}".format(test))
+        GeneralLogger().get_logger().warning("测试未通过：\t{}\n{}".format(test, _exc_str))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 1
