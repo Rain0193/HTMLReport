@@ -15,7 +15,7 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = "刘士"
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 
 class TestRunner(TemplateMixin, TestSuite):
