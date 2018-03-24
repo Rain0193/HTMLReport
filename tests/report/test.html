@@ -3,216 +3,151 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>一个简单的测试报告</title>
-    <meta name="generator" content="HTMLReport 1.1.0"/>
+    <meta name="generator" content="HTMLReport 1.1.1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    
-<style type="text/css" media="screen">
-body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
-table       { font-size: 100%; }
-pre         { word-wrap:break-word;word-break:break-all;overflow:auto; }
-
-/* -- heading ---------------------------------------------------------------------- */
-h1 {
-    font-size: 16pt;
-    color: gray;
+    <style type="text/css" media="screen">body{font-family:verdana,arial,helvetica,sans-serif;font-size:100%}
+table{font-size:100%}
+pre{word-wrap:break-word;word-break:break-all;overflow:auto}
+h1{font-size:16pt;color:gray}
+.heading{margin-top:0;margin-bottom:1ex}
+.heading .attribute{margin-top:1ex;margin-bottom:0}
+.heading .description{margin-top:4ex;margin-bottom:6ex}
+a.popup_link:hover{color:red}
+.popup_window{display:none;position:relative;left:0;top:0;padding:10px;background-color:#E6E6D6;font-family:"Lucida Console","Courier New",Courier,monospace;text-align:left;font-size:8pt}
+#show_detail_line{margin-top:3ex;margin-bottom:1ex}
+#result_table{width:100%;border-collapse:collapse;border:1px solid #777}
+#header_row{font-weight:700;color:#fff;background-color:#777}
+#result_table td{border:1px solid #777;padding:2px}
+#total_row{font-weight:700}
+.passClass{background-color:#6c6}
+.failClass{background-color:#c60}
+.errorClass{background-color:#c00}
+.skipClass{background-color:#c95}
+.failCase{color:#c60;font-weight:700}
+.errorCase{color:#c00;font-weight:700}
+.skipCase{color:#c95;font-weight:700}
+.hiddenRow{display:none}
+.testcase{margin-left:2em}
+#popup{position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;display:none}
+#popup .bg{background-color:rgba(0,0,0,.5);width:100%;height:100%}
+@media \0screen\,screen\9{#popup .bg{background-color:#000;filter:Alpha(opacity=50);position:static}
+#popup .bg img{position:relative}
 }
-.heading {
-    margin-top: 0ex;
-    margin-bottom: 1ex;
-}
-
-.heading .attribute {
-    margin-top: 1ex;
-    margin-bottom: 0;
-}
-
-.heading .description {
-    margin-top: 4ex;
-    margin-bottom: 6ex;
-}
-
-/* -- css div popup ------------------------------------------------------------------------ */
-a.popup_link {
-}
-
-a.popup_link:hover {
-    color: red;
-}
-
-.popup_window {
-    display: none;
-    position: relative;
-    left: 0px;
-    top: 0px;
-    /*border: solid #627173 1px; */
-    padding: 10px;
-    background-color: #E6E6D6;
-    font-family: "Lucida Console", "Courier New", Courier, monospace;
-    text-align: left;
-    font-size: 8pt;
-}
-
-/* -- report ------------------------------------------------------------------------ */
-#show_detail_line {
-    margin-top: 3ex;
-    margin-bottom: 1ex;
-}
-#result_table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #777;
-}
-#header_row {
-    font-weight: bold;
-    color: white;
-    background-color: #777;
-}
-#result_table td {
-    border: 1px solid #777;
-    padding: 2px;
-}
-#total_row  { font-weight: bold; }
-.passClass  { background-color: #6c6; }
-.failClass  { background-color: #c60; }
-.errorClass { background-color: #c00; }
-.skipClass  { background-color: #c95; }
-.passCase   { }
-.failCase   { color: #c60; font-weight: bold; }
-.errorCase  { color: #c00; font-weight: bold; }
-.skipCase   { color: #c95; font-weight: bold; }
-.hiddenRow  { display: none; }
-.testcase   { margin-left: 2em; }
-
-
-/* -- ending ---------------------------------------------------------------------- */
-#ending {
-}
-
+#popup img{max-width:100%;max-height:100%;margin:auto;position:absolute;top:0;left:0;bottom:0;right:0}
 </style>
-
-</head>
-<body>
-<script language="javascript" type="text/javascript">
-output_list = Array();
+    <script language="javascript" type="text/javascript">output_list = Array();
 
 function showCase(level) {
-    trs = document.getElementsByTagName("tr");
-    for (var i = 0; i < trs.length; i++) {
-        tr = trs[i];
-        id = tr.id;
-        if (id.substr(0,2) === 'st') {
-            if (level === 4 || level === 3) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-        if (id.substr(0,2) === 'ft') {
-            if (level === 4 || level === 2) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-        if (id.substr(0,2) === 'pt') {
-            if (level === 4 || level === 1) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-    }
+trs = document.getElementsByTagName("tr");
+for (var i = 0; i < trs.length; i++) {
+tr = trs[i];
+id = tr.id;
+if (id.substr(0, 2) === "st") {
+if (level === 4 || level === 3) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
 }
-
+}
+if (id.substr(0, 2) === "ft") {
+if (level === 4 || level === 2) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
+}
+}
+if (id.substr(0, 2) === "pt") {
+if (level === 4 || level === 1) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
+}
+}
+}
+}
 
 function showClassDetail(cid, count) {
-    var id_list = Array(count);
-    var toHide = 1;
-    for (var i = 0; i < count; i++) {
-        tid0 = 't' + cid.substr(1) + '.' + (i+1);
-        tid = 'f' + tid0;
-        tr = document.getElementById(tid);
-        if (!tr) {
-            tid = 'p' + tid0;
-            tr = document.getElementById(tid);
-            if (tr === null){
-                tid = 's' + tid0;
-                tr = document.getElementById(tid);
-            }
-        }
-        id_list[i] = tid;
-        if (tr.className) {
-            toHide = 0;
-        }
-    }
-    for (var i = 0; i < count; i++) {
-        tid = id_list[i];
-        if (toHide && tid.indexOf('p') !== -1) {
-            document.getElementById(tid).className = 'hiddenRow';
-        }
-        else {
-            document.getElementById(tid).className = '';
-        }
-        if (tid.indexOf('f') !== -1) {
-            document.getElementById('div_'+tid).style.display = 'none'
-        }
-    }
+var id_list = Array(count);
+var toHide = 1;
+for (var i = 0; i < count; i++) {
+tid0 = "t" + cid.substr(1) + "." + (i + 1);
+tid = "f" + tid0;
+tr = document.getElementById(tid);
+if (!tr) {
+tid = "p" + tid0;
+tr = document.getElementById(tid);
+if (tr === null) {
+tid = "s" + tid0;
+tr = document.getElementById(tid);
+}
+}
+id_list[i] = tid;
+if (tr.className) {
+toHide = 0;
+}
+}
+for (var i = 0; i < count; i++) {
+tid = id_list[i];
+if (toHide && tid.indexOf("p") !== -1) {
+document.getElementById(tid).className = "hiddenRow";
+} else {
+document.getElementById(tid).className = "";
+}
+if (tid.indexOf("f") !== -1) {
+document.getElementById("div_" + tid).style.display = "none";
+}
+}
 }
 
-
-function showTestDetail(div_id){
-    var details_div = document.getElementById(div_id)
-    var displayState = details_div.style.display
-    // alert(displayState)
-    if (displayState != 'block' ) {
-        displayState = 'block'
-        details_div.style.display = 'block'
-    }
-    else {
-        details_div.style.display = 'none'
-    }
+function showTestDetail(div_id) {
+var details_div = document.getElementById(div_id);
+var displayState = details_div.style.display;
+if (displayState != "block") {
+displayState = "block";
+details_div.style.display = "block";
+} else {
+details_div.style.display = "none";
 }
-
+}
 
 function html_escape(s) {
-    s = s.replace(/&/g,'&amp;');
-    s = s.replace(/</g,'&lt;');
-    s = s.replace(/>/g,'&gt;');
-    return s;
+s = s.replace(/&/g, "&amp;");
+s = s.replace(/</g, "&lt;");
+s = s.replace(/>/g, "&gt;");
+return s;
 }
 
-/* obsoleted by detail in <div>
-function showOutput(id, name) {
-    var w = window.open("", //url
-                    name,
-                    "resizable,scrollbars,status,width=800,height=450");
-    d = w.document;
-    d.write("<pre>");
-    d.write(html_escape(output_list[id]));
-    d.write("\n");
-    d.write("<a href='javascript:window.close()'>close</a>\n");
-    d.write("</pre>\n");
-    d.close();
+function load() {
+var imgs = document.getElementsByClassName("pic");
+var lens = imgs.length;
+var popup = document.getElementById("popup");
+for (var i = 0; i < lens; i++) {
+imgs[i].onclick = function(event) {
+event = event || window.event;
+var target = document.elementFromPoint(event.clientX, event.clientY);
+showBig(target.src);
+};
 }
-*/
-</script>
+popup.onclick = function() {
+popup.style.display = "none";
+popup.style.zIndex = "-1";
+};
+function showBig(src) {
+popup.getElementsByTagName("img")[0].src = src;
+popup.style.display = "block";
+popup.style.zIndex = "999999";
+}
+}</script>
+</head>
+<body onload="load()">
 
 <div class='heading'>
 <h1>一个简单的测试报告</h1>
-<p class='attribute'><strong>启动时间：</strong> 2018-03-23 16:15:53</p>
-<p class='attribute'><strong>运行时长：</strong> 0:00:00.059668</p>
-<p class='attribute'><strong>结果：</strong> 通过：4&nbsp;&nbsp;&nbsp;&nbsp;失败：3&nbsp;&nbsp;&nbsp;&nbsp;错误：1&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
-
+<p class='attribute'><strong>启动时间：</strong> 2018-03-24 14:06:01</p><p class='attribute'><strong>运行时长：</strong> 0:00:00.028265</p><p class='attribute'><strong>结果：</strong> 通过：4&nbsp;&nbsp;&nbsp;&nbsp;失败：3&nbsp;&nbsp;&nbsp;&nbsp;错误：1&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
 <p class='description'>随意描述</p>
 </div>
 
-
-
 <a href='test.log'>下载日志文件</a>
-
 
 <p id='show_detail_line'>筛选
 <a href='javascript:showCase(0)'>摘要</a>
@@ -265,10 +200,10 @@ function showOutput(id, name) {
         </div>
         <pre>
             
-st1.1: [   INFO] [2018-03-23 16:15:53,496] [10644] [Result.py(43)] - 开始测试：test_skip (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,499] [10644] [Result.py(72)] - 跳过测试：	test_skip (__main__.test_1th)
+st1.1: [   INFO] [2018-03-24 14:06:01,541] [17872] [Result.py(43)] - 开始测试：test_skip (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,543] [17872] [Result.py(72)] - 跳过测试：	test_skip (__main__.test_1th)
 这是一个跳过的测试
-[   INFO] [2018-03-23 16:15:53,501] [10644] [Result.py(53)] - 测试结束：test_skip (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,547] [17872] [Result.py(53)] - 测试结束：test_skip (__main__.test_1th)
 
 
         </pre>
@@ -294,15 +229,15 @@ st1.1: [   INFO] [2018-03-23 16:15:53,496] [10644] [Result.py(43)] - 开始测�
         </div>
         <pre>
             
-ft1.2: [   INFO] [2018-03-23 16:15:53,496] [17076] [Result.py(43)] - 开始测试：test_fail (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,496] [17076] [HTMLReport_test.py(40)] - 测试失败
-[WARNING] [2018-03-23 16:15:53,499] [17076] [Result.py(120)] - 测试未通过：	test_fail (__main__.test_1th)
+ft1.2: [   INFO] [2018-03-24 14:06:01,539] [12068] [Result.py(43)] - 开始测试：test_fail (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,540] [12068] [HTMLReport_test.py(40)] - 测试失败
+[WARNING] [2018-03-24 14:06:01,544] [12068] [Result.py(120)] - 测试未通过：	test_fail (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_fail
     self.assertEqual(1, 2, "相等")
 AssertionError: 1 != 2 : 相等
 
-[   INFO] [2018-03-23 16:15:53,501] [17076] [Result.py(53)] - 测试结束：test_fail (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,547] [12068] [Result.py(53)] - 测试结束：test_fail (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_fail
     self.assertEqual(1, 2, "相等")
@@ -332,10 +267,10 @@ AssertionError: 1 != 2 : 相等
         </div>
         <pre>
             
-pt1.3: [   INFO] [2018-03-23 16:15:53,496] [17728] [Result.py(43)] - 开始测试：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,497] [17728] [HTMLReport_test.py(16)] - 测试isupper
-[   INFO] [2018-03-23 16:15:53,500] [17728] [Result.py(87)] - 测试执行通过：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,501] [17728] [Result.py(53)] - 测试结束：test_isupper (__main__.test_1th)
+pt1.3: [   INFO] [2018-03-24 14:06:01,540] [18200] [Result.py(43)] - 开始测试：test_isupper (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,541] [18200] [HTMLReport_test.py(16)] - 测试isupper
+[   INFO] [2018-03-24 14:06:01,545] [18200] [Result.py(87)] - 测试执行通过：test_isupper (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,547] [18200] [Result.py(53)] - 测试结束：test_isupper (__main__.test_1th)
 
 
         </pre>
@@ -361,10 +296,10 @@ pt1.3: [   INFO] [2018-03-23 16:15:53,496] [17728] [Result.py(43)] - 开始测�
         </div>
         <pre>
             
-pt1.4: [   INFO] [2018-03-23 16:15:53,498] [16552] [Result.py(43)] - 开始测试：test_split (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,501] [16552] [HTMLReport_test.py(22)] - 测试split
-[   INFO] [2018-03-23 16:15:53,501] [16552] [Result.py(87)] - 测试执行通过：test_split (__main__.test_1th)
-[   INFO] [2018-03-23 16:15:53,502] [16552] [Result.py(53)] - 测试结束：test_split (__main__.test_1th)
+pt1.4: [   INFO] [2018-03-24 14:06:01,542] [11936] [Result.py(43)] - 开始测试：test_split (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,546] [11936] [HTMLReport_test.py(22)] - 测试split
+[   INFO] [2018-03-24 14:06:01,548] [11936] [Result.py(87)] - 测试执行通过：test_split (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,549] [11936] [Result.py(53)] - 测试结束：test_split (__main__.test_1th)
 
 
         </pre>
@@ -390,15 +325,15 @@ pt1.4: [   INFO] [2018-03-23 16:15:53,498] [16552] [Result.py(43)] - 开始测�
         </div>
         <pre>
             
-ft1.5: [   INFO] [2018-03-23 16:15:53,495] [11408] [Result.py(43)] - 开始测试：test_error (__main__.test_1th)
-[  ERROR] [2018-03-23 16:15:53,495] [11408] [HTMLReport_test.py(30)] - 测试错误
-[  ERROR] [2018-03-23 16:15:53,538] [11408] [Result.py(103)] - 测试产生错误：	test_error (__main__.test_1th)
+ft1.5: [   INFO] [2018-03-24 14:06:01,539] [15792] [Result.py(43)] - 开始测试：test_error (__main__.test_1th)
+[  ERROR] [2018-03-24 14:06:01,540] [15792] [HTMLReport_test.py(30)] - 测试错误
+[  ERROR] [2018-03-24 14:06:01,559] [15792] [Result.py(103)] - 测试产生错误：	test_error (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 36, in test_error
     raise ValueError
 ValueError
 
-[   INFO] [2018-03-23 16:15:53,538] [11408] [Result.py(53)] - 测试结束：test_error (__main__.test_1th)
+[   INFO] [2018-03-24 14:06:01,559] [15792] [Result.py(53)] - 测试结束：test_error (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 36, in test_error
     raise ValueError
@@ -407,11 +342,11 @@ ValueError
 
         </pre>
         <div>
-<img src='images/image_11408_2018_03_23_16_15_53_747.jpg' style="width: 500px;">
+<img class="pic" src='images/image_15792_2018_03_24_14_06_01_758.jpg' style="width: 500px;">
     
-<img src='images/image_11408_2018_03_23_16_15_53_36.jpg' style="width: 500px;">
+<img class="pic" src='images/image_15792_2018_03_24_14_06_01_410.jpg' style="width: 500px;">
     
-<img src='images/image_11408_2018_03_23_16_15_53_900.jpg' style="width: 500px;">
+<img class="pic" src='images/image_15792_2018_03_24_14_06_01_914.jpg' style="width: 500px;">
     </div>
     </div>
     <!--css div popup end-->
@@ -444,10 +379,10 @@ ValueError
         </div>
         <pre>
             
-pt2.1: [   INFO] [2018-03-23 16:15:53,539] [6228] [Result.py(43)] - 开始测试：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-23 16:15:53,539] [6228] [HTMLReport_test.py(53)] - 测试异常类型
-[   INFO] [2018-03-23 16:15:53,540] [6228] [Result.py(87)] - 测试执行通过：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-23 16:15:53,540] [6228] [Result.py(53)] - 测试结束：test_bad_int (__main__.test_2th)
+pt2.1: [   INFO] [2018-03-24 14:06:01,560] [13120] [Result.py(43)] - 开始测试：test_bad_int (__main__.test_2th)
+[   INFO] [2018-03-24 14:06:01,561] [13120] [HTMLReport_test.py(53)] - 测试异常类型
+[   INFO] [2018-03-24 14:06:01,561] [13120] [Result.py(87)] - 测试执行通过：test_bad_int (__main__.test_2th)
+[   INFO] [2018-03-24 14:06:01,561] [13120] [Result.py(53)] - 测试结束：test_bad_int (__main__.test_2th)
 
 
         </pre>
@@ -473,10 +408,10 @@ pt2.1: [   INFO] [2018-03-23 16:15:53,539] [6228] [Result.py(43)] - 开始测试
         </div>
         <pre>
             
-pt2.2: [   INFO] [2018-03-23 16:15:53,539] [9704] [Result.py(43)] - 开始测试：test_upper (__main__.test_2th)
-[CRITICAL] [2018-03-23 16:15:53,540] [9704] [HTMLReport_test.py(58)] - 测试执行
-[   INFO] [2018-03-23 16:15:53,541] [9704] [Result.py(87)] - 测试执行通过：test_upper (__main__.test_2th)
-[   INFO] [2018-03-23 16:15:53,541] [9704] [Result.py(53)] - 测试结束：test_upper (__main__.test_2th)
+pt2.2: [   INFO] [2018-03-24 14:06:01,560] [16608] [Result.py(43)] - 开始测试：test_upper (__main__.test_2th)
+[CRITICAL] [2018-03-24 14:06:01,561] [16608] [HTMLReport_test.py(58)] - 测试执行
+[   INFO] [2018-03-24 14:06:01,561] [16608] [Result.py(87)] - 测试执行通过：test_upper (__main__.test_2th)
+[   INFO] [2018-03-24 14:06:01,562] [16608] [Result.py(53)] - 测试结束：test_upper (__main__.test_2th)
 
 
         </pre>
@@ -512,14 +447,14 @@ pt2.2: [   INFO] [2018-03-23 16:15:53,539] [9704] [Result.py(43)] - 开始测试
         </div>
         <pre>
             
-ft3.1: [   INFO] [2018-03-23 16:15:53,544] [10196] [Result.py(43)] - 开始测试：test_False (__main__.test_第三个测试)
-[WARNING] [2018-03-23 16:15:53,545] [10196] [Result.py(120)] - 测试未通过：	test_False (__main__.test_第三个测试)
+ft3.1: [   INFO] [2018-03-24 14:06:01,563] [20832] [Result.py(43)] - 开始测试：test_False (__main__.test_第三个测试)
+[WARNING] [2018-03-24 14:06:01,563] [20832] [Result.py(120)] - 测试未通过：	test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
-[   INFO] [2018-03-23 16:15:53,545] [10196] [Result.py(53)] - 测试结束：test_False (__main__.test_第三个测试)
+[   INFO] [2018-03-24 14:06:01,564] [20832] [Result.py(53)] - 测试结束：test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_False
     self.assertFalse(True, self.a)
@@ -549,14 +484,14 @@ AssertionError: True is not false : 2
         </div>
         <pre>
             
-ft3.2: [   INFO] [2018-03-23 16:15:53,544] [17376] [Result.py(43)] - 开始测试：test_True (__main__.test_第三个测试)
-[WARNING] [2018-03-23 16:15:53,546] [17376] [Result.py(120)] - 测试未通过：	test_True (__main__.test_第三个测试)
+ft3.2: [   INFO] [2018-03-24 14:06:01,563] [788] [Result.py(43)] - 开始测试：test_True (__main__.test_第三个测试)
+[WARNING] [2018-03-24 14:06:01,564] [788] [Result.py(120)] - 测试未通过：	test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 73, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 
-[   INFO] [2018-03-23 16:15:53,546] [17376] [Result.py(53)] - 测试结束：test_True (__main__.test_第三个测试)
+[   INFO] [2018-03-24 14:06:01,564] [788] [Result.py(53)] - 测试结束：test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 73, in test_True
     self.assertTrue(False, self.a)
@@ -583,6 +518,6 @@ AssertionError: False is not true : 3
 </table>
 
 <div id='ending'>&nbsp;</div>
-
+<div id="popup"><div class="bg"><img src="" alt=""/></div></div>
 </body>
 </html>

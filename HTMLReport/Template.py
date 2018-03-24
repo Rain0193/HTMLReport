@@ -20,229 +20,160 @@ class TemplateMixin(object):
     <meta name="generator" content="{generator}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     {stylesheet}
+    <script language="javascript" type="text/javascript">{js}</script>
 </head>
-<body>
-<script language="javascript" type="text/javascript">{js}</script>
+<body onload="load()">
 
 {heading}
 {log}
 {report}
 {ending}
-
+<div id="popup"><div class="bg"><img src="" alt=""/></div></div>
 </body>
 </html>
 """
-    JS = r"""
-output_list = Array();
+    JS = r"""output_list = Array();
 
 function showCase(level) {
-    trs = document.getElementsByTagName("tr");
-    for (var i = 0; i < trs.length; i++) {
-        tr = trs[i];
-        id = tr.id;
-        if (id.substr(0,2) === 'st') {
-            if (level === 4 || level === 3) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-        if (id.substr(0,2) === 'ft') {
-            if (level === 4 || level === 2) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-        if (id.substr(0,2) === 'pt') {
-            if (level === 4 || level === 1) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-    }
+trs = document.getElementsByTagName("tr");
+for (var i = 0; i < trs.length; i++) {
+tr = trs[i];
+id = tr.id;
+if (id.substr(0, 2) === "st") {
+if (level === 4 || level === 3) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
 }
-
+}
+if (id.substr(0, 2) === "ft") {
+if (level === 4 || level === 2) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
+}
+}
+if (id.substr(0, 2) === "pt") {
+if (level === 4 || level === 1) {
+tr.className = "";
+} else {
+tr.className = "hiddenRow";
+}
+}
+}
+}
 
 function showClassDetail(cid, count) {
-    var id_list = Array(count);
-    var toHide = 1;
-    for (var i = 0; i < count; i++) {
-        tid0 = 't' + cid.substr(1) + '.' + (i+1);
-        tid = 'f' + tid0;
-        tr = document.getElementById(tid);
-        if (!tr) {
-            tid = 'p' + tid0;
-            tr = document.getElementById(tid);
-            if (tr === null){
-                tid = 's' + tid0;
-                tr = document.getElementById(tid);
-            }
-        }
-        id_list[i] = tid;
-        if (tr.className) {
-            toHide = 0;
-        }
-    }
-    for (var i = 0; i < count; i++) {
-        tid = id_list[i];
-        if (toHide && tid.indexOf('p') !== -1) {
-            document.getElementById(tid).className = 'hiddenRow';
-        }
-        else {
-            document.getElementById(tid).className = '';
-        }
-        if (tid.indexOf('f') !== -1) {
-            document.getElementById('div_'+tid).style.display = 'none'
-        }
-    }
+var id_list = Array(count);
+var toHide = 1;
+for (var i = 0; i < count; i++) {
+tid0 = "t" + cid.substr(1) + "." + (i + 1);
+tid = "f" + tid0;
+tr = document.getElementById(tid);
+if (!tr) {
+tid = "p" + tid0;
+tr = document.getElementById(tid);
+if (tr === null) {
+tid = "s" + tid0;
+tr = document.getElementById(tid);
+}
+}
+id_list[i] = tid;
+if (tr.className) {
+toHide = 0;
+}
+}
+for (var i = 0; i < count; i++) {
+tid = id_list[i];
+if (toHide && tid.indexOf("p") !== -1) {
+document.getElementById(tid).className = "hiddenRow";
+} else {
+document.getElementById(tid).className = "";
+}
+if (tid.indexOf("f") !== -1) {
+document.getElementById("div_" + tid).style.display = "none";
+}
+}
 }
 
-
-function showTestDetail(div_id){
-    var details_div = document.getElementById(div_id)
-    var displayState = details_div.style.display
-    // alert(displayState)
-    if (displayState != 'block' ) {
-        displayState = 'block'
-        details_div.style.display = 'block'
-    }
-    else {
-        details_div.style.display = 'none'
-    }
+function showTestDetail(div_id) {
+var details_div = document.getElementById(div_id);
+var displayState = details_div.style.display;
+if (displayState != "block") {
+displayState = "block";
+details_div.style.display = "block";
+} else {
+details_div.style.display = "none";
 }
-
+}
 
 function html_escape(s) {
-    s = s.replace(/&/g,'&amp;');
-    s = s.replace(/</g,'&lt;');
-    s = s.replace(/>/g,'&gt;');
-    return s;
+s = s.replace(/&/g, "&amp;");
+s = s.replace(/</g, "&lt;");
+s = s.replace(/>/g, "&gt;");
+return s;
 }
 
-/* obsoleted by detail in <div>
-function showOutput(id, name) {
-    var w = window.open("", //url
-                    name,
-                    "resizable,scrollbars,status,width=800,height=450");
-    d = w.document;
-    d.write("<pre>");
-    d.write(html_escape(output_list[id]));
-    d.write("\n");
-    d.write("<a href='javascript:window.close()'>close</a>\n");
-    d.write("</pre>\n");
-    d.close();
+function load() {
+var imgs = document.getElementsByClassName("pic");
+var lens = imgs.length;
+var popup = document.getElementById("popup");
+for (var i = 0; i < lens; i++) {
+imgs[i].onclick = function(event) {
+event = event || window.event;
+var target = document.elementFromPoint(event.clientX, event.clientY);
+showBig(target.src);
+};
 }
-*/
-"""
+popup.onclick = function() {
+popup.style.display = "none";
+popup.style.zIndex = "-1";
+};
+function showBig(src) {
+popup.getElementsByTagName("img")[0].src = src;
+popup.style.display = "block";
+popup.style.zIndex = "999999";
+}
+}"""
 
-    STYLESHEET_TMPL = r"""
-<style type="text/css" media="screen">
-body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
-table       { font-size: 100%; }
-pre         { word-wrap:break-word;word-break:break-all;overflow:auto; }
-
-/* -- heading ---------------------------------------------------------------------- */
-h1 {
-    font-size: 16pt;
-    color: gray;
+    STYLESHEET_TMPL = r"""<style type="text/css" media="screen">body{font-family:verdana,arial,helvetica,sans-serif;font-size:100%}
+table{font-size:100%}
+pre{word-wrap:break-word;word-break:break-all;overflow:auto}
+h1{font-size:16pt;color:gray}
+.heading{margin-top:0;margin-bottom:1ex}
+.heading .attribute{margin-top:1ex;margin-bottom:0}
+.heading .description{margin-top:4ex;margin-bottom:6ex}
+a.popup_link:hover{color:red}
+.popup_window{display:none;position:relative;left:0;top:0;padding:10px;background-color:#E6E6D6;font-family:"Lucida Console","Courier New",Courier,monospace;text-align:left;font-size:8pt}
+#show_detail_line{margin-top:3ex;margin-bottom:1ex}
+#result_table{width:100%;border-collapse:collapse;border:1px solid #777}
+#header_row{font-weight:700;color:#fff;background-color:#777}
+#result_table td{border:1px solid #777;padding:2px}
+#total_row{font-weight:700}
+.passClass{background-color:#6c6}
+.failClass{background-color:#c60}
+.errorClass{background-color:#c00}
+.skipClass{background-color:#c95}
+.failCase{color:#c60;font-weight:700}
+.errorCase{color:#c00;font-weight:700}
+.skipCase{color:#c95;font-weight:700}
+.hiddenRow{display:none}
+.testcase{margin-left:2em}
+#popup{position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;display:none}
+#popup .bg{background-color:rgba(0,0,0,.5);width:100%;height:100%}
+@media \0screen\,screen\9{#popup .bg{background-color:#000;filter:Alpha(opacity=50);position:static}
+#popup .bg img{position:relative}
 }
-.heading {
-    margin-top: 0ex;
-    margin-bottom: 1ex;
-}
-
-.heading .attribute {
-    margin-top: 1ex;
-    margin-bottom: 0;
-}
-
-.heading .description {
-    margin-top: 4ex;
-    margin-bottom: 6ex;
-}
-
-/* -- css div popup ------------------------------------------------------------------------ */
-a.popup_link {
-}
-
-a.popup_link:hover {
-    color: red;
-}
-
-.popup_window {
-    display: none;
-    position: relative;
-    left: 0px;
-    top: 0px;
-    /*border: solid #627173 1px; */
-    padding: 10px;
-    background-color: #E6E6D6;
-    font-family: "Lucida Console", "Courier New", Courier, monospace;
-    text-align: left;
-    font-size: 8pt;
-}
-
-/* -- report ------------------------------------------------------------------------ */
-#show_detail_line {
-    margin-top: 3ex;
-    margin-bottom: 1ex;
-}
-#result_table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #777;
-}
-#header_row {
-    font-weight: bold;
-    color: white;
-    background-color: #777;
-}
-#result_table td {
-    border: 1px solid #777;
-    padding: 2px;
-}
-#total_row  { font-weight: bold; }
-.passClass  { background-color: #6c6; }
-.failClass  { background-color: #c60; }
-.errorClass { background-color: #c00; }
-.skipClass  { background-color: #c95; }
-.passCase   { }
-.failCase   { color: #c60; font-weight: bold; }
-.errorCase  { color: #c00; font-weight: bold; }
-.skipCase   { color: #c95; font-weight: bold; }
-.hiddenRow  { display: none; }
-.testcase   { margin-left: 2em; }
-
-
-/* -- ending ---------------------------------------------------------------------- */
-#ending {
-}
-
-</style>
-"""
+#popup img{max-width:100%;max-height:100%;margin:auto;position:absolute;top:0;left:0;bottom:0;right:0}
+</style>"""
 
     HEADING_TMPL = r"""<div class='heading'>
 <h1>{title}</h1>
 {parameters}
 <p class='description'>{description}</p>
-</div>
-
-"""  # variables: (title, parameters, description)
-
-    HEADING_ATTRIBUTE_TMPL = r"""<p class='attribute'><strong>{name}：</strong> {value}</p>
-"""  # variables: (name, value)
-
-    # ------------------------------------------------------------------------
-    # Report
-    #
-
-    REPORT_TMPL = r"""
-<p id='show_detail_line'>筛选
+</div>"""
+    HEADING_ATTRIBUTE_TMPL = r"""<p class='attribute'><strong>{name}：</strong> {value}</p>"""
+    REPORT_TMPL = r"""<p id='show_detail_line'>筛选
 <a href='javascript:showCase(0)'>摘要</a>
 <a href='javascript:showCase(1)'>通过</a>
 <a href='javascript:showCase(2)'>失败</a>
@@ -278,8 +209,7 @@ a.popup_link:hover {
     <td>&nbsp;</td>
 </tr>
 </table>
-"""  # variables: (test_list, count, Pass, fail, error)
-
+"""
     REPORT_CLASS_TMPL = r"""
 <tr class='{style}'>
     <td>{desc}</td>
@@ -290,8 +220,7 @@ a.popup_link:hover {
     <td>{skip}</td>
     <td><a href="javascript:showClassDetail('{cid}',{count})">细节</a></td>
 </tr>
-"""  # variables: (style, desc, count, Pass, fail, error, cid)
-
+"""
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='{tid}' class='{Class}'>
     <td class='{style}'><div class='testcase'>{desc}</div></td>
@@ -315,29 +244,20 @@ a.popup_link:hover {
 
     </td>
 </tr>
-"""  # variables: (tid, Class, style, desc, status)
-
+"""
     REPORT_TEST_NO_OUTPUT_TMPL = r"""
 <tr id='{tid}' class='{Class}'>
     <td class='{style}'><div class='testcase'>{desc}</div></td>
     <td colspan='6' align='center'>{status}</td>
 </tr>
-"""  # variables: (tid, Class, style, desc, status)
-
+"""
     REPORT_TEST_OUTPUT_TMPL = r"""
 {id}: {output}
-"""  # variables: (id, output)
-
-    # ------------------------------------------------------------------------
-    # ENDING
-    #
-
+"""
     ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
-
     REPORT_LOG_FILE_TMPL = r"""
 <a href='{log_file}'>下载日志文件</a>
 """
-
     REPORT_IMG_TMPL = r"""
-<img src='{img_src}' style="width: 500px;">
+<img class="pic" src='{img_src}' style="width: 500px;">
     """
