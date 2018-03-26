@@ -3,7 +3,7 @@ import unittest
 
 import HTMLReport
 from HTMLReport import AddImage
-from HTMLReport import GeneralLogger
+from HTMLReport import logger
 
 
 def parse_int(s):
@@ -13,13 +13,13 @@ def parse_int(s):
 class test_1th(unittest.TestCase):
     def test_isupper(self):
         """测试isupper"""
-        GeneralLogger().get_logger().info("测试isupper")
+        logger().info("测试isupper")
         self.assertTrue('FOO'.isupper(), "真")
         self.assertFalse('Foo'.isupper(), '假')
 
     def test_split(self):
         """测试split"""
-        GeneralLogger().get_logger().info("测试split")
+        logger().info("测试split")
         s = 'hello world'
         self.assertEqual(s.split(), ['hello', 'world'], "相等")
         with self.assertRaises(TypeError):
@@ -27,7 +27,7 @@ class test_1th(unittest.TestCase):
 
     def test_error(self):
         """测试错误"""
-        GeneralLogger().get_logger().error("测试错误")
+        logger().error("测试错误")
         with open("baidu.png", 'rb') as f:
             image = base64.b64encode(f.read())
             AddImage(image)
@@ -37,25 +37,25 @@ class test_1th(unittest.TestCase):
 
     def test_fail(self):
         """测试失败"""
-        GeneralLogger().get_logger().info("测试失败")
+        logger().info("测试失败")
         self.assertEqual(1, 2, "相等")
 
     @unittest.skip("这是一个跳过的测试")
     def test_skip(self):
         """测试跳过"""
-        GeneralLogger().get_logger().warning("测试跳过")
+        logger().warning("测试跳过")
         pass
 
 
 class test_2th(unittest.TestCase):
     def test_bad_int(self):
         """测试异常类型"""
-        GeneralLogger().get_logger().info("测试异常类型")
+        logger().info("测试异常类型")
         self.assertRaises(ValueError, parse_int, 'N/A')
 
     def test_upper(self):
         """测试相等"""
-        GeneralLogger().get_logger().critical('测试执行')
+        logger().critical('测试执行')
         self.assertEqual('foo'.upper(), 'FOO')
 
 

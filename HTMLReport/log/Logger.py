@@ -9,10 +9,6 @@ class InfoOrLessCritical(logging.Filter):
         return record.levelno < LOG_LEVEL_WARNING
 
 
-# logger for this module
-logger = logging.getLogger(__name__)
-
-
 def singleton(cls, *args, **kw):
     instances = {}
 
@@ -34,7 +30,6 @@ class GeneralLogger(object):
         logging.getLogger().addHandler(HandlerFactory.get_std_err_handler())
         logging.getLogger().addHandler(HandlerFactory.get_stream_handler())
         # 默认日志设置
-        # logger.info("日志程序初始化...")
         self._loggers = {}
         self._log_level = level
         self._main_thread_id = str(self.get_current_thread_id())
@@ -68,7 +63,7 @@ class GeneralLogger(object):
         else:
             return os.path.join(base_dir, base_name)
 
-    def get_logger(self, stream=False):
+    def get_logger(self, is_stream=False) -> logging:
         name = self._main_thread_id
 
         if self._log_by_thread:
@@ -81,20 +76,20 @@ class GeneralLogger(object):
                 name = self._main_thread_id + '.' + current_id
 
         if name not in self._loggers:
-            if stream:
-                self.set_logger(name, stream)
+            if is_stream:
+                self.set_logger(name, is_stream)
             else:
                 self.set_logger(name)
 
         return self._loggers[name]
 
-    def set_logger(self, name, stream=False):
+    def set_logger(self, name, is_stream=False):
         if name not in self._loggers:
             new_logger = logging.getLogger(name)
             new_logger.setLevel(self._log_level)
 
             if self._log_path:
-                if stream:
+                if is_stream:
                     # new_logger.addHandler(HandlerFactory.get_rotating_stream_handler(name, stream))
                     new_logger.addHandler(HandlerFactory.get_stream_handler())
                 else:

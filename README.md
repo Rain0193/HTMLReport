@@ -46,14 +46,14 @@ runner.run(suite)
 为测试报告中添加过程日志，在多线程下，在报告中会分别记录每个线程的日志，同时会产生与测试报告同名的测试log文件。
 
 ```python
-from HTMLReport import GeneralLogger
+from HTMLReport import logger
 
 
-GeneralLogger().get_logger().info("测试")
-GeneralLogger().get_logger().debug("测试")
-GeneralLogger().get_logger().warning("测试")
-GeneralLogger().get_logger().error("测试")
-GeneralLogger().get_logger().critical("测试")
+logger().info("测试")
+logger().debug("测试")
+logger().warning("测试")
+logger().error("测试")
+logger().critical("测试")
 ```
 
 为测试报告添加图片信息,请将图片信息编码为base64编码。

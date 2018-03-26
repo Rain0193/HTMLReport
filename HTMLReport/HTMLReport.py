@@ -15,7 +15,6 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = "刘士"
-__version__ = '1.1.3'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -189,7 +188,7 @@ class TestRunner(TemplateMixin, TestSuite):
 
     def _generateReport(self, result):
         report_attr = self._getReportAttributes(result)
-        generator = 'HTMLReport {}'.format(__version__)
+        generator = 'HTMLReport {}'.format(__author__)
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attr)
         log_file = self._generate_log(self.log_name)
