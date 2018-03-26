@@ -14,7 +14,8 @@ from HTMLReport.images import SaveImages
 from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
-__author__ = "刘士"
+__author__ = '刘士'
+__version__ = '1.1.14'
 
 
 class TestRunner(TemplateMixin, TestSuite):

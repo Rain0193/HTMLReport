@@ -2,21 +2,20 @@
 # -*- coding: utf-8 -*-
 import sys
 
+if sys.version_info < (3, 5):
+    raise RuntimeError("The minimum support Python 3.5")
+
 from setuptools import find_packages
 from setuptools import setup
 
-__author__ = "刘士"
-__version__ = '1.1.6'
-
-if sys.version_info < (3, 5):
-    raise RuntimeError("The minimum support Python 3.5")
+from HTMLReport.HTMLReport import __version__, __author__
 
 try:
     from pypandoc import convert
 
     read_md = lambda f: convert(f, 'rst')
 except ImportError:
-    print("warning: 没有找到pypandoc模块，无法将Markdown转换为RST")
+    print("warning: pypandoc module not found, could not convert Markdown to RST")
     read_md = lambda f: open(f, 'r', encoding="utf-8").read()
 
 setup(
@@ -41,5 +40,5 @@ setup(
         'Natural Language :: Chinese (Simplified)',
         'Programming Language :: Python :: 3.5',
     ],
-    test_suite='tests', install_requires=['pypandoc']
+    test_suite='tests'
 )
