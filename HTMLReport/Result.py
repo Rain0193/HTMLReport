@@ -25,12 +25,11 @@ class Result(TestResult):
         self.stdout_steams = StringIO()
         self.stdout_steams.write("\n")
         """
-        返回结果是一个5个属性的字典的列表
+        返回结果是一个4个属性的字典的列表
         (
           result_code (0: success; 1: fail; 2: error; 3: skip),
           testCase_object,
           test_output (byte string),
-          stack_trace,
           image_paths list,
         )
         """
@@ -44,7 +43,6 @@ class Result(TestResult):
         self.result_tmp[str(threading.current_thread().ident)] = {'result_code': 0,
                                                                   'testCase_object': test,
                                                                   'test_output': '',
-                                                                  'stack_trace': '',
                                                                   'image_paths': []
                                                                   }
         TestResult.startTest(self, test)
@@ -104,7 +102,6 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 2
-        self.result_tmp[current_id]["stack_trace"] = _exc_str
 
     def addFailure(self, test, err):
         self.failure_count += 1
@@ -121,4 +118,3 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 1
-        self.result_tmp[current_id]["stack_trace"] = _exc_str

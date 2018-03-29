@@ -143,7 +143,7 @@ popup.style.zIndex = "999999";
 
 <div class='heading'>
 <h1>一个简单的测试报告</h1>
-<p class='attribute'><strong>启动时间：</strong> 2018-03-26 16:27:41</p><p class='attribute'><strong>运行时长：</strong> 0:00:00.034088</p><p class='attribute'><strong>结果：</strong> 通过：4&nbsp;&nbsp;&nbsp;&nbsp;失败：3&nbsp;&nbsp;&nbsp;&nbsp;错误：1&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
+<p class='attribute'><strong>启动时间：</strong> 2018-03-29 18:22:28</p><p class='attribute'><strong>运行时长：</strong> 0:00:00.018987</p><p class='attribute'><strong>结果：</strong> 通过：2&nbsp;&nbsp;&nbsp;&nbsp;失败：4&nbsp;&nbsp;&nbsp;&nbsp;错误：2&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
 <p class='description'>随意描述</p>
 </div>
 
@@ -185,25 +185,30 @@ popup.style.zIndex = "999999";
     <td><a href="javascript:showClassDetail('c1',5)">细节</a></td>
 </tr>
 
-<tr id='st1.1' class='none'>
-    <td class='skipCase'><div class='testcase'>test_skip: 测试跳过</div></td>
+<tr id='ft1.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_fail: 测试失败</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_st1.1')" >
-        skip</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >
+        fail</a>
 
-    <div id='div_st1.1' class="popup_window">
+    <div id='div_ft1.1' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_st1.1').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
             
-st1.1: [   INFO] [2018-03-26 16:27:41,801] [21848] [Result.py(43)] - 开始测试：test_skip (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,802] [21848] [Result.py(72)] - 跳过测试：	test_skip (__main__.test_1th)
-这是一个跳过的测试
-[   INFO] [2018-03-26 16:27:41,804] [21848] [Result.py(53)] - 测试结束：test_skip (__main__.test_1th)
+ft1.1: [   INFO] [2018-03-29 18:22:28,654] [18744] [Result.py(42)] - 开始测试：test_fail (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,655] [18744] [HTMLReport_test.py(45)] - 测试失败
+[WARNING] [2018-03-29 18:22:28,657] [18744] [Result.py(117)] - 测试未通过：	test_fail (__main__.test_1th)
+Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 46, in test_fail
+    self.assertEqual(1, 2, "相等")
+AssertionError: 1 != 2 : 相等
+
+[   INFO] [2018-03-29 18:22:28,659] [18744] [Result.py(51)] - 测试结束：test_fail (__main__.test_1th)
 
 
         </pre>
@@ -214,25 +219,25 @@ st1.1: [   INFO] [2018-03-26 16:27:41,801] [21848] [Result.py(43)] - 开始测�
     </td>
 </tr>
 
-<tr id='pt1.2' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
+<tr id='st1.2' class='none'>
+    <td class='skipCase'><div class='testcase'>test_skip: 测试跳过</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.2')" >
-        pass</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_st1.2')" >
+        skip</a>
 
-    <div id='div_pt1.2' class="popup_window">
+    <div id='div_st1.2' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.2').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_st1.2').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
             
-pt1.2: [   INFO] [2018-03-26 16:27:41,800] [20828] [Result.py(43)] - 开始测试：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,802] [20828] [HTMLReport_test.py(16)] - 测试isupper
-[   INFO] [2018-03-26 16:27:41,803] [20828] [Result.py(87)] - 测试执行通过：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,804] [20828] [Result.py(53)] - 测试结束：test_isupper (__main__.test_1th)
+st1.2: [   INFO] [2018-03-29 18:22:28,656] [17268] [Result.py(42)] - 开始测试：test_skip (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,658] [17268] [Result.py(70)] - 跳过测试：	test_skip (__main__.test_1th)
+这是一个跳过的测试
+[   INFO] [2018-03-29 18:22:28,659] [17268] [Result.py(51)] - 测试结束：test_skip (__main__.test_1th)
 
 
         </pre>
@@ -244,7 +249,7 @@ pt1.2: [   INFO] [2018-03-26 16:27:41,800] [20828] [Result.py(43)] - 开始测�
 </tr>
 
 <tr id='pt1.3' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
+    <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
@@ -258,10 +263,10 @@ pt1.2: [   INFO] [2018-03-26 16:27:41,800] [20828] [Result.py(43)] - 开始测�
         </div>
         <pre>
             
-pt1.3: [   INFO] [2018-03-26 16:27:41,802] [21172] [Result.py(43)] - 开始测试：test_split (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,803] [21172] [HTMLReport_test.py(22)] - 测试split
-[   INFO] [2018-03-26 16:27:41,804] [21172] [Result.py(87)] - 测试执行通过：test_split (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,805] [21172] [Result.py(53)] - 测试结束：test_split (__main__.test_1th)
+pt1.3: [   INFO] [2018-03-29 18:22:28,655] [2836] [Result.py(42)] - 开始测试：test_isupper (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,655] [2836] [HTMLReport_test.py(20)] - 测试isupper
+[   INFO] [2018-03-29 18:22:28,658] [2836] [Result.py(85)] - 测试执行通过：test_isupper (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,659] [2836] [Result.py(51)] - 测试结束：test_isupper (__main__.test_1th)
 
 
         </pre>
@@ -272,34 +277,25 @@ pt1.3: [   INFO] [2018-03-26 16:27:41,802] [21172] [Result.py(43)] - 开始测�
     </td>
 </tr>
 
-<tr id='ft1.4' class='none'>
-    <td class='failCase'><div class='testcase'>test_fail: 测试失败</div></td>
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.4')" >
-        fail</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
+        pass</a>
 
-    <div id='div_ft1.4' class="popup_window">
+    <div id='div_pt1.4' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.4').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
             
-ft1.4: [   INFO] [2018-03-26 16:27:41,799] [27296] [Result.py(43)] - 开始测试：test_fail (__main__.test_1th)
-[   INFO] [2018-03-26 16:27:41,800] [27296] [HTMLReport_test.py(40)] - 测试失败
-[WARNING] [2018-03-26 16:27:41,803] [27296] [Result.py(120)] - 测试未通过：	test_fail (__main__.test_1th)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_fail
-    self.assertEqual(1, 2, "相等")
-AssertionError: 1 != 2 : 相等
-
-[   INFO] [2018-03-26 16:27:41,804] [27296] [Result.py(53)] - 测试结束：test_fail (__main__.test_1th)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_fail
-    self.assertEqual(1, 2, "相等")
-AssertionError: 1 != 2 : 相等
+pt1.4: [   INFO] [2018-03-29 18:22:28,656] [5348] [Result.py(42)] - 开始测试：test_split (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,659] [5348] [HTMLReport_test.py(27)] - 测试split
+[   INFO] [2018-03-29 18:22:28,660] [5348] [Result.py(85)] - 测试执行通过：test_split (__main__.test_1th)
+[   INFO] [2018-03-29 18:22:28,660] [5348] [Result.py(51)] - 测试结束：test_split (__main__.test_1th)
 
 
         </pre>
@@ -325,28 +321,24 @@ AssertionError: 1 != 2 : 相等
         </div>
         <pre>
             
-ft1.5: [   INFO] [2018-03-26 16:27:41,799] [9620] [Result.py(43)] - 开始测试：test_error (__main__.test_1th)
-[  ERROR] [2018-03-26 16:27:41,799] [9620] [HTMLReport_test.py(30)] - 测试错误
-[  ERROR] [2018-03-26 16:27:41,826] [9620] [Result.py(103)] - 测试产生错误：	test_error (__main__.test_1th)
+ft1.5: [   INFO] [2018-03-29 18:22:28,654] [10280] [Result.py(42)] - 开始测试：test_error (__main__.test_1th)
+[  ERROR] [2018-03-29 18:22:28,654] [10280] [HTMLReport_test.py(35)] - 测试错误
+[  ERROR] [2018-03-29 18:22:28,667] [10280] [Result.py(101)] - 测试产生错误：	test_error (__main__.test_1th)
 Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 36, in test_error
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_error
     raise ValueError
 ValueError
 
-[   INFO] [2018-03-26 16:27:41,826] [9620] [Result.py(53)] - 测试结束：test_error (__main__.test_1th)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 36, in test_error
-    raise ValueError
-ValueError
+[   INFO] [2018-03-29 18:22:28,668] [10280] [Result.py(51)] - 测试结束：test_error (__main__.test_1th)
 
 
         </pre>
         <div>
-<img class="pic" src='images/image_9620_2018_03_26_16_27_41_346.jpg' style="width: 500px;">
+<img class="pic" src='images/image_10280_2018_03_29_18_22_28_732.jpg' style="width: 500px;">
     
-<img class="pic" src='images/image_9620_2018_03_26_16_27_41_135.jpg' style="width: 500px;">
+<img class="pic" src='images/image_10280_2018_03_29_18_22_28_209.jpg' style="width: 500px;">
     
-<img class="pic" src='images/image_9620_2018_03_26_16_27_41_904.jpg' style="width: 500px;">
+<img class="pic" src='images/image_10280_2018_03_29_18_22_28_823.jpg' style="width: 500px;">
     </div>
     </div>
     <!--css div popup end-->
@@ -354,35 +346,42 @@ ValueError
     </td>
 </tr>
 
-<tr class='passClass'>
+<tr class='errorClass'>
     <td>test_2th</td>
     <td>2</td>
-    <td>2</td>
     <td>0</td>
-    <td>0</td>
+    <td>1</td>
+    <td>1</td>
     <td>0</td>
     <td><a href="javascript:showClassDetail('c2',2)">细节</a></td>
 </tr>
 
-<tr id='pt2.1' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_bad_int: 测试异常类型</div></td>
+<tr id='ft2.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_bad_int: 测试异常类型</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.1')" >
-        pass</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.1')" >
+        error</a>
 
-    <div id='div_pt2.1' class="popup_window">
+    <div id='div_ft2.1' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.1').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.1').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
             
-pt2.1: [   INFO] [2018-03-26 16:27:41,827] [27524] [Result.py(43)] - 开始测试：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-26 16:27:41,827] [27524] [HTMLReport_test.py(53)] - 测试异常类型
-[   INFO] [2018-03-26 16:27:41,828] [27524] [Result.py(87)] - 测试执行通过：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-26 16:27:41,828] [27524] [Result.py(53)] - 测试结束：test_bad_int (__main__.test_2th)
+ft2.1: [   INFO] [2018-03-29 18:22:28,668] [19592] [Result.py(42)] - 开始测试：test_bad_int (__main__.test_2th)
+[   INFO] [2018-03-29 18:22:28,668] [19592] [HTMLReport_test.py(58)] - 测试异常类型
+[  ERROR] [2018-03-29 18:22:28,669] [19592] [Result.py(101)] - 测试产生错误：	test_bad_int (__main__.test_2th)
+Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
+    self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 11, in parse_int
+    return int(s)
+ValueError: invalid literal for int() with base 10: '1.5'
+
+[   INFO] [2018-03-29 18:22:28,670] [19592] [Result.py(51)] - 测试结束：test_bad_int (__main__.test_2th)
 
 
         </pre>
@@ -393,25 +392,33 @@ pt2.1: [   INFO] [2018-03-26 16:27:41,827] [27524] [Result.py(43)] - 开始测�
     </td>
 </tr>
 
-<tr id='pt2.2' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_upper: 测试相等</div></td>
+<tr id='ft2.2' class='none'>
+    <td class='failCase'><div class='testcase'>test_upper: 测试相等</div></td>
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.2')" >
-        pass</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.2')" >
+        fail</a>
 
-    <div id='div_pt2.2' class="popup_window">
+    <div id='div_ft2.2' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.2').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.2').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
             
-pt2.2: [   INFO] [2018-03-26 16:27:41,827] [24660] [Result.py(43)] - 开始测试：test_upper (__main__.test_2th)
-[CRITICAL] [2018-03-26 16:27:41,828] [24660] [HTMLReport_test.py(58)] - 测试执行
-[   INFO] [2018-03-26 16:27:41,828] [24660] [Result.py(87)] - 测试执行通过：test_upper (__main__.test_2th)
-[   INFO] [2018-03-26 16:27:41,829] [24660] [Result.py(53)] - 测试结束：test_upper (__main__.test_2th)
+ft2.2: [   INFO] [2018-03-29 18:22:28,669] [15544] [Result.py(42)] - 开始测试：test_upper (__main__.test_2th)
+[CRITICAL] [2018-03-29 18:22:28,669] [15544] [HTMLReport_test.py(63)] - 测试相等
+[WARNING] [2018-03-29 18:22:28,670] [15544] [Result.py(117)] - 测试未通过：	test_upper (__main__.test_2th)
+Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 64, in test_upper
+    self.assertEqual('foo'.upper(), '00')
+AssertionError: 'FOO' != '00'
+- FOO
++ 00
+
+
+[   INFO] [2018-03-29 18:22:28,670] [15544] [Result.py(51)] - 测试结束：test_upper (__main__.test_2th)
 
 
         </pre>
@@ -447,18 +454,14 @@ pt2.2: [   INFO] [2018-03-26 16:27:41,827] [24660] [Result.py(43)] - 开始测�
         </div>
         <pre>
             
-ft3.1: [   INFO] [2018-03-26 16:27:41,829] [22100] [Result.py(43)] - 开始测试：test_False (__main__.test_第三个测试)
-[WARNING] [2018-03-26 16:27:41,830] [22100] [Result.py(120)] - 测试未通过：	test_False (__main__.test_第三个测试)
+ft3.1: [   INFO] [2018-03-29 18:22:28,671] [2116] [Result.py(42)] - 开始测试：test_False (__main__.test_第三个测试)
+[WARNING] [2018-03-29 18:22:28,671] [2116] [Result.py(117)] - 测试未通过：	test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_False
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 83, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
-[   INFO] [2018-03-26 16:27:41,830] [22100] [Result.py(53)] - 测试结束：test_False (__main__.test_第三个测试)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_False
-    self.assertFalse(True, self.a)
-AssertionError: True is not false : 2
+[   INFO] [2018-03-29 18:22:28,672] [2116] [Result.py(51)] - 测试结束：test_False (__main__.test_第三个测试)
 
 
         </pre>
@@ -484,18 +487,14 @@ AssertionError: True is not false : 2
         </div>
         <pre>
             
-ft3.2: [   INFO] [2018-03-26 16:27:41,829] [26628] [Result.py(43)] - 开始测试：test_True (__main__.test_第三个测试)
-[WARNING] [2018-03-26 16:27:41,831] [26628] [Result.py(120)] - 测试未通过：	test_True (__main__.test_第三个测试)
+ft3.2: [   INFO] [2018-03-29 18:22:28,671] [19580] [Result.py(42)] - 开始测试：test_True (__main__.test_第三个测试)
+[WARNING] [2018-03-29 18:22:28,672] [19580] [Result.py(117)] - 测试未通过：	test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 73, in test_True
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 
-[   INFO] [2018-03-26 16:27:41,831] [26628] [Result.py(53)] - 测试结束：test_True (__main__.test_第三个测试)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 73, in test_True
-    self.assertTrue(False, self.a)
-AssertionError: False is not true : 3
+[   INFO] [2018-03-29 18:22:28,672] [19580] [Result.py(51)] - 测试结束：test_True (__main__.test_第三个测试)
 
 
         </pre>
@@ -509,9 +508,9 @@ AssertionError: False is not true : 3
 <tr id='total_row'>
     <td>合计</td>
     <td>9</td>
+    <td>2</td>
     <td>4</td>
-    <td>3</td>
-    <td>1</td>
+    <td>2</td>
     <td>1</td>
     <td>&nbsp;</td>
 </tr>

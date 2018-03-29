@@ -15,7 +15,7 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = '刘士'
-__version__ = '1.1.14'
+__version__ = '1.1.15'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -43,8 +43,6 @@ class TestRunner(TemplateMixin, TestSuite):
 
         self.thread_count = thread_count
         self.sequential_execution = sequential_execution
-        self.startTime = datetime.datetime.now()
-        self.stopTime = datetime.datetime.now()
 
         SaveImages.report_path = report_path = os.path.join(output_path or "report")
         dir_to = os.path.join(os.getcwd(), report_path)
@@ -57,12 +55,13 @@ class TestRunner(TemplateMixin, TestSuite):
         self.log_name = "{}.log".format(log_file_name or report_file_name or random_name)
         self.path_file = os.path.join(dir_to, report_name)
         self.log_file_name = os.path.join(dir_to, self.log_name)
-        # self.relative_log_dir = os.path.join(relative_dir, log_name)
-
         GeneralLogger().set_log_path(self.log_file_name)
         GeneralLogger().set_log_by_thread_log(True)
         GeneralLogger().set_log_level(LOG_LEVEL_NOTSET)
         self.main_logger = GeneralLogger().get_logger()
+
+        self.startTime = datetime.datetime.now()
+        self.stopTime = datetime.datetime.now()
 
     def _threadPoolExecutorTestCase(self, tmp_list, result):
         """多线程运行"""
@@ -89,38 +88,37 @@ class TestRunner(TemplateMixin, TestSuite):
 
         result = Result()
 
-        # print("预计并发线程数：", end='')
-        if self.thread_count <= 1:
-            # print(1)
-            self.main_logger.info("预计并发线程数：1")
-            test(result)
+        # # print("预计并发线程数：", end='')
+        # if self.thread_count <= 1:
+        #     # print(1)
+        #     self.main_logger.info("预计并发线程数：1")
+        #     test(result)
+        # else:
+        # 参数为多线程模式
+        self.main_logger.info("预计并发线程数：" + str(self.thread_count))
+        if self.sequential_execution:
+            # 执行套件添加顺序
+            test_case_queue = queue.Queue()
+            L = []
+            tmp_key = None
+            for test_case in test:
+                tmp_class_name = test_case.__class__
+                if tmp_key == tmp_class_name:
+                    L.append(test_case)
+                else:
+                    tmp_key = tmp_class_name
+                    if len(L) != 0:
+                        test_case_queue.put(L.copy())
+                        L.clear()
+                    L.append(test_case)
+            if len(L) != 0:
+                test_case_queue.put(L.copy())
+            while not test_case_queue.empty():
+                tmp_list = test_case_queue.get()
+                self._threadPoolExecutorTestCase(tmp_list, result)
         else:
-            # 参数为多线程模式
-            # print(self.thread_count)
-            self.main_logger.info("预计并发线程数：" + str(self.thread_count))
-            if self.sequential_execution:
-                # 执行套件添加顺序
-                test_case_queue = queue.Queue()
-                L = []
-                tmp_key = None
-                for test_case in test:
-                    tmp_class_name = test_case.__class__
-                    if tmp_key == tmp_class_name:
-                        L.append(test_case)
-                    else:
-                        tmp_key = tmp_class_name
-                        if len(L) != 0:
-                            test_case_queue.put(L.copy())
-                            L.clear()
-                        L.append(test_case)
-                if len(L) != 0:
-                    test_case_queue.put(L.copy())
-                while not test_case_queue.empty():
-                    tmp_list = test_case_queue.get()
-                    self._threadPoolExecutorTestCase(tmp_list, result)
-            else:
-                # 无序执行
-                self._threadPoolExecutorTestCase(test, result)
+            # 无序执行
+            self._threadPoolExecutorTestCase(test, result)
 
         self.stopTime = datetime.datetime.now()
         if result.stdout_steams.getvalue().strip():
@@ -150,14 +148,13 @@ class TestRunner(TemplateMixin, TestSuite):
             n = dic.get('result_code')
             t = dic.get('testCase_object')
             o = dic.get('test_output')
-            e = dic.get('stack_trace')
             i = dic.get('image_paths')
 
             cls = t.__class__
             if cls not in remap:
                 remap[cls] = []
                 classes.append(cls)
-            remap[cls].append((n, t, o, e, i))
+            remap[cls].append((n, t, o, i))
         r = [(cls, remap[cls]) for cls in classes]
         return r
 
@@ -234,7 +231,7 @@ class TestRunner(TemplateMixin, TestSuite):
         sortedResult = self._sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
             np = nf = ne = ns = 0
-            for n, t, o, e, i in cls_results:
+            for n, t, o, i in cls_results:
                 if n == 0:
                     np += 1
                 elif n == 1:
@@ -264,8 +261,8 @@ class TestRunner(TemplateMixin, TestSuite):
             )
             rows.append(row)
 
-            for tid, (n, t, o, e, i) in enumerate(cls_results):
-                self._generate_report_test(rows, cid, tid, n, t, o, e, i)
+            for tid, (n, t, o, i) in enumerate(cls_results):
+                self._generate_report_test(rows, cid, tid, n, t, o, i)
 
         report = self.REPORT_TMPL.format(
             test_list=''.join(rows),
@@ -277,8 +274,8 @@ class TestRunner(TemplateMixin, TestSuite):
         )
         return report
 
-    def _generate_report_test(self, rows, cid, tid, n, t, o, e, i):
-        has_output = bool(o or e)
+    def _generate_report_test(self, rows, cid, tid, n, t, o, i):
+        has_output = bool(o)
         # 0: success; 1: fail; 2: error; 3: skip
         tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't{}.{}'.format(cid + 1, tid + 1)
         name = t.id().split('.')[-1]
@@ -290,7 +287,7 @@ class TestRunner(TemplateMixin, TestSuite):
             imgs += (self._generate_img(img))
         script = self.REPORT_TEST_OUTPUT_TMPL.format(
             id=tid,
-            output=saxutils.escape(o + e),
+            output=saxutils.escape(o),
         )
 
         row = temp.format(

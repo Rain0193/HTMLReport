@@ -85,12 +85,14 @@ class GeneralLogger(object):
 
     def set_logger(self, name, is_stream=False):
         if name not in self._loggers:
-            new_logger = logging.getLogger(name)
+            if name == self._main_thread_id:
+                new_logger = logging.getLogger()
+            else:
+                new_logger = logging.getLogger(name)
             new_logger.setLevel(self._log_level)
 
             if self._log_path:
                 if is_stream:
-                    # new_logger.addHandler(HandlerFactory.get_rotating_stream_handler(name, stream))
                     new_logger.addHandler(HandlerFactory.get_stream_handler())
                 else:
                     # 如果启用了线程，日志路径将会变化
