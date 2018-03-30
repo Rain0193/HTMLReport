@@ -1,4 +1,5 @@
 import threading
+import time
 from io import StringIO
 from unittest import TestResult
 
@@ -36,6 +37,7 @@ class Result(TestResult):
         self.result = []
         self.result_tmp = {}
         self.image_paths = {}
+        self.time = {}
 
     def startTest(self, test):
         GeneralLogger().get_logger(True)
@@ -45,10 +47,13 @@ class Result(TestResult):
                                                                   'test_output': '',
                                                                   'image_paths': []
                                                                   }
+        self.time[str(threading.current_thread().ident)] = time.clock()
         TestResult.startTest(self, test)
 
     def stopTest(self, test):
+        end_time = time.clock()
         GeneralLogger().get_logger().info("测试结束：{}".format(test))
+        GeneralLogger().get_logger().info("耗时：{} 秒".format(end_time - self.time[str(threading.current_thread().ident)]))
 
         current_id = str(threading.current_thread().ident)
         if current_id in SaveImages.imageList:

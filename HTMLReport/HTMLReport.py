@@ -15,7 +15,7 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = '刘士'
-__version__ = '1.1.15'
+__version__ = '1.2.0'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -79,8 +79,6 @@ class TestRunner(TemplateMixin, TestSuite):
 
                 pool.submit(test_case, result)
 
-    ################################
-
     def run(self, test, debug=False):
         """
         运行给定的测试用例或测试套件。
@@ -88,13 +86,6 @@ class TestRunner(TemplateMixin, TestSuite):
 
         result = Result()
 
-        # # print("预计并发线程数：", end='')
-        # if self.thread_count <= 1:
-        #     # print(1)
-        #     self.main_logger.info("预计并发线程数：1")
-        #     test(result)
-        # else:
-        # 参数为多线程模式
         self.main_logger.info("预计并发线程数：" + str(self.thread_count))
         if self.sequential_execution:
             # 执行套件添加顺序
@@ -241,7 +232,7 @@ class TestRunner(TemplateMixin, TestSuite):
                 elif n == 3:
                     ns += 1
 
-            # format class description
+            # 格式化类描述
             if cls.__module__ == "__main__":
                 name = cls.__name__
             else:

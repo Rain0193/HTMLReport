@@ -22,7 +22,6 @@ setup(
     name='HTMLReport',
     version=__version__,
     description="Python3 Unittest HTML报告生成",
-    # long_description=doc,
     long_description=read_md('README.md'),
     author=__author__,
     author_email='liushilive@outlook.com',

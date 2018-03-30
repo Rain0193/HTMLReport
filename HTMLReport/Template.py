@@ -60,6 +60,7 @@ tr.className = "";
 tr.className = "hiddenRow";
 }
 }
+if (id.substr(0, 4) === "div_") {tr.className = "hiddenRow";}
 }
 }
 
@@ -90,20 +91,17 @@ document.getElementById(tid).className = "hiddenRow";
 } else {
 document.getElementById(tid).className = "";
 }
-if (tid.indexOf("f") !== -1) {
-document.getElementById("div_" + tid).style.display = "none";
-}
+document.getElementById("div_" + tid).className = "hiddenRow";
 }
 }
 
 function showTestDetail(div_id) {
 var details_div = document.getElementById(div_id);
-var displayState = details_div.style.display;
-if (displayState != "block") {
-displayState = "block";
-details_div.style.display = "block";
+var className = details_div.className;
+if (className != "") {
+details_div.className = "";
 } else {
-details_div.style.display = "none";
+details_div.className = "hiddenRow";
 }
 }
 
@@ -126,6 +124,7 @@ showBig(target.src);
 };
 }
 popup.onclick = function() {
+popup.getElementsByTagName("img")[0].src = "";
 popup.style.display = "none";
 popup.style.zIndex = "-1";
 };
@@ -144,11 +143,11 @@ h1{font-size:16pt;color:gray}
 .heading .attribute{margin-top:1ex;margin-bottom:0}
 .heading .description{margin-top:4ex;margin-bottom:6ex}
 a.popup_link:hover{color:red}
-.popup_window{display:none;position:relative;left:0;top:0;padding:10px;background-color:#E6E6D6;font-family:"Lucida Console","Courier New",Courier,monospace;text-align:left;font-size:8pt}
+.popup_window{display:block ;position:relative;left:0;top:0;padding:10px;background-color:#E6E6D6;font-family:"Lucida Console","Courier New",Courier,monospace;text-align:left;font-size:8pt}
 #show_detail_line{margin-top:3ex;margin-bottom:1ex}
 #result_table{width:100%;border-collapse:collapse;border:1px solid #777}
 #header_row{font-weight:700;color:#fff;background-color:#777}
-#result_table td{border:1px solid #777;padding:2px}
+#result_table td{border:1px solid #777;padding:2px;min-width:35px}
 #total_row{font-weight:700}
 .passClass{background-color:#6c6}
 .failClass{background-color:#c60}
@@ -227,21 +226,20 @@ a.popup_link:hover{color:red}
     <td colspan='6' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')" >
-        {status}</a>
-
-    <div id='div_{tid}' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-            {script}
-        </pre>
-        <div>{img}</div>
-    </div>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')" >{status}</a>
     <!--css div popup end-->
 
+    </td>
+</tr>
+<tr id='div_{tid}' class="hiddenRow">
+    <td colspan='7'>
+        <div class="popup_window">
+            <div style='text-align: right; color:red;cursor:pointer'>
+                <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').className = 'hiddenRow' " >[x]</a>
+            </div>
+            <pre>{script}</pre>
+            <div>{img}</div>
+        </div>
     </td>
 </tr>
 """
