@@ -250,7 +250,8 @@ a.popup_link:hover{color:red}
 </tr>
 """
     REPORT_TEST_OUTPUT_TMPL = r"""
-{id}: {output}
+{id}: 
+{output}
 """
     ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
     REPORT_LOG_FILE_TMPL = r"""

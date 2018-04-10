@@ -63,7 +63,7 @@ class GeneralLogger(object):
         else:
             return os.path.join(base_dir, base_name)
 
-    def get_logger(self, is_stream=False) -> logging:
+    def get_logger(self, is_stream: bool = False) -> logging.Logger:
         name = self._main_thread_id
 
         if self._log_by_thread:
@@ -80,7 +80,6 @@ class GeneralLogger(object):
                 self.set_logger(name, is_stream)
             else:
                 self.set_logger(name)
-
         return self._loggers[name]
 
     def set_logger(self, name, is_stream=False):
