@@ -38,6 +38,8 @@ runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如
                                thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
                                sequential_execution=False  # 是否按照套件添加(addTests)顺序执行，
                                # 会等待一个addTests执行完成，再执行下一个，默认 False
+                               # lang='en'
+                               lang='zh'  # 支持中文与英文，默认中文
                                )
 # 执行测试用例套件
 runner.run(suite)
