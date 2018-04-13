@@ -21,8 +21,7 @@ except ImportError:
 setup(
     name='HTMLReport',
     version=__version__,
-    description="Python3 Unittest HTML报告生成器\n"
-                "感谢您使用本插件，如有建议请联系作者：{} liushilive@outlook.com".format(__author__),
+    description="Python3 Unittest HTML报告生成器",
     long_description=read_md('README.md'),
     author=__author__,
     author_email='liushilive@outlook.com',
