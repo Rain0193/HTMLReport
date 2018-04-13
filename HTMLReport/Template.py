@@ -10,7 +10,9 @@ class TemplateMixin(object):
     }
 
     DEFAULT_TITLE = '测试报告'
+    DEFAULT_TITLE_en = 'Test Results'
     DEFAULT_DESCRIPTION = '无测试描述'
+    DEFAULT_DESCRIPTION_en = 'Test Description'
 
     HTML_TMPL = r"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -32,8 +34,8 @@ class TemplateMixin(object):
 </body>
 </html>
 """
-    JS = r"""output_list = Array();
 
+    JS = r"""output_list = Array();
 function showCase(level) {
 trs = document.getElementsByTagName("tr");
 for (var i = 0; i < trs.length; i++) {
@@ -171,7 +173,9 @@ a.popup_link:hover{color:red}
 {parameters}
 <p class='description'>{description}</p>
 </div>"""
+
     HEADING_ATTRIBUTE_TMPL = r"""<p class='attribute'><strong>{name}：</strong> {value}</p>"""
+
     REPORT_TMPL = r"""<p id='show_detail_line'>筛选
 <a href='javascript:showCase(0)'>摘要</a>
 <a href='javascript:showCase(1)'>通过</a>
@@ -209,54 +213,115 @@ a.popup_link:hover{color:red}
 </tr>
 </table>
 """
-    REPORT_CLASS_TMPL = r"""
-<tr class='{style}'>
-    <td>{desc}</td>
+
+    REPORT_TMPL_en = r"""<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Pass</a>
+<a href='javascript:showCase(2)'>Fail</a>
+<a href='javascript:showCase(3)'>Skip</a>
+<a href='javascript:showCase(4)'>All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row'>
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>Skip</td>
+    <td>View</td>
+</tr>
+{test_list}
+<tr id='total_row'>
+    <td>Count</td>
     <td>{count}</td>
     <td>{Pass}</td>
     <td>{fail}</td>
     <td>{error}</td>
     <td>{skip}</td>
-    <td><a href="javascript:showClassDetail('{cid}',{count})">细节</a></td>
+    <td>&nbsp;</td>
 </tr>
+</table>
 """
-    REPORT_TEST_WITH_OUTPUT_TMPL = r"""
-<tr id='{tid}' class='{Class}'>
-    <td class='{style}'><div class='testcase'>{desc}</div></td>
-    <td colspan='6' align='center'>
 
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')" >{status}</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_{tid}' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').className = 'hiddenRow' " >[x]</a>
-            </div>
-            <pre>{script}</pre>
-            <div>{img}</div>
-        </div>
-    </td>
-</tr>
-"""
-    REPORT_TEST_NO_OUTPUT_TMPL = r"""
-<tr id='{tid}' class='{Class}'>
-    <td class='{style}'><div class='testcase'>{desc}</div></td>
-    <td colspan='6' align='center'>{status}</td>
-</tr>
-"""
-    REPORT_TEST_OUTPUT_TMPL = r"""
-{id}: 
-{output}
-"""
-    ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
-    REPORT_LOG_FILE_TMPL = r"""
-<a href='{log_file}'>下载日志文件</a>
-"""
-    REPORT_IMG_TMPL = r"""
-<img class="pic" src='{img_src}' style="width: 500px;">
+    REPORT_CLASS_TMPL = r"""
+    <tr class='{style}'>
+        <td>{desc}</td>
+        <td>{count}</td>
+        <td>{Pass}</td>
+        <td>{fail}</td>
+        <td>{error}</td>
+        <td>{skip}</td>
+        <td><a href="javascript:showClassDetail('{cid}',{count})">细节</a></td>
+    </tr>
     """
+
+    REPORT_CLASS_TMPL_en = r"""
+    <tr class='{style}'>
+        <td>{desc}</td>
+        <td>{count}</td>
+        <td>{Pass}</td>
+        <td>{fail}</td>
+        <td>{error}</td>
+        <td>{skip}</td>
+        <td><a href="javascript:showClassDetail('{cid}',{count})">Detail</a></td>
+    </tr>
+    """
+
+    REPORT_TEST_WITH_OUTPUT_TMPL = r"""
+    <tr id='{tid}' class='{Class}'>
+        <td class='{style}'><div class='testcase'>{desc}</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')" >{status}</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_{tid}' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>{script}</pre>
+                <div>{img}</div>
+            </div>
+        </td>
+    </tr>
+    """
+
+    REPORT_TEST_NO_OUTPUT_TMPL = r"""
+    <tr id='{tid}' class='{Class}'>
+        <td class='{style}'><div class='testcase'>{desc}</div></td>
+        <td colspan='6' align='center'>{status}</td>
+    </tr>
+    """
+
+    REPORT_TEST_OUTPUT_TMPL = r"""
+    {id}: 
+    {output}
+    """
+
+    ENDING_TMPL = r"""<div id='ending'>&nbsp;</div>"""
+
+    REPORT_LOG_FILE_TMPL = r"""
+    <a href='{log_file}'>下载日志文件</a>
+    """
+
+    REPORT_LOG_FILE_TMPL_en = r"""
+    <a href='{log_file}'>Download log file</a>
+    """
+
+    REPORT_IMG_TMPL = r"""
+    <img class="pic" src='{img_src}' style="width: 500px;">
+        """

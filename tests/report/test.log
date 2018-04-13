@@ -1,55 +1,45 @@
-[   INFO] [2018-03-30 12:20:53,738] [14632] [HTMLReport.py(89)] - 预计并发线程数：5
-[   INFO] [2018-03-30 12:20:53,741] [17220] [Result.py(44)] - 开始测试：test_error (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,742] [17496] [Result.py(44)] - 开始测试：test_fail (__main__.test_1th)
-[  ERROR] [2018-03-30 12:20:53,743] [17220] [HTMLReport_test.py(35)] - 测试错误
-[   INFO] [2018-03-30 12:20:53,743] [10012] [Result.py(44)] - 开始测试：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,744] [1116] [Result.py(44)] - 开始测试：test_skip (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,744] [17496] [HTMLReport_test.py(45)] - 测试失败
-[   INFO] [2018-03-30 12:20:53,745] [16696] [Result.py(44)] - 开始测试：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,745] [10012] [HTMLReport_test.py(20)] - 测试isupper
-[   INFO] [2018-03-30 12:20:53,745] [1116] [Result.py(75)] - 跳过测试：	test_skip (__main__.test_1th)
-这是一个跳过的测试
-[WARNING] [2018-03-30 12:20:53,746] [17496] [Result.py(122)] - 测试未通过：	test_fail (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,239] [25304] [HTMLReport.py(96)] - 预计并发线程数：5
+[   INFO] [2018-04-13 12:23:13,241] [25328] [Result.py(44)] - 开始测试：test_error (__main__.test_1th)
+[  ERROR] [2018-04-13 12:23:13,242] [25328] [HTMLReport_test.py(35)] - 测试错误
+[   INFO] [2018-04-13 12:23:13,242] [10108] [Result.py(44)] - 开始测试：test_fail (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,243] [25252] [Result.py(44)] - 开始测试：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,243] [10108] [HTMLReport_test.py(45)] - 测试失败
+[   INFO] [2018-04-13 12:23:13,244] [25252] [HTMLReport_test.py(20)] - 测试isupper
+[   INFO] [2018-04-13 12:23:13,245] [23280] [Result.py(44)] - 开始测试：test_skip (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,247] [24852] [Result.py(44)] - 开始测试：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,248] [25252] [HTMLReport_test.py(21)] - 11111111111111111111111111111111111111111111111111111
+[WARNING] [2018-04-13 12:23:13,249] [10108] [Result.py(122)] - 测试未通过：	test_fail (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 46, in test_fail
     self.assertEqual(1, 2, "相等")
 AssertionError: 1 != 2 : 相等
 
-[   INFO] [2018-03-30 12:20:53,747] [16696] [HTMLReport_test.py(27)] - 测试split
-[   INFO] [2018-03-30 12:20:53,747] [10012] [HTMLReport_test.py(21)] - 11111111111111111111111111111111111111111111111111111
-[   INFO] [2018-03-30 12:20:53,747] [1116] [Result.py(55)] - 测试结束：test_skip (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,748] [17496] [Result.py(55)] - 测试结束：test_fail (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,748] [16696] [Result.py(90)] - 测试执行通过：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,748] [10012] [Result.py(90)] - 测试执行通过：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [1116] [Result.py(56)] - 耗时：0.0022006093585769217 秒
-[   INFO] [2018-03-30 12:20:53,749] [17496] [Result.py(56)] - 耗时：0.00342312787596911 秒
-[   INFO] [2018-03-30 12:20:53,749] [16696] [Result.py(55)] - 测试结束：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [10012] [Result.py(55)] - 测试结束：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,750] [16696] [Result.py(56)] - 耗时：0.002044373316708704 秒
-[   INFO] [2018-03-30 12:20:53,750] [10012] [Result.py(56)] - 耗时：0.004306944901136037 秒
-[  ERROR] [2018-03-30 12:20:53,762] [17220] [Result.py(106)] - 测试产生错误：	test_error (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,248] [23280] [Result.py(75)] - 跳过测试：	test_skip (__main__.test_1th)
+这是一个跳过的测试
+[   INFO] [2018-04-13 12:23:13,249] [24852] [HTMLReport_test.py(27)] - 测试split
+[   INFO] [2018-04-13 12:23:13,249] [25252] [Result.py(90)] - 测试执行通过：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,250] [10108] [Result.py(55)] - 测试结束：test_fail (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,250] [23280] [Result.py(55)] - 测试结束：test_skip (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,250] [24852] [Result.py(90)] - 测试执行通过：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [25252] [Result.py(55)] - 测试结束：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [10108] [Result.py(56)] - 耗时：0.00654785120240976 秒
+[   INFO] [2018-04-13 12:23:13,251] [23280] [Result.py(56)] - 耗时：0.001455162519757595 秒
+[   INFO] [2018-04-13 12:23:13,251] [24852] [Result.py(55)] - 测试结束：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,252] [25252] [Result.py(56)] - 耗时：0.0065649573448834 秒
+[   INFO] [2018-04-13 12:23:13,252] [24852] [Result.py(56)] - 耗时：0.0023804147593317806 秒
+[  ERROR] [2018-04-13 12:23:13,264] [25328] [Result.py(106)] - 测试产生错误：	test_error (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_error
     raise ValueError
 ValueError
 
-[   INFO] [2018-03-30 12:20:53,762] [17220] [Result.py(55)] - 测试结束：test_error (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,762] [17220] [Result.py(56)] - 耗时：0.019008338290944962 秒
-[   INFO] [2018-03-30 12:20:53,763] [13220] [Result.py(44)] - 开始测试：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-30 12:20:53,763] [13220] [HTMLReport_test.py(58)] - 测试异常类型
-[   INFO] [2018-03-30 12:20:53,763] [11636] [Result.py(44)] - 开始测试：test_upper (__main__.test_2th)
-[  ERROR] [2018-03-30 12:20:53,763] [13220] [Result.py(106)] - 测试产生错误：	test_bad_int (__main__.test_2th)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
-    self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 11, in parse_int
-    return int(s)
-ValueError: invalid literal for int() with base 10: '1.5'
-
-[   INFO] [2018-03-30 12:20:53,764] [13220] [Result.py(55)] - 测试结束：test_bad_int (__main__.test_2th)
-[CRITICAL] [2018-03-30 12:20:53,764] [11636] [HTMLReport_test.py(63)] - 测试相等
-[   INFO] [2018-03-30 12:20:53,764] [13220] [Result.py(56)] - 耗时：0.0010708441117828968 秒
-[WARNING] [2018-03-30 12:20:53,765] [11636] [Result.py(122)] - 测试未通过：	test_upper (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,264] [25328] [Result.py(55)] - 测试结束：test_error (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,265] [25328] [Result.py(56)] - 耗时：0.022346324118064316 秒
+[   INFO] [2018-04-13 12:23:13,265] [24256] [Result.py(44)] - 开始测试：test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,266] [3052] [Result.py(44)] - 开始测试：test_upper (__main__.test_2th)
+[CRITICAL] [2018-04-13 12:23:13,266] [3052] [HTMLReport_test.py(63)] - 测试相等
+[   INFO] [2018-04-13 12:23:13,266] [24256] [HTMLReport_test.py(58)] - 测试异常类型
+[WARNING] [2018-04-13 12:23:13,266] [3052] [Result.py(122)] - 测试未通过：	test_upper (__main__.test_2th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 64, in test_upper
     self.assertEqual('foo'.upper(), '00')
@@ -58,42 +48,52 @@ AssertionError: 'FOO' != '00'
 + 00
 
 
-[   INFO] [2018-03-30 12:20:53,765] [11636] [Result.py(55)] - 测试结束：test_upper (__main__.test_2th)
-[   INFO] [2018-03-30 12:20:53,765] [11636] [Result.py(56)] - 耗时：0.0011050563837248402 秒
-[   INFO] [2018-03-30 12:20:53,766] [17480] [Result.py(44)] - 开始测试：test_False (__main__.test_第三个测试)
-[   INFO] [2018-03-30 12:20:53,766] [9856] [Result.py(44)] - 开始测试：test_True (__main__.test_第三个测试)
-[WARNING] [2018-03-30 12:20:53,766] [17480] [Result.py(122)] - 测试未通过：	test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,267] [3052] [Result.py(55)] - 测试结束：test_upper (__main__.test_2th)
+[  ERROR] [2018-04-13 12:23:13,267] [24256] [Result.py(106)] - 测试产生错误：	test_bad_int (__main__.test_2th)
+Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
+    self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 11, in parse_int
+    return int(s)
+ValueError: invalid literal for int() with base 10: '1.5'
+
+[   INFO] [2018-04-13 12:23:13,267] [3052] [Result.py(56)] - 耗时：0.001325155836957935 秒
+[   INFO] [2018-04-13 12:23:13,268] [24256] [Result.py(55)] - 测试结束：test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,268] [24256] [Result.py(56)] - 耗时：0.0020873295182834255 秒
+[   INFO] [2018-04-13 12:23:13,269] [25596] [Result.py(44)] - 开始测试：test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,270] [25008] [Result.py(44)] - 开始测试：test_True (__main__.test_第三个测试)
+[WARNING] [2018-04-13 12:23:13,270] [25596] [Result.py(122)] - 测试未通过：	test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 83, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
-[WARNING] [2018-03-30 12:20:53,767] [9856] [Result.py(122)] - 测试未通过：	test_True (__main__.test_第三个测试)
+[WARNING] [2018-04-13 12:23:13,271] [25008] [Result.py(122)] - 测试未通过：	test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 
-[   INFO] [2018-03-30 12:20:53,767] [17480] [Result.py(55)] - 测试结束：test_False (__main__.test_第三个测试)
-[   INFO] [2018-03-30 12:20:53,767] [9856] [Result.py(55)] - 测试结束：test_True (__main__.test_第三个测试)
-[   INFO] [2018-03-30 12:20:53,767] [17480] [Result.py(56)] - 耗时：0.0010210462492896213 秒
-[   INFO] [2018-03-30 12:20:53,767] [9856] [Result.py(56)] - 耗时：0.0006929885750018537 秒
-[   INFO] [2018-03-30 12:20:53,768] [14632] [HTMLReport.py(116)] - 
-Pass	test_split (__main__.test_1th)	测试split
+[   INFO] [2018-04-13 12:23:13,271] [25596] [Result.py(55)] - 测试结束：test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,271] [25008] [Result.py(55)] - 测试结束：test_True (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,271] [25596] [Result.py(56)] - 耗时：0.0007070538889104305 秒
+[   INFO] [2018-04-13 12:23:13,271] [25008] [Result.py(56)] - 耗时：0.0005371328736722795 秒
+[   INFO] [2018-04-13 12:23:13,271] [25304] [HTMLReport.py(126)] - 
 Pass	test_isupper (__main__.test_1th)	测试isupper
+Pass	test_split (__main__.test_1th)	测试split
 
-[  ERROR] [2018-03-30 12:20:53,768] [14632] [HTMLReport.py(118)] - 
+[  ERROR] [2018-04-13 12:23:13,271] [25304] [HTMLReport.py(128)] - 
 Skip	test_skip (__main__.test_1th)	测试跳过
 Fail	test_fail (__main__.test_1th)	测试失败
 Error	test_error (__main__.test_1th)	测试错误
-Error	test_bad_int (__main__.test_2th)	测试异常类型
 Fail	test_upper (__main__.test_2th)	测试相等
+Error	test_bad_int (__main__.test_2th)	测试异常类型
 Fail	test_False (__main__.test_第三个测试)	测试FALSE
 Fail	test_True (__main__.test_第三个测试)	测试True
 
-[   INFO] [2018-03-30 12:20:53,786] [14632] [HTMLReport.py(129)] - 
+[   INFO] [2018-04-13 12:23:13,301] [25304] [HTMLReport.py(146)] - 
 测试结束！
-运行时间: 0:00:00.029944
+运行时间: 0:00:00.032324
 共计执行用例数量：9
 执行成功用例数量：2
 执行失败用例数量：4

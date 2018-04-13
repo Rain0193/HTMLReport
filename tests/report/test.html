@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>一个简单的测试报告</title>
-    <meta name="generator" content="HTMLReport 刘士"/>
+    <meta name="generator" content="HTMLReport 刘士 1.2.3"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css" media="screen">body{font-family:verdana,arial,helvetica,sans-serif;font-size:100%}
 table{font-size:100%}
@@ -36,7 +36,6 @@ a.popup_link:hover{color:red}
 #popup img{max-width:100%;max-height:100%;margin:auto;position:absolute;top:0;left:0;bottom:0;right:0}
 </style>
     <script language="javascript" type="text/javascript">output_list = Array();
-
 function showCase(level) {
 trs = document.getElementsByTagName("tr");
 for (var i = 0; i < trs.length; i++) {
@@ -142,12 +141,12 @@ popup.style.zIndex = "999999";
 
 <div class='heading'>
 <h1>一个简单的测试报告</h1>
-<p class='attribute'><strong>启动时间：</strong> 2018-03-30 12:20:53</p><p class='attribute'><strong>运行时长：</strong> 0:00:00.029944</p><p class='attribute'><strong>结果：</strong> 通过：2&nbsp;&nbsp;&nbsp;&nbsp;失败：4&nbsp;&nbsp;&nbsp;&nbsp;错误：2&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
+<p class='attribute'><strong>启动时间：</strong> 2018-04-13 12:23:13</p><p class='attribute'><strong>运行时长：</strong> 0:00:00.032324</p><p class='attribute'><strong>结果：</strong> 通过：2&nbsp;&nbsp;&nbsp;&nbsp;失败：4&nbsp;&nbsp;&nbsp;&nbsp;错误：2&nbsp;&nbsp;&nbsp;&nbsp;跳过：1</p>
 <p class='description'>随意描述</p>
 </div>
 
-<a href='test.log'>下载日志文件</a>
-
+    <a href='test.log'>下载日志文件</a>
+    
 <p id='show_detail_line'>筛选
 <a href='javascript:showCase(0)'>摘要</a>
 <a href='javascript:showCase(1)'>通过</a>
@@ -174,243 +173,213 @@ popup.style.zIndex = "999999";
     <td>查看</td>
 </tr>
 
-<tr class='errorClass'>
-    <td>test_1th</td>
-    <td>5</td>
-    <td>2</td>
-    <td>1</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="javascript:showClassDetail('c1',5)">细节</a></td>
-</tr>
-
-<tr id='st1.1' class='none'>
-    <td class='skipCase'><div class='testcase'>test_skip: 测试跳过</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_st1.1')" >skip</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_st1.1' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_st1.1').className = 'hiddenRow' " >[x]</a>
-            </div>
-            <pre>
-st1.1: [   INFO] [2018-03-30 12:20:53,744] [1116] [Result.py(44)] - 开始测试：test_skip (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,745] [1116] [Result.py(75)] - 跳过测试：	test_skip (__main__.test_1th)
-这是一个跳过的测试
-[   INFO] [2018-03-30 12:20:53,747] [1116] [Result.py(55)] - 测试结束：test_skip (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [1116] [Result.py(56)] - 耗时：0.0022006093585769217 秒
-
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='ft1.2' class='none'>
-    <td class='failCase'><div class='testcase'>test_fail: 测试失败</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >fail</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft1.2' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').className = 'hiddenRow' " >[x]</a>
-            </div>
-            <pre>
-ft1.2: [   INFO] [2018-03-30 12:20:53,742] [17496] [Result.py(44)] - 开始测试：test_fail (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,744] [17496] [HTMLReport_test.py(45)] - 测试失败
-[WARNING] [2018-03-30 12:20:53,746] [17496] [Result.py(122)] - 测试未通过：	test_fail (__main__.test_1th)
+    <tr class='errorClass'>
+        <td>test_1th</td>
+        <td>5</td>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c1',5)">细节</a></td>
+    </tr>
+    
+    <tr id='ft1.1' class='none'>
+        <td class='failCase'><div class='testcase'>test_fail: 测试失败</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >fail</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft1.1' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft1.1: 
+    [   INFO] [2018-04-13 12:23:13,242] [10108] [Result.py(44)] - 开始测试：test_fail (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,243] [10108] [HTMLReport_test.py(45)] - 测试失败
+[WARNING] [2018-04-13 12:23:13,249] [10108] [Result.py(122)] - 测试未通过：	test_fail (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 46, in test_fail
     self.assertEqual(1, 2, "相等")
 AssertionError: 1 != 2 : 相等
 
-[   INFO] [2018-03-30 12:20:53,748] [17496] [Result.py(55)] - 测试结束：test_fail (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [17496] [Result.py(56)] - 耗时：0.00342312787596911 秒
+[   INFO] [2018-04-13 12:23:13,250] [10108] [Result.py(55)] - 测试结束：test_fail (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [10108] [Result.py(56)] - 耗时：0.00654785120240976 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='pt1.3' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')" >pass</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_pt1.3' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.3').className = 'hiddenRow' " >[x]</a>
+    </pre>
+                <div></div>
             </div>
-            <pre>
-pt1.3: [   INFO] [2018-03-30 12:20:53,745] [16696] [Result.py(44)] - 开始测试：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,747] [16696] [HTMLReport_test.py(27)] - 测试split
-[   INFO] [2018-03-30 12:20:53,748] [16696] [Result.py(90)] - 测试执行通过：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [16696] [Result.py(55)] - 测试结束：test_split (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,750] [16696] [Result.py(56)] - 耗时：0.002044373316708704 秒
+        </td>
+    </tr>
+    
+    <tr id='st1.2' class='none'>
+        <td class='skipCase'><div class='testcase'>test_skip: 测试跳过</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_st1.2')" >skip</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_st1.2' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_st1.2').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    st1.2: 
+    [   INFO] [2018-04-13 12:23:13,245] [23280] [Result.py(44)] - 开始测试：test_skip (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,248] [23280] [Result.py(75)] - 跳过测试：	test_skip (__main__.test_1th)
+这是一个跳过的测试
+[   INFO] [2018-04-13 12:23:13,250] [23280] [Result.py(55)] - 测试结束：test_skip (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [23280] [Result.py(56)] - 耗时：0.001455162519757595 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='pt1.4' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >pass</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_pt1.4' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').className = 'hiddenRow' " >[x]</a>
+    </pre>
+                <div></div>
             </div>
-            <pre>
-pt1.4: [   INFO] [2018-03-30 12:20:53,743] [10012] [Result.py(44)] - 开始测试：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,745] [10012] [HTMLReport_test.py(20)] - 测试isupper
-[   INFO] [2018-03-30 12:20:53,748] [10012] [Result.py(90)] - 测试执行通过：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,749] [10012] [Result.py(55)] - 测试结束：test_isupper (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,750] [10012] [Result.py(56)] - 耗时：0.004306944901136037 秒
+        </td>
+    </tr>
+    
+    <tr id='pt1.3' class='hiddenRow'>
+        <td class='passCase'><div class='testcase'>test_isupper: 测试isupper</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')" >pass</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_pt1.3' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.3').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    pt1.3: 
+    [   INFO] [2018-04-13 12:23:13,243] [25252] [Result.py(44)] - 开始测试：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,244] [25252] [HTMLReport_test.py(20)] - 测试isupper
+[   INFO] [2018-04-13 12:23:13,249] [25252] [Result.py(90)] - 测试执行通过：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [25252] [Result.py(55)] - 测试结束：test_isupper (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,252] [25252] [Result.py(56)] - 耗时：0.0065649573448834 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='ft1.5' class='none'>
-    <td class='errorCase'><div class='testcase'>test_error: 测试错误</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.5')" >error</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft1.5' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.5').className = 'hiddenRow' " >[x]</a>
+    </pre>
+                <div></div>
             </div>
-            <pre>
-ft1.5: [   INFO] [2018-03-30 12:20:53,741] [17220] [Result.py(44)] - 开始测试：test_error (__main__.test_1th)
-[  ERROR] [2018-03-30 12:20:53,743] [17220] [HTMLReport_test.py(35)] - 测试错误
-[  ERROR] [2018-03-30 12:20:53,762] [17220] [Result.py(106)] - 测试产生错误：	test_error (__main__.test_1th)
+        </td>
+    </tr>
+    
+    <tr id='pt1.4' class='hiddenRow'>
+        <td class='passCase'><div class='testcase'>test_split: 测试split</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >pass</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_pt1.4' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    pt1.4: 
+    [   INFO] [2018-04-13 12:23:13,247] [24852] [Result.py(44)] - 开始测试：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,249] [24852] [HTMLReport_test.py(27)] - 测试split
+[   INFO] [2018-04-13 12:23:13,250] [24852] [Result.py(90)] - 测试执行通过：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,251] [24852] [Result.py(55)] - 测试结束：test_split (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,252] [24852] [Result.py(56)] - 耗时：0.0023804147593317806 秒
+
+    </pre>
+                <div></div>
+            </div>
+        </td>
+    </tr>
+    
+    <tr id='ft1.5' class='none'>
+        <td class='errorCase'><div class='testcase'>test_error: 测试错误</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.5')" >error</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft1.5' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.5').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft1.5: 
+    [   INFO] [2018-04-13 12:23:13,241] [25328] [Result.py(44)] - 开始测试：test_error (__main__.test_1th)
+[  ERROR] [2018-04-13 12:23:13,242] [25328] [HTMLReport_test.py(35)] - 测试错误
+[  ERROR] [2018-04-13 12:23:13,264] [25328] [Result.py(106)] - 测试产生错误：	test_error (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_error
     raise ValueError
 ValueError
 
-[   INFO] [2018-03-30 12:20:53,762] [17220] [Result.py(55)] - 测试结束：test_error (__main__.test_1th)
-[   INFO] [2018-03-30 12:20:53,762] [17220] [Result.py(56)] - 耗时：0.019008338290944962 秒
+[   INFO] [2018-04-13 12:23:13,264] [25328] [Result.py(55)] - 测试结束：test_error (__main__.test_1th)
+[   INFO] [2018-04-13 12:23:13,265] [25328] [Result.py(56)] - 耗时：0.022346324118064316 秒
 
-</pre>
-            <div>
-<img class="pic" src='images/image_17220_2018_03_30_12_20_53_734.jpg' style="width: 500px;">
-    
-<img class="pic" src='images/image_17220_2018_03_30_12_20_53_696.jpg' style="width: 500px;">
-    
-<img class="pic" src='images/image_17220_2018_03_30_12_20_53_48.jpg' style="width: 500px;">
-    </div>
+    </pre>
+                <div>
+    <img class="pic" src='images/image_25328_2018_04_13_12_23_13_477.jpg' style="width: 500px;">
+        
+    <img class="pic" src='images/image_25328_2018_04_13_12_23_13_187.jpg' style="width: 500px;">
+        
+    <img class="pic" src='images/image_25328_2018_04_13_12_23_13_730.jpg' style="width: 500px;">
         </div>
-    </td>
-</tr>
-
-<tr class='errorClass'>
-    <td>test_2th</td>
-    <td>2</td>
-    <td>0</td>
-    <td>1</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c2',2)">细节</a></td>
-</tr>
-
-<tr id='ft2.1' class='none'>
-    <td class='errorCase'><div class='testcase'>test_bad_int: 测试异常类型</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.1')" >error</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft2.1' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.1').className = 'hiddenRow' " >[x]</a>
             </div>
-            <pre>
-ft2.1: [   INFO] [2018-03-30 12:20:53,763] [13220] [Result.py(44)] - 开始测试：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-30 12:20:53,763] [13220] [HTMLReport_test.py(58)] - 测试异常类型
-[  ERROR] [2018-03-30 12:20:53,763] [13220] [Result.py(106)] - 测试产生错误：	test_bad_int (__main__.test_2th)
-Traceback (most recent call last):
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
-    self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
-  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 11, in parse_int
-    return int(s)
-ValueError: invalid literal for int() with base 10: '1.5'
-
-[   INFO] [2018-03-30 12:20:53,764] [13220] [Result.py(55)] - 测试结束：test_bad_int (__main__.test_2th)
-[   INFO] [2018-03-30 12:20:53,764] [13220] [Result.py(56)] - 耗时：0.0010708441117828968 秒
-
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='ft2.2' class='none'>
-    <td class='failCase'><div class='testcase'>test_upper: 测试相等</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.2')" >fail</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft2.2' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.2').className = 'hiddenRow' " >[x]</a>
-            </div>
-            <pre>
-ft2.2: [   INFO] [2018-03-30 12:20:53,763] [11636] [Result.py(44)] - 开始测试：test_upper (__main__.test_2th)
-[CRITICAL] [2018-03-30 12:20:53,764] [11636] [HTMLReport_test.py(63)] - 测试相等
-[WARNING] [2018-03-30 12:20:53,765] [11636] [Result.py(122)] - 测试未通过：	test_upper (__main__.test_2th)
+        </td>
+    </tr>
+    
+    <tr class='errorClass'>
+        <td>test_2th</td>
+        <td>2</td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c2',2)">细节</a></td>
+    </tr>
+    
+    <tr id='ft2.1' class='none'>
+        <td class='failCase'><div class='testcase'>test_upper: 测试相等</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.1')" >fail</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft2.1' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.1').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft2.1: 
+    [   INFO] [2018-04-13 12:23:13,266] [3052] [Result.py(44)] - 开始测试：test_upper (__main__.test_2th)
+[CRITICAL] [2018-04-13 12:23:13,266] [3052] [HTMLReport_test.py(63)] - 测试相等
+[WARNING] [2018-04-13 12:23:13,266] [3052] [Result.py(122)] - 测试未通过：	test_upper (__main__.test_2th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 64, in test_upper
     self.assertEqual('foo'.upper(), '00')
@@ -419,91 +388,130 @@ AssertionError: 'FOO' != '00'
 + 00
 
 
-[   INFO] [2018-03-30 12:20:53,765] [11636] [Result.py(55)] - 测试结束：test_upper (__main__.test_2th)
-[   INFO] [2018-03-30 12:20:53,765] [11636] [Result.py(56)] - 耗时：0.0011050563837248402 秒
+[   INFO] [2018-04-13 12:23:13,267] [3052] [Result.py(55)] - 测试结束：test_upper (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,267] [3052] [Result.py(56)] - 耗时：0.001325155836957935 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr class='failClass'>
-    <td>test_第三个测试</td>
-    <td>2</td>
-    <td>0</td>
-    <td>2</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c3',2)">细节</a></td>
-</tr>
-
-<tr id='ft3.1' class='none'>
-    <td class='failCase'><div class='testcase'>test_False: 测试FALSE</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft3.1')" >fail</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft3.1' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft3.1').className = 'hiddenRow' " >[x]</a>
+    </pre>
+                <div></div>
             </div>
-            <pre>
-ft3.1: [   INFO] [2018-03-30 12:20:53,766] [17480] [Result.py(44)] - 开始测试：test_False (__main__.test_第三个测试)
-[WARNING] [2018-03-30 12:20:53,766] [17480] [Result.py(122)] - 测试未通过：	test_False (__main__.test_第三个测试)
+        </td>
+    </tr>
+    
+    <tr id='ft2.2' class='none'>
+        <td class='errorCase'><div class='testcase'>test_bad_int: 测试异常类型</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.2')" >error</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft2.2' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.2').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft2.2: 
+    [   INFO] [2018-04-13 12:23:13,265] [24256] [Result.py(44)] - 开始测试：test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,266] [24256] [HTMLReport_test.py(58)] - 测试异常类型
+[  ERROR] [2018-04-13 12:23:13,267] [24256] [Result.py(106)] - 测试产生错误：	test_bad_int (__main__.test_2th)
+Traceback (most recent call last):
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
+    self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
+  File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 11, in parse_int
+    return int(s)
+ValueError: invalid literal for int() with base 10: '1.5'
+
+[   INFO] [2018-04-13 12:23:13,268] [24256] [Result.py(55)] - 测试结束：test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-13 12:23:13,268] [24256] [Result.py(56)] - 耗时：0.0020873295182834255 秒
+
+    </pre>
+                <div></div>
+            </div>
+        </td>
+    </tr>
+    
+    <tr class='failClass'>
+        <td>test_第三个测试</td>
+        <td>2</td>
+        <td>0</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c3',2)">细节</a></td>
+    </tr>
+    
+    <tr id='ft3.1' class='none'>
+        <td class='failCase'><div class='testcase'>test_False: 测试FALSE</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft3.1')" >fail</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft3.1' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft3.1').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft3.1: 
+    [   INFO] [2018-04-13 12:23:13,269] [25596] [Result.py(44)] - 开始测试：test_False (__main__.test_第三个测试)
+[WARNING] [2018-04-13 12:23:13,270] [25596] [Result.py(122)] - 测试未通过：	test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 83, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
-[   INFO] [2018-03-30 12:20:53,767] [17480] [Result.py(55)] - 测试结束：test_False (__main__.test_第三个测试)
-[   INFO] [2018-03-30 12:20:53,767] [17480] [Result.py(56)] - 耗时：0.0010210462492896213 秒
+[   INFO] [2018-04-13 12:23:13,271] [25596] [Result.py(55)] - 测试结束：test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,271] [25596] [Result.py(56)] - 耗时：0.0007070538889104305 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
-<tr id='ft3.2' class='none'>
-    <td class='failCase'><div class='testcase'>test_True: 测试True</div></td>
-    <td colspan='6' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft3.2')" >fail</a>
-    <!--css div popup end-->
-
-    </td>
-</tr>
-<tr id='div_ft3.2' class="hiddenRow">
-    <td colspan='7'>
-        <div class="popup_window">
-            <div style='text-align: right; color:red;cursor:pointer'>
-                <a onfocus='this.blur();' onclick="document.getElementById('div_ft3.2').className = 'hiddenRow' " >[x]</a>
+    </pre>
+                <div></div>
             </div>
-            <pre>
-ft3.2: [   INFO] [2018-03-30 12:20:53,766] [9856] [Result.py(44)] - 开始测试：test_True (__main__.test_第三个测试)
-[WARNING] [2018-03-30 12:20:53,767] [9856] [Result.py(122)] - 测试未通过：	test_True (__main__.test_第三个测试)
+        </td>
+    </tr>
+    
+    <tr id='ft3.2' class='none'>
+        <td class='failCase'><div class='testcase'>test_True: 测试True</div></td>
+        <td colspan='6' align='center'>
+    
+        <!--css div popup start-->
+        <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft3.2')" >fail</a>
+        <!--css div popup end-->
+    
+        </td>
+    </tr>
+    <tr id='div_ft3.2' class="hiddenRow">
+        <td colspan='7'>
+            <div class="popup_window">
+                <div style='text-align: right; color:red;cursor:pointer'>
+                    <a onfocus='this.blur();' onclick="document.getElementById('div_ft3.2').className = 'hiddenRow' " >[x]</a>
+                </div>
+                <pre>
+    ft3.2: 
+    [   INFO] [2018-04-13 12:23:13,270] [25008] [Result.py(44)] - 开始测试：test_True (__main__.test_第三个测试)
+[WARNING] [2018-04-13 12:23:13,271] [25008] [Result.py(122)] - 测试未通过：	test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 
-[   INFO] [2018-03-30 12:20:53,767] [9856] [Result.py(55)] - 测试结束：test_True (__main__.test_第三个测试)
-[   INFO] [2018-03-30 12:20:53,767] [9856] [Result.py(56)] - 耗时：0.0006929885750018537 秒
+[   INFO] [2018-04-13 12:23:13,271] [25008] [Result.py(55)] - 测试结束：test_True (__main__.test_第三个测试)
+[   INFO] [2018-04-13 12:23:13,271] [25008] [Result.py(56)] - 耗时：0.0005371328736722795 秒
 
-</pre>
-            <div></div>
-        </div>
-    </td>
-</tr>
-
+    </pre>
+                <div></div>
+            </div>
+        </td>
+    </tr>
+    
 <tr id='total_row'>
     <td>合计</td>
     <td>9</td>

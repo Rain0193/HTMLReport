@@ -15,7 +15,7 @@ from HTMLReport.log.HandlerFactory import *
 from HTMLReport.log.Logger import GeneralLogger
 
 __author__ = '刘士'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 
 class TestRunner(TemplateMixin, TestSuite):
@@ -26,7 +26,7 @@ class TestRunner(TemplateMixin, TestSuite):
     def __init__(self, report_file_name: str = None, log_file_name: str = None, output_path: str = None,
                  title: str = None,
                  description: str = None, thread_count: int = 1,
-                 sequential_execution: bool = False):
+                 sequential_execution: bool = False, lang: str = "zh"):
         """
         :param report_file_name: 报告文件名，如果未赋值，将采用“test+时间戳”
         :param log_file_name: 日志文件名，如果未赋值，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
@@ -35,11 +35,18 @@ class TestRunner(TemplateMixin, TestSuite):
         :param description: # 报告描述，默认“无测试描述”
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
         :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False
+        :param lang： ("zh", "en") 支持中文与英文报告输出，默认采用中文
         """
         super().__init__()
 
-        self.title = title or self.DEFAULT_TITLE
-        self.description = description or self.DEFAULT_DESCRIPTION
+        self.title = title or (self.lang == 'zh' and self.DEFAULT_TITLE or self.DEFAULT_TITLE_en)
+        self.description = description or (
+                self.lang == 'zh' and self.DEFAULT_DESCRIPTION or self.DEFAULT_DESCRIPTION_en)
+
+        if lang in ("zh", "en"):
+            self.lang = lang
+        else:
+            self.lang = "zh"
 
         self.thread_count = thread_count
         self.sequential_execution = sequential_execution
@@ -85,8 +92,11 @@ class TestRunner(TemplateMixin, TestSuite):
         """
 
         result = Result()
+        if self.lang == "zh":
+            self.main_logger.info("预计并发线程数：" + str(self.thread_count))
+        else:
+            self.main_logger.info("The number of concurrent threads is expected to be " + str(self.thread_count))
 
-        self.main_logger.info("预计并发线程数：" + str(self.thread_count))
         if self.sequential_execution:
             # 执行套件添加顺序
             test_case_queue = queue.Queue()
@@ -116,15 +126,22 @@ class TestRunner(TemplateMixin, TestSuite):
             self.main_logger.info(result.stdout_steams.getvalue())
         if result.stderr_steams.getvalue().strip():
             self.main_logger.error(result.stderr_steams.getvalue())
-        s = '\n测试结束！\n运行时间: {time}\n共计执行用例数量：{count}\n执行成功用例数量：{Pass}' \
-            '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}' \
-            .format(time=self.stopTime - self.startTime,
-                    count=result.success_count + result.failure_count + result.error_count + result.skip_count,
-                    Pass=result.success_count,
-                    fail=result.failure_count,
-                    skip=result.skip_count,
-                    error=result.error_count
-                    )
+
+        if self.lang == "zh":
+            s = '\n测试结束！\n运行时间: {time}\n共计执行用例数量：{count}\n执行成功用例数量：{Pass}' \
+                '\n执行失败用例数量：{fail}\n跳过执行用例数量：{skip}\n产生异常用例数量：{error}'
+        else:
+
+            s = '\nEOT！\nRan {count} tests in {time}\n\nPASS：{Pass}' \
+                '\nFailures：{fail}\nSkipped：{skip}\nErrors：{error}'
+
+        s = s.format(time=self.stopTime - self.startTime,
+                     count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+                     Pass=result.success_count,
+                     fail=result.failure_count,
+                     skip=result.skip_count,
+                     error=result.error_count
+                     )
         self._generateReport(result)
         self.main_logger.info(s)
         return result
@@ -157,23 +174,42 @@ class TestRunner(TemplateMixin, TestSuite):
         startTime = str(self.startTime)[:19]
         duration = str(self.stopTime - self.startTime)
         status = []
-        if result.success_count:
-            status.append('通过：{}'.format(result.success_count))
-        if result.failure_count:
-            status.append('失败：{}'.format(result.failure_count))
-        if result.error_count:
-            status.append('错误：{}'.format(result.error_count))
-        if result.skip_count:
-            status.append('跳过：{}'.format(result.skip_count))
-        if status:
-            status = "&nbsp;&nbsp;&nbsp;&nbsp;".join(status)
+        if self.lang == "zh":
+            if result.success_count:
+                status.append('通过：{}'.format(result.success_count))
+            if result.failure_count:
+                status.append('失败：{}'.format(result.failure_count))
+            if result.error_count:
+                status.append('错误：{}'.format(result.error_count))
+            if result.skip_count:
+                status.append('跳过：{}'.format(result.skip_count))
+            if status:
+                status = "&nbsp;&nbsp;&nbsp;&nbsp;".join(status)
+            else:
+                status = '空'
+            return [
+                ('启动时间', startTime),
+                ('运行时长', duration),
+                ('结果', status),
+            ]
         else:
-            status = '空'
-        return [
-            ('启动时间', startTime),
-            ('运行时长', duration),
-            ('结果', status),
-        ]
+            if result.success_count:
+                status.append('PASS：{}'.format(result.success_count))
+            if result.failure_count:
+                status.append('FAIL：{}'.format(result.failure_count))
+            if result.error_count:
+                status.append('ERROR：{}'.format(result.error_count))
+            if result.skip_count:
+                status.append('SKIP：{}'.format(result.skip_count))
+            if status:
+                status = "&nbsp;&nbsp;&nbsp;&nbsp;".join(status)
+            else:
+                status = 'None'
+            return [
+                ('Start Time', startTime),
+                ('Duration', duration),
+                ('Status', status),
+            ]
 
     def _generateReport(self, result):
         report_attr = self._getReportAttributes(result)
@@ -240,7 +276,7 @@ class TestRunner(TemplateMixin, TestSuite):
             doc = cls.__doc__ and cls.__doc__.split("\n")[0] or ""
             desc = doc and '{}: {}'.format(name, doc) or name
 
-            row = self.REPORT_CLASS_TMPL.format(
+            row = (self.lang == 'zh' and self.REPORT_CLASS_TMPL or self.REPORT_CLASS_TMPL_en).format(
                 style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or np > 0 and 'passClass' or 'skipClass',
                 desc=desc,
                 count=np + nf + ne + ns,
@@ -255,7 +291,7 @@ class TestRunner(TemplateMixin, TestSuite):
             for tid, (n, t, o, i) in enumerate(cls_results):
                 self._generate_report_test(rows, cid, tid, n, t, o, i)
 
-        report = self.REPORT_TMPL.format(
+        report = (self.lang == 'zh' and self.REPORT_TMPL or self.REPORT_TMPL_en).format(
             test_list=''.join(rows),
             count=result.success_count + result.failure_count + result.error_count + result.skip_count,
             Pass=result.success_count,
@@ -302,7 +338,8 @@ class TestRunner(TemplateMixin, TestSuite):
         return self.JS
 
     def _generate_log(self, log_file):
-        return self.REPORT_LOG_FILE_TMPL.format(log_file=log_file)
+        return (self.lang == 'zh' and self.REPORT_LOG_FILE_TMPL or self.REPORT_LOG_FILE_TMPL_en).format(
+            log_file=log_file)
 
     def _generate_img(self, href):
         return self.REPORT_IMG_TMPL.format(img_src=href)
