@@ -1,6 +1,6 @@
 # HTMLReport
 
-`HTMLReport`是一个单元测试测试运行器，可以将测试结果保存在Html文件中，用于人性化的结果显示。
+`HTMLReport`是一个单元测试测试运行器，可以将测试结果保存在 Html 文件中，用于人性化的结果显示。
 
 仅支持**Python 3.x**
 
@@ -8,7 +8,7 @@
 
 ## 安装
 
-要安装HTMLReport，请在终端中运行此命令
+要安装 HTMLReport，请在终端中运行此命令
 
 ```bash
 pip install HTMLReport
@@ -21,7 +21,6 @@ pip install HTMLReport
 ```python
 import unittest
 import HTMLReport
-
 
 # 测试套件
 suite = unittest.TestSuite()
@@ -45,11 +44,10 @@ runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如
 runner.run(suite)
 ```
 
-为测试报告中添加过程日志，在多线程下，在报告中会分别记录每个线程的日志，同时会产生与测试报告同名的测试log文件。
+为测试报告中添加过程日志，在多线程下，在报告中会分别记录每个线程的日志，同时会产生与测试报告同名的测试 log 文件。
 
 ```python
 from HTMLReport import logger
-
 
 logger().info("测试")
 logger().debug("测试")
@@ -58,9 +56,9 @@ logger().error("测试")
 logger().critical("测试")
 ```
 
-为测试报告添加图片信息,请将图片信息编码为base64编码。
+为测试报告添加图片信息，请将图片信息编码为 base64 编码。
 
-如采用的是selenium截屏，请使用 `get_screenshot_as_base64()` 方法获取 base64 encoded string 作为参数传入。
+如采用的是 selenium 截屏，请使用 `get_screenshot_as_base64()` 方法获取 base64 encoded string 作为参数传入。
 
 本库会自动将图片保存在报告路径下的`images`目录下，并嵌入到报告中。
 

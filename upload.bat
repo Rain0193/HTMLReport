@@ -1,2 +1,3 @@
-python setup.py sdist upload
+REM python setup.py sdist upload
+twine upload dist/*
 pause
