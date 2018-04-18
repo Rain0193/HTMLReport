@@ -257,7 +257,7 @@ class TestRunner(TemplateMixin, TestSuite):
     def _generate_report_test(self, rows, cid, tid, n, t, o, i):
         has_output = bool(o)
         # 0: success; 1: fail; 2: error; 3: skip
-        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't{}.{}'.format(cid + 1, tid + 1)
+        tid = (n == 0 and 'p' or n == 3 and 's' or n == 2 and 'e' or 'f') + 't{}.{}'.format(cid + 1, tid + 1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
         desc = doc and ('{}: {}'.format(name, doc)) or name

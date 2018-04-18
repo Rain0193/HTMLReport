@@ -5,7 +5,7 @@
 
 <head>
   <title>一个简单的测试报告</title>
-  <meta name="generator" content="HTMLReport 刘士 1.3.3" />
+  <meta name="generator" content="HTMLReport 刘士 1.3.5" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <style type="text/css" media="screen">
   body {
     font-family: verdana, arial, helvetica, sans-serif;
@@ -78,30 +78,22 @@
   #result_table td {
     border: 1px solid #777;
     padding: 2px;
-    min-width: 35px
+    min-width: 50px;
+    width: 100%
+  }
+  
+  #result_table td:nth-child(n+2) {
+    text-align: center
   }
 
   #total_row {
     font-weight: 700
   }
 
-  .passClass {
-    background-color: #97cc64;
-    font-weight: bold
-  }
-
-  .failClass {
-    background-color: #fd5a3e;
-    font-weight: bold
-  }
-
-  .errorClass {
-    background-color: #ffd050;
-    font-weight: bold
-  }
-
+  .passClass,
+  .failClass,
+  .errorClass,
   .skipClass {
-    background-color: #aaa;
     font-weight: bold
   }
 
@@ -260,6 +252,13 @@ function showCase(level) {
         tr.className = "hiddenRow";
       }
     }
+    if (id.substr(0, 2) === "et") {
+      if (level === 4 || level === 5 || level === 2) {
+        tr.className = "";
+      } else {
+        tr.className = "hiddenRow";
+      }
+    }
     if (id.substr(0, 4) === "div_") { tr.className = "hiddenRow"; }
   }
 }
@@ -365,19 +364,19 @@ function load() {
     <strong>
       <span class="lang-cn">启动时间：</span>
       <span class="lang-en">Start Time:</span>
-    </strong> 2018-04-18 12:33:07
+    </strong> 2018-04-18 15:56:46
   </p>
   <p class='attribute'>
     <strong>
       <span class="lang-cn">结束时间：</span>
       <span class="lang-en">End Time:</span>
-    </strong> 2018-04-18 12:33:07
+    </strong> 2018-04-18 15:56:46
   </p>
   <p class='attribute'>
     <strong>
       <span class="lang-cn">运行时长：</span>
       <span class="lang-en">Duration:</span>
-    </strong> 0:00:00.019463
+    </strong> 0:00:00.019464
   </p>
   <p class='attribute'>
     <strong>
@@ -415,6 +414,10 @@ function load() {
     <span class="lang-cn">失败</span>
     <span class="lang-en">Fail</span>
   </a>
+  <a href='javascript:showCase(5)'>
+    <span class="lang-cn">异常</span>
+    <span class="lang-en">Error</span>
+  </a>
   <a href='javascript:showCase(3)'>
     <span class="lang-cn">跳过</span>
     <span class="lang-en">Skip</span>
@@ -425,14 +428,6 @@ function load() {
   </a>
 </p>
 <table id='result_table'>
-  <colgroup>
-    <col align='left' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-  </colgroup>
   <tr id='header_row'>
     <td>
       <span class="lang-cn">测试组/测试用例</span>
@@ -495,11 +490,11 @@ function load() {
       </div>
       <pre>
 st1.1: 
-[   INFO] [2018-04-18 12:33:07,300] [22860] [Result.py(45)] - Start Test:	test_skip (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,301] [22860] [Result.py(78)] - Skip Test:	test_skip (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,771] [41792] [Result.py(45)] - Start Test: test_skip (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,773] [41792] [Result.py(78)] - Skip Test: test_skip (__main__.test_1th)
 这是一个跳过的测试
-[   INFO] [2018-04-18 12:33:07,303] [22860] [Result.py(56)] - Stop Test:	test_skip (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,304] [22860] [Result.py(58)] - Duration:	0.0019432548301970855
+[   INFO] [2018-04-18 15:56:46,775] [41792] [Result.py(56)] - Stop Test: test_skip (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,776] [41792] [Result.py(58)] - Duration: 0.0017383615685624553
 
 </pre>
       <div></div>
@@ -523,16 +518,16 @@ st1.1:
       </div>
       <pre>
 ft1.2: 
-[   INFO] [2018-04-18 12:33:07,299] [24860] [Result.py(45)] - Start Test:	test_fail (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,300] [24860] [HTMLReport_test.py(45)] - 测试失败
-[WARNING] [2018-04-18 12:33:07,302] [24860] [Result.py(127)] - Failure:	test_fail (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,770] [53056] [Result.py(45)] - Start Test: test_fail (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,771] [53056] [HTMLReport_test.py(45)] - 测试失败
+[WARNING] [2018-04-18 15:56:46,773] [53056] [Result.py(127)] - Failure: test_fail (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 46, in test_fail
     self.assertEqual(1, 2, "相等")
 AssertionError: 1 != 2 : 相等
 
-[   INFO] [2018-04-18 12:33:07,303] [24860] [Result.py(56)] - Stop Test:	test_fail (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,304] [24860] [Result.py(58)] - Duration:	0.002959738284020834
+[   INFO] [2018-04-18 15:56:46,775] [53056] [Result.py(56)] - Stop Test: test_fail (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,776] [53056] [Result.py(58)] - Duration: 0.004170471193680012
 
 </pre>
       <div></div>
@@ -542,7 +537,7 @@ AssertionError: 1 != 2 : 相等
 
 <tr id='pt1.3' class='hiddenRow'>
   <td class='passCase'>
-    <div class='testcase'>test_split: 测试split</div>
+    <div class='testcase'>test_isupper: 测试isupper</div>
   </td>
   <td class='passCase' colspan='6' align='center'>
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')">pass</a>
@@ -556,11 +551,11 @@ AssertionError: 1 != 2 : 相等
       </div>
       <pre>
 pt1.3: 
-[   INFO] [2018-04-18 12:33:07,301] [2740] [Result.py(45)] - Start Test:	test_split (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,303] [2740] [HTMLReport_test.py(27)] - 测试split
-[   INFO] [2018-04-18 12:33:07,304] [2740] [Result.py(93)] - Pass Test:	test_split (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,305] [2740] [Result.py(56)] - Stop Test:	test_split (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,305] [2740] [Result.py(58)] - Duration:	0.0018672276459170746
+[   INFO] [2018-04-18 15:56:46,771] [29732] [Result.py(45)] - Start Test: test_isupper (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,771] [29732] [HTMLReport_test.py(20)] - 测试isupper
+[   INFO] [2018-04-18 15:56:46,775] [29732] [Result.py(93)] - Pass Test: test_isupper (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,776] [29732] [Result.py(56)] - Stop Test: test_isupper (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,777] [29732] [Result.py(58)] - Duration: 0.004614469949875277
 
 </pre>
       <div></div>
@@ -570,7 +565,7 @@ pt1.3:
 
 <tr id='pt1.4' class='hiddenRow'>
   <td class='passCase'>
-    <div class='testcase'>test_isupper: 测试isupper</div>
+    <div class='testcase'>test_split: 测试split</div>
   </td>
   <td class='passCase' colspan='6' align='center'>
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')">pass</a>
@@ -584,11 +579,11 @@ pt1.3:
       </div>
       <pre>
 pt1.4: 
-[   INFO] [2018-04-18 12:33:07,300] [22524] [Result.py(45)] - Start Test:	test_isupper (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,301] [22524] [HTMLReport_test.py(20)] - 测试isupper
-[   INFO] [2018-04-18 12:33:07,304] [22524] [Result.py(93)] - Pass Test:	test_isupper (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,305] [22524] [Result.py(56)] - Stop Test:	test_isupper (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,306] [22524] [Result.py(58)] - Duration:	0.0038032598936075584
+[   INFO] [2018-04-18 15:56:46,773] [45136] [Result.py(45)] - Start Test: test_split (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,774] [45136] [HTMLReport_test.py(27)] - 测试split
+[   INFO] [2018-04-18 15:56:46,775] [45136] [Result.py(93)] - Pass Test: test_split (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,776] [45136] [Result.py(56)] - Stop Test: test_split (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,777] [45136] [Result.py(58)] - Duration: 0.001790820325715663
 
 </pre>
       <div></div>
@@ -596,40 +591,40 @@ pt1.4:
   </td>
 </tr>
 
-<tr id='ft1.5' class='none'>
+<tr id='et1.5' class='none'>
   <td class='errorCase'>
     <div class='testcase'>test_error: 测试错误</div>
   </td>
   <td class='errorCase' colspan='6' align='center'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.5')">error</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_et1.5')">error</a>
   </td>
 </tr>
-<tr id='div_ft1.5' class="hiddenRow">
+<tr id='div_et1.5' class="hiddenRow">
   <td colspan='7'>
     <div class="popup_window">
       <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.5').className = 'hiddenRow' ">[x]</a>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_et1.5').className = 'hiddenRow' ">[x]</a>
       </div>
       <pre>
-ft1.5: 
-[   INFO] [2018-04-18 12:33:07,299] [25156] [Result.py(45)] - Start Test:	test_error (__main__.test_1th)
-[  ERROR] [2018-04-18 12:33:07,300] [25156] [HTMLReport_test.py(35)] - 测试错误
-[  ERROR] [2018-04-18 12:33:07,312] [25156] [Result.py(110)] - Error Test:	test_error (__main__.test_1th)
+et1.5: 
+[   INFO] [2018-04-18 15:56:46,770] [39912] [Result.py(45)] - Start Test: test_error (__main__.test_1th)
+[  ERROR] [2018-04-18 15:56:46,770] [39912] [HTMLReport_test.py(35)] - 测试错误
+[  ERROR] [2018-04-18 15:56:46,783] [39912] [Result.py(110)] - Error Test: test_error (__main__.test_1th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 41, in test_error
     raise ValueError
 ValueError
 
-[   INFO] [2018-04-18 12:33:07,312] [25156] [Result.py(56)] - Stop Test:	test_error (__main__.test_1th)
-[   INFO] [2018-04-18 12:33:07,312] [25156] [Result.py(58)] - Duration:	0.012711365075696465
+[   INFO] [2018-04-18 15:56:46,783] [39912] [Result.py(56)] - Stop Test: test_error (__main__.test_1th)
+[   INFO] [2018-04-18 15:56:46,783] [39912] [Result.py(58)] - Duration: 0.012960734240134903
 
 </pre>
       <div>
-<img class="pic" src='images/image_25156_2018_04_18_12_33_07_252.jpg'>
+<img class="pic" src='images/image_39912_2018_04_18_15_56_46_579.jpg'>
 
-<img class="pic" src='images/image_25156_2018_04_18_12_33_07_934.jpg'>
+<img class="pic" src='images/image_39912_2018_04_18_15_56_46_291.jpg'>
 
-<img class="pic" src='images/image_25156_2018_04_18_12_33_07_21.jpg'>
+<img class="pic" src='images/image_39912_2018_04_18_15_56_46_656.jpg'>
 </div>
     </div>
   </td>
@@ -650,25 +645,25 @@ ValueError
   </td>
 </tr>
 
-<tr id='ft2.1' class='none'>
+<tr id='et2.1' class='none'>
   <td class='errorCase'>
     <div class='testcase'>test_bad_int: 测试异常类型</div>
   </td>
   <td class='errorCase' colspan='6' align='center'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.1')">error</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_et2.1')">error</a>
   </td>
 </tr>
-<tr id='div_ft2.1' class="hiddenRow">
+<tr id='div_et2.1' class="hiddenRow">
   <td colspan='7'>
     <div class="popup_window">
       <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.1').className = 'hiddenRow' ">[x]</a>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_et2.1').className = 'hiddenRow' ">[x]</a>
       </div>
       <pre>
-ft2.1: 
-[   INFO] [2018-04-18 12:33:07,313] [23044] [Result.py(45)] - Start Test:	test_bad_int (__main__.test_2th)
-[   INFO] [2018-04-18 12:33:07,314] [23044] [HTMLReport_test.py(58)] - 测试异常类型
-[  ERROR] [2018-04-18 12:33:07,314] [23044] [Result.py(110)] - Error Test:	test_bad_int (__main__.test_2th)
+et2.1: 
+[   INFO] [2018-04-18 15:56:46,784] [52888] [Result.py(45)] - Start Test: test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-18 15:56:46,784] [52888] [HTMLReport_test.py(58)] - 测试异常类型
+[  ERROR] [2018-04-18 15:56:46,784] [52888] [Result.py(110)] - Error Test: test_bad_int (__main__.test_2th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 59, in test_bad_int
     self.assertRaises(ValueError, parse_int("1.5"), 'N/A')
@@ -676,8 +671,8 @@ Traceback (most recent call last):
     return int(s)
 ValueError: invalid literal for int() with base 10: '1.5'
 
-[   INFO] [2018-04-18 12:33:07,314] [23044] [Result.py(56)] - Stop Test:	test_bad_int (__main__.test_2th)
-[   INFO] [2018-04-18 12:33:07,315] [23044] [Result.py(58)] - Duration:	0.000976949317998143
+[   INFO] [2018-04-18 15:56:46,784] [52888] [Result.py(56)] - Stop Test: test_bad_int (__main__.test_2th)
+[   INFO] [2018-04-18 15:56:46,784] [52888] [Result.py(58)] - Duration: 0.0008944598230543315
 
 </pre>
       <div></div>
@@ -701,9 +696,9 @@ ValueError: invalid literal for int() with base 10: '1.5'
       </div>
       <pre>
 ft2.2: 
-[   INFO] [2018-04-18 12:33:07,313] [9348] [Result.py(45)] - Start Test:	test_upper (__main__.test_2th)
-[CRITICAL] [2018-04-18 12:33:07,314] [9348] [HTMLReport_test.py(63)] - 测试相等
-[WARNING] [2018-04-18 12:33:07,314] [9348] [Result.py(127)] - Failure:	test_upper (__main__.test_2th)
+[   INFO] [2018-04-18 15:56:46,784] [38036] [Result.py(45)] - Start Test: test_upper (__main__.test_2th)
+[CRITICAL] [2018-04-18 15:56:46,784] [38036] [HTMLReport_test.py(63)] - 测试相等
+[WARNING] [2018-04-18 15:56:46,785] [38036] [Result.py(127)] - Failure: test_upper (__main__.test_2th)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 64, in test_upper
     self.assertEqual('foo'.upper(), '00')
@@ -712,8 +707,8 @@ AssertionError: 'FOO' != '00'
 + 00
 
 
-[   INFO] [2018-04-18 12:33:07,315] [9348] [Result.py(56)] - Stop Test:	test_upper (__main__.test_2th)
-[   INFO] [2018-04-18 12:33:07,315] [9348] [Result.py(58)] - Duration:	0.0013399791229351966
+[   INFO] [2018-04-18 15:56:46,785] [38036] [Result.py(56)] - Stop Test: test_upper (__main__.test_2th)
+[   INFO] [2018-04-18 15:56:46,785] [38036] [Result.py(58)] - Duration: 0.0009834116286619437
 
 </pre>
       <div></div>
@@ -752,15 +747,15 @@ AssertionError: 'FOO' != '00'
       </div>
       <pre>
 ft3.1: 
-[   INFO] [2018-04-18 12:33:07,316] [25240] [Result.py(45)] - Start Test:	test_False (__main__.test_第三个测试)
-[WARNING] [2018-04-18 12:33:07,316] [25240] [Result.py(127)] - Failure:	test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-18 15:56:46,786] [48136] [Result.py(45)] - Start Test: test_False (__main__.test_第三个测试)
+[WARNING] [2018-04-18 15:56:46,786] [48136] [Result.py(127)] - Failure: test_False (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 83, in test_False
     self.assertFalse(True, self.a)
 AssertionError: True is not false : 2
 
-[   INFO] [2018-04-18 12:33:07,317] [25240] [Result.py(56)] - Stop Test:	test_False (__main__.test_第三个测试)
-[   INFO] [2018-04-18 12:33:07,317] [25240] [Result.py(58)] - Duration:	0.00045084120278046647
+[   INFO] [2018-04-18 15:56:46,787] [48136] [Result.py(56)] - Stop Test: test_False (__main__.test_第三个测试)
+[   INFO] [2018-04-18 15:56:46,787] [48136] [Result.py(58)] - Duration: 0.0007325219205379062
 
 </pre>
       <div></div>
@@ -784,15 +779,15 @@ AssertionError: True is not false : 2
       </div>
       <pre>
 ft3.2: 
-[   INFO] [2018-04-18 12:33:07,316] [18992] [Result.py(45)] - Start Test:	test_True (__main__.test_第三个测试)
-[WARNING] [2018-04-18 12:33:07,317] [18992] [Result.py(127)] - Failure:	test_True (__main__.test_第三个测试)
+[   INFO] [2018-04-18 15:56:46,786] [57676] [Result.py(45)] - Start Test: test_True (__main__.test_第三个测试)
+[WARNING] [2018-04-18 15:56:46,787] [57676] [Result.py(127)] - Failure: test_True (__main__.test_第三个测试)
 Traceback (most recent call last):
   File "C:/Users/liush/Documents/GitHub/HTMLReport/tests/HTMLReport_test.py", line 78, in test_True
     self.assertTrue(False, self.a)
 AssertionError: False is not true : 3
 
-[   INFO] [2018-04-18 12:33:07,317] [18992] [Result.py(56)] - Stop Test:	test_True (__main__.test_第三个测试)
-[   INFO] [2018-04-18 12:33:07,317] [18992] [Result.py(58)] - Duration:	0.0007131349885465058
+[   INFO] [2018-04-18 15:56:46,787] [57676] [Result.py(56)] - Stop Test: test_True (__main__.test_第三个测试)
+[   INFO] [2018-04-18 15:56:46,787] [57676] [Result.py(58)] - Duration: 0.0010328292984439526
 
 </pre>
       <div></div>

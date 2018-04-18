@@ -77,6 +77,13 @@ function showCase(level) {
         tr.className = "hiddenRow";
       }
     }
+    if (id.substr(0, 2) === "et") {
+      if (level === 4 || level === 5 || level === 2) {
+        tr.className = "";
+      } else {
+        tr.className = "hiddenRow";
+      }
+    }
     if (id.substr(0, 4) === "div_") { tr.className = "hiddenRow"; }
   }
 }
@@ -235,30 +242,22 @@ function load() {
   #result_table td {
     border: 1px solid #777;
     padding: 2px;
-    min-width: 35px
+    min-width: 50px;
+    width: 100%
+  }
+  
+  #result_table td:nth-child(n+2) {
+    text-align: center
   }
 
   #total_row {
     font-weight: 700
   }
 
-  .passClass {
-    background-color: #97cc64;
-    font-weight: bold
-  }
-
-  .failClass {
-    background-color: #fd5a3e;
-    font-weight: bold
-  }
-
-  .errorClass {
-    background-color: #ffd050;
-    font-weight: bold
-  }
-
+  .passClass,
+  .failClass,
+  .errorClass,
   .skipClass {
-    background-color: #aaa;
     font-weight: bold
   }
 
@@ -443,6 +442,10 @@ function load() {
     <span class="lang-cn">失败</span>
     <span class="lang-en">Fail</span>
   </a>
+  <a href='javascript:showCase(5)'>
+    <span class="lang-cn">异常</span>
+    <span class="lang-en">Error</span>
+  </a>
   <a href='javascript:showCase(3)'>
     <span class="lang-cn">跳过</span>
     <span class="lang-en">Skip</span>
@@ -453,14 +456,6 @@ function load() {
   </a>
 </p>
 <table id='result_table'>
-  <colgroup>
-    <col align='left' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-    <col align='right' />
-  </colgroup>
   <tr id='header_row'>
     <td>
       <span class="lang-cn">测试组/测试用例</span>
