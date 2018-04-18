@@ -101,8 +101,8 @@ if __name__ == '__main__':
                                    thread_count=5,  # 并发线程数量（无序执行测试），默认数量 1
                                    sequential_execution=True,  # 是否按照套件添加(addTests)顺序执行，
                                    # 会等待一个addTests执行完成，再执行下一个，默认 False
-                                   # lang='en'
-                                   lang='zh'  # 支持中文与英文，默认中文
+                                   lang='en'
+                                   # lang='cn'  # 支持中文与英文，默认中文
                                    )
     # 执行测试用例套件
     runner.run(suite)

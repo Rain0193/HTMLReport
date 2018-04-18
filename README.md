@@ -33,12 +33,12 @@ suite.addTests(loader.loadTestsFromTestCase(TestStringMethods))
 runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如果未赋值，将采用“test+时间戳”
                                output_path='report',  # 保存文件夹名，默认“report”
                                title='测试报告',  # 报告标题，默认“测试报告”
-                               description='无测试描述',  # 报告描述，默认“无测试描述”
+                               description='无测试描述',  # 报告描述，默认“测试描述”
                                thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
-                               sequential_execution=False  # 是否按照套件添加(addTests)顺序执行，
+                               sequential_execution=False,  # 是否按照套件添加(addTests)顺序执行，
                                # 会等待一个addTests执行完成，再执行下一个，默认 False
                                # lang='en'
-                               lang='zh'  # 支持中文与英文，默认中文
+                               lang='cn'  # 支持中文与英文，默认中文
                                )
 # 执行测试用例套件
 runner.run(suite)
@@ -63,6 +63,7 @@ logger().critical("测试")
 本库会自动将图片保存在报告路径下的`images`目录下，并嵌入到报告中。
 
 ```python
+import base64
 from HTMLReport import AddImage
 
 with open("baidu.png", 'rb') as f:

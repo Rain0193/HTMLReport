@@ -3,9 +3,9 @@ import time
 from io import StringIO
 from unittest import TestResult
 
-from HTMLReport.images import SaveImages
-from HTMLReport.log.HandlerFactory import HandlerFactory
-from HTMLReport.log.Logger import GeneralLogger
+from .images import SaveImages
+from .log.HandlerFactory import HandlerFactory
+from .log.Logger import GeneralLogger
 
 
 class Result(TestResult):
@@ -14,7 +14,7 @@ class Result(TestResult):
     这里重写了 unittest.TestResult 的多个方法，比如 startTest(self, test) 等等
     """
 
-    def __init__(self, verbosity=2):
+    def __init__(self, LANG, verbosity=2):
         TestResult.__init__(self)
         super().__init__(verbosity)
         self.success_count = 0
@@ -25,6 +25,7 @@ class Result(TestResult):
         self.stderr_steams.write("\n")
         self.stdout_steams = StringIO()
         self.stdout_steams.write("\n")
+        self.LANG = LANG
         """
         返回结果是一个4个属性的字典的列表
         (
@@ -41,7 +42,7 @@ class Result(TestResult):
 
     def startTest(self, test):
         GeneralLogger().get_logger(True)
-        GeneralLogger().get_logger().info("开始测试：{}".format(test))
+        GeneralLogger().get_logger().info((self.LANG == 'cn' and "开始测试：\t{}" or "Start Test:\t{}").format(test))
         self.result_tmp[str(threading.current_thread().ident)] = {'result_code': 0,
                                                                   'testCase_object': test,
                                                                   'test_output': '',
@@ -52,8 +53,9 @@ class Result(TestResult):
 
     def stopTest(self, test):
         end_time = time.clock()
-        GeneralLogger().get_logger().info("测试结束：{}".format(test))
-        GeneralLogger().get_logger().info("耗时：{} 秒".format(end_time - self.time[str(threading.current_thread().ident)]))
+        GeneralLogger().get_logger().info((self.LANG == 'cn' and "测试结束：\t{}" or "Stop Test:\t{}").format(test))
+        GeneralLogger().get_logger().info((self.LANG == 'cn' and "耗时：\t{}\t秒" or "Duration:\t{}").format(
+            end_time - self.time[str(threading.current_thread().ident)]))
 
         current_id = str(threading.current_thread().ident)
         if current_id in SaveImages.imageList:
@@ -72,7 +74,8 @@ class Result(TestResult):
             self.stderr_steams.write(doc)
         self.stderr_steams.write("\n")
 
-        GeneralLogger().get_logger().info("跳过测试：\t{}\n{}".format(test, reason))
+        GeneralLogger().get_logger().info(
+            (self.LANG == 'cn' and "跳过测试：\t{}\n{}" or "Skip Test:\t{}\n{}").format(test, reason))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 3
@@ -87,7 +90,7 @@ class Result(TestResult):
             self.stdout_steams.write("\t")
             self.stdout_steams.write(doc)
         self.stdout_steams.write('\n')
-        GeneralLogger().get_logger().info("测试执行通过：{}".format(test))
+        GeneralLogger().get_logger().info((self.LANG == 'cn' and "测试执行通过：\t{}" or "Pass Test:\t{}").format(test))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 0
@@ -103,7 +106,8 @@ class Result(TestResult):
             self.stderr_steams.write("\t")
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
-        GeneralLogger().get_logger().error("测试产生错误：\t{}\n{}".format(test, _exc_str))
+        GeneralLogger().get_logger().error(
+            (self.LANG == 'cn' and "测试产生错误：\t{}\n{}" or "Error Test:\t{}\n{}").format(test, _exc_str))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 2
@@ -119,7 +123,8 @@ class Result(TestResult):
             self.stderr_steams.write("\t")
             self.stderr_steams.write(doc)
         self.stderr_steams.write('\n')
-        GeneralLogger().get_logger().warning("测试未通过：\t{}\n{}".format(test, _exc_str))
+        GeneralLogger().get_logger().warning(
+            (self.LANG == "cn" and "测试未通过：\t{}\n{}" or "Failure:\t{}\n{}").format(test, _exc_str))
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 1

@@ -1,7 +1,7 @@
 import logging.handlers
 import os
 
-from HTMLReport.log.HandlerFactory import *
+from .HandlerFactory import *
 
 
 class InfoOrLessCritical(logging.Filter):

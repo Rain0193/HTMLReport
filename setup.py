@@ -8,21 +8,21 @@ if sys.version_info < (3, 5):
 from setuptools import find_packages
 from setuptools import setup
 
-from HTMLReport.HTMLReport import __version__, __author__
+from HTMLReport import __version__, __author__
 
 try:
     from pypandoc import convert
 
-    read_md = lambda f: convert(f, 'rst')
+    read_md = convert('README.md', 'rst')
 except ImportError:
     print("warning: pypandoc module not found, could not convert Markdown to RST")
-    read_md = lambda f: open(f, 'r', encoding="utf-8").read()
+    read_md = open('README.md', 'r', encoding="utf-8").read()
 
 setup(
     name='HTMLReport',
     version=__version__,
     description="Python3 Unittest HTML报告生成器",
-    long_description=read_md('README.md'),
+    long_description=read_md,
     author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',
