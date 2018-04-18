@@ -163,8 +163,7 @@ function load() {
 }
 """
 
-    STYLESHEET_TMPL = r"""
-<style type="text/css" media="screen">
+    STYLESHEET_TMPL = r"""<style type="text/css" media="screen">
   body {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 100%
@@ -244,34 +243,39 @@ function load() {
   }
 
   .passClass {
-    background-color: #6c6
+    background-color: #97cc64;
+    font-weight: bold
   }
 
   .failClass {
-    background-color: #c60
+    background-color: #fd5a3e;
+    font-weight: bold
   }
 
   .errorClass {
-    background-color: #c00
+    background-color: #ffd050;
+    font-weight: bold
   }
 
   .skipClass {
-    background-color: #c95
+    background-color: #aaa;
+    font-weight: bold
+  }
+
+  .passCase {
+    background-color: #97cc64
   }
 
   .failCase {
-    color: #c60;
-    font-weight: 700
+    background-color: #fd5a3e
   }
 
   .errorCase {
-    color: #c00;
-    font-weight: 700
+    background-color: #ffd050
   }
 
   .skipCase {
-    color: #c95;
-    font-weight: 700
+    background-color: #aaa
   }
 
   .hiddenRow {
@@ -384,17 +388,21 @@ function load() {
   #lang li a#lang-en {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAIWSURBVHja1JY/SBthGIefu1xqS6K20KFDy0kopUiHmphIByUZotRAIZOTWZzFpYtbB0uh6KJTIdQhi9pBSwmmCOpgoUSKFItTh4AU6tCr16Rn5P58XZocDrlYuAz9wfHAcbzv9/2+932/k4QQdFIyHVbHE0iAAlwFgj7HNoG6AoRzudc/A4F/28yL2l7bb269yd9QgJAsS8zMjFIufyWRuHspXqtbnsHrH8oAIQlQJyfzlaGhCNFohJ2dI1Kp/iZ3d49IJvsvvJckmJ197JlACIEsy30KgGUJBgcjFIufSacfsLnpza2tL/x4+qx15fR0Uz84hL8HjG1blEqHJJP9bGx8IpMZ8CSAMIzWq1cUhO24CSzLYWTkPisrH8lm46yuenN9fZ+br156WmRZFgQLjR3YrK2VyWSiFAp7TEw88iTAyZNca4t6e6h/P3EbzTRtxscfks9vk83G27JaPcOuVls/v6o4pltlajo9L1KpebG8vC9isbm2jMXmRDsZhiEAVWn4NTU1ysJCkenpMRYXS55cWnrPcSThUUVhzrquNEeFOjz8vOI4CrXa+aU7+d3p29YJusMYwQD3Drb7AFRd14Xf0nXdtehbfAxdkhG13/5M0HCImiTcPhC2BVIAHMefOWrbCNxYqqZpvlukaVrTIrNye4CK1JH7xpSAXuAOcN3n4KfAceNG62qch4+ygHPpv/+r+DMAXV79BpyNnBoAAAAASUVORK5CYII=");
   }
-</style>
-"""
+</style>"""
 
-    HEADING_TMPL = r"""
-<div class='heading'>
+    HEADING_TMPL = r"""<div class='heading'>
   <h1>{title}</h1>
-<p class='attribute'>
+  <p class='attribute'>
     <strong>
       <span class="lang-cn">启动时间：</span>
       <span class="lang-en">Start Time:</span>
     </strong> {startTime}
+  </p>
+  <p class='attribute'>
+    <strong>
+      <span class="lang-cn">结束时间：</span>
+      <span class="lang-en">End Time:</span>
+    </strong> {endTime}
   </p>
   <p class='attribute'>
     <strong>
@@ -410,17 +418,16 @@ function load() {
     <span class="lang-cn">合计：</span>
     <span class="lang-en">Total:</span>{total}&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="lang-cn">通过：</span>
-    <span class="lang-en">Pass:</span>{Pass}&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="lang-en">Passed:</span>{Pass}&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="lang-cn">失败：</span>
-    <span class="lang-en">Fail:</span>{fail}&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="lang-en">Failed:</span>{fail}&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="lang-cn">错误：</span>
     <span class="lang-en">Error:</span>{error}&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="lang-cn">跳过：</span>
-    <span class="lang-en">Skip:</span>{skip}&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="lang-en">Skipped:</span>{skip}&nbsp;&nbsp;&nbsp;&nbsp;
   </p>
   <p class='description'>{description}</p>
-</div>
-"""
+</div>"""
 
     REPORT_TMPL = r"""
 <p id='show_detail_line'>筛选
@@ -522,7 +529,7 @@ function load() {
   <td class='{style}'>
     <div class='testcase'>{desc}</div>
   </td>
-  <td colspan='6' align='center'>
+  <td class='{style}' colspan='6' align='center'>
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')">{status}</a>
   </td>
 </tr>
@@ -544,7 +551,7 @@ function load() {
   <td class='{style}'>
     <div class='testcase'>{desc}</div>
   </td>
-  <td colspan='6' align='center'>{status}</td>
+  <td class='{style}' colspan='6' align='center'>{status}</td>
 </tr>
 """
 

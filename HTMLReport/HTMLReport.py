@@ -195,6 +195,7 @@ class TestRunner(TemplateMixin, TestSuite):
         heading = self.HEADING_TMPL.format(
             title=saxutils.escape(self.title),
             startTime=str(self.startTime)[:19],
+            endTime=str(self.stopTime)[:19],
             duration=self.stopTime - self.startTime,
             total=result.success_count + result.failure_count + result.error_count + result.skip_count,
             Pass=result.success_count,
