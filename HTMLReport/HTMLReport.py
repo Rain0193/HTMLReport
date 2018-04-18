@@ -294,5 +294,5 @@ class TestRunner(TemplateMixin, TestSuite):
         return self.REPORT_LOG_FILE_TMPL.format(
             log_file=log_file)
 
-    def _generate_img(self, href):
-        return self.REPORT_IMG_TMPL.format(img_src=href)
+    def _generate_img(self, img):
+        return self.REPORT_IMG_TMPL.format(img_src=img[0], alt=img[1])

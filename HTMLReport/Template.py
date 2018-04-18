@@ -320,11 +320,12 @@ function load() {
     top: 0;
     left: 0;
     bottom: 0;
-    right: 0
+    right: 0;
   }
 
   img.pic {
     width: 500px;
+    cursor: pointer;
   }
 
   #wrapper {
@@ -565,5 +566,5 @@ function load() {
 """
 
     REPORT_IMG_TMPL = r"""
-<img class="pic" src='{img_src}'>
+<img class="pic" src='{img_src}' alt='{alt}' title='{alt}' />
 """

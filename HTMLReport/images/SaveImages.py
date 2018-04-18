@@ -8,7 +8,7 @@ report_path = ""
 imageList = {}
 
 
-def AddImage(base64_data: base64, name: str = "image"):
+def AddImage(base64_data: base64, alt="", name: str = "image"):
     if base64_data and report_path:
         current_id = str(threading.current_thread().ident)
         if current_id not in imageList:
@@ -24,4 +24,4 @@ def AddImage(base64_data: base64, name: str = "image"):
         image_file = os.path.join(image_path, random_name)
         with open(image_file, "wb") as f:
             f.write(base64.b64decode(base64_data))
-            imageList[current_id].append(os.path.join('images', random_name).replace("\\", "/"))
+            imageList[current_id].append((os.path.join('images', random_name).replace("\\", "/"), alt))

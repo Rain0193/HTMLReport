@@ -35,9 +35,9 @@ class test_1th(unittest.TestCase):
         logger().error("测试错误")
         with open("baidu.png", 'rb') as f:
             image = base64.b64encode(f.read())
-            AddImage(image)
-            AddImage(image)
-            AddImage(image)
+            AddImage(image, "百度1")
+            AddImage(image, "百度12")
+            AddImage(image, "百度123")
         raise ValueError
 
     def test_fail(self):

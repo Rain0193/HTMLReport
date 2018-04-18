@@ -37,7 +37,6 @@ class Result(TestResult):
         """
         self.result = []
         self.result_tmp = {}
-        self.image_paths = {}
         self.time = {}
 
     def startTest(self, test):
