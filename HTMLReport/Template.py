@@ -101,6 +101,10 @@ function showClassDetail(cid, count) {
       if (tr === null) {
         tid = "s" + tid0;
         tr = document.getElementById(tid);
+        if (!tr) {
+          tid = "e" + tid0;
+          tr = document.getElementById(tid);
+        }
       }
     }
     id_list[i] = tid;

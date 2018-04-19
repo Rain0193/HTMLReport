@@ -1,5 +1,5 @@
 __author__ = '刘士'
-__version__ = '1.3.7'
+__version__ = '1.3.8'
 
 from .HTMLReport import TestRunner
 from .images.SaveImages import AddImage
