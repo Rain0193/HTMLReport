@@ -77,4 +77,4 @@ Links:
 
 ---------
 
-* [https://github.com/liushilive/HTMLReport](https://github.com/liushilive/HTMLReport "Github")
+* [https://liushilive.github.io](https://liushilive.github.iot "Github")
