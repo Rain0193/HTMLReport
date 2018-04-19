@@ -272,7 +272,7 @@ class TestRunner(TemplateMixin, TestSuite):
 
         row = temp.format(
             tid=tid,
-            Class=(n == 0 and 'hiddenRow' or 'none'),
+            Class='none',
             style=(n == 0 and 'passCase' or n == 2 and 'errorCase' or
                    n == 1 and 'failCase' or n == 3 and 'skipCase' or 'none'),
             desc=desc,
