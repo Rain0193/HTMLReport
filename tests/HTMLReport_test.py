@@ -71,6 +71,11 @@ class test_第三个测试(unittest.TestCase):
     def setUpClass(cls):
         """公共"""
         cls.a = 1
+        LOG.info("a : {}".format(cls.a))
+
+    @classmethod
+    def tearDownClass(cls):
+        LOG.info("a : {}".format(cls.a))
 
     def test_True(self):
         """测试True"""
@@ -98,11 +103,13 @@ if __name__ == '__main__':
                                    output_path='report',  # 保存文件夹名，默认“report”
                                    title='一个简单的测试报告',  # 报告标题，默认“测试报告”
                                    description='随意描述',  # 报告描述，默认“无测试描述”
-                                   thread_count=5,  # 并发线程数量（无序执行测试），默认数量 1
+                                   thread_count=2,  # 并发线程数量（无序执行测试），默认数量 1
                                    sequential_execution=True,  # 是否按照套件添加(addTests)顺序执行，
                                    # 会等待一个addTests执行完成，再执行下一个，默认 False
-                                   lang='en'
-                                   # lang='cn'  # 支持中文与英文，默认中文
+                                   # 如果用例中存在 tearDownClass ，建议设置为True，
+                                   # 否则 tearDownClass 将会在所有用例线程执行完后才会执行。
+                                   # lang='en'
+                                   lang='cn'  # 支持中文与英文，默认中文
                                    )
     # 执行测试用例套件
     runner.run(suite)

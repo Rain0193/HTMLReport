@@ -4,8 +4,6 @@
 
 仅支持**Python 3.x**
 
-> 多线程不支持 @classmethod 装饰器！采用单线程模式工作！
-
 ## 安装
 
 要安装 HTMLReport，请在终端中运行此命令
@@ -37,6 +35,8 @@ runner = HTMLReport.TestRunner(report_file_name='test',  # 报告文件名，如
                                thread_count=1,  # 并发线程数量（无序执行测试），默认数量 1
                                sequential_execution=False,  # 是否按照套件添加(addTests)顺序执行，
                                # 会等待一个addTests执行完成，再执行下一个，默认 False
+                               # 如果用例中存在 tearDownClass ，建议设置为True，
+                               # 否则 tearDownClass 将会在所有用例线程执行完后才会执行。
                                # lang='en'
                                lang='cn'  # 支持中文与英文，默认中文
                                )
