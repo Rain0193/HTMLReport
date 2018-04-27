@@ -32,9 +32,7 @@ class TestRunner(TemplateMixin, TestSuite):
         :param title: 报告标题，默认“测试报告”
         :param description: # 报告描述，默认“无测试描述”
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
-        :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False。
-                                      如果用例中存在 tearDownClass ，建议设置为True，
-                                      否则 tearDownClass 将会在所有用例线程执行完后才会执行。
+        :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False。如果用例中存在 tearDownClass ，建议设置为True，否则 tearDownClass 将会在所有用例线程执行完后才会执行。
         :param lang： ("cn", "en") 支持中文与英文报告输出，默认采用中文
         """
         super().__init__()
