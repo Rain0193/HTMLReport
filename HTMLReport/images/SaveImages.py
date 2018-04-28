@@ -9,6 +9,13 @@ imageList = {}
 
 
 def AddImage(base64_data: base64, alt="", name: str = "image"):
+    """添加截图到报告
+
+    :param base64_data:base64格式的图片文本
+    :param alt:图片提示
+    :param name:图片命名前缀
+    :return:None
+    """
     if base64_data and report_path:
         current_id = str(threading.current_thread().ident)
         if current_id not in imageList:
