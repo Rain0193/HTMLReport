@@ -138,9 +138,9 @@ class TestRunner(TemplateMixin, TestSuite):
 
             s = '\nEOT！\nRan {count} tests in {time}\n\nPASS：{Pass}' \
                 '\nFailures：{fail}\nSkipped：{skip}\nErrors：{error}'
-
+        count = result.success_count + result.failure_count + result.error_count + result.skip_count
         s = s.format(time=self.stopTime - self.startTime,
-                     count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+                     count=count,
                      Pass=result.success_count,
                      fail=result.failure_count,
                      skip=result.skip_count,
@@ -236,32 +236,31 @@ class TestRunner(TemplateMixin, TestSuite):
                 name = "{}.{}".format(cls.__module__, cls.__name__)
             doc = cls.__doc__ and cls.__doc__.split("\n")[0] or ""
             desc = doc and '{}: {}'.format(name, doc) or name
-
+            count = np + nf + ne + ns
             row = self.REPORT_CLASS_TMPL.format(
                 style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or np > 0 and 'passClass' or 'skipClass',
                 desc=desc,
-                count=np + nf + ne + ns,
+                count=count,
                 Pass=np,
                 fail=nf,
                 error=ne,
                 skip=ns,
-                statistics=np / (np + nf + ne + ns),
+                statistics=np / (count == 0 and 1 or count),
                 cid='c{}'.format(cid + 1),
             )
             rows.append(row)
 
             for tid, (n, t, o, i) in enumerate(cls_results):
                 self._generate_report_test(rows, cid, tid, n, t, o, i)
-
+        count = result.success_count + result.failure_count + result.error_count + result.skip_count
         report = self.REPORT_TMPL.format(
             test_list=''.join(rows),
-            count=result.success_count + result.failure_count + result.error_count + result.skip_count,
+            count=count,
             Pass=result.success_count,
             fail=result.failure_count,
             skip=result.skip_count,
             error=result.error_count,
-            statistics=result.success_count / (
-                        result.success_count + result.failure_count + result.error_count + result.skip_count)
+            statistics=result.success_count / (count == 0 and 1 or count)
         )
         return report
 
