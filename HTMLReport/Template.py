@@ -175,12 +175,8 @@ function load() {
 
     STYLESHEET_TMPL = r"""<style type="text/css" media="screen">
   body {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 100%
-  }
-
-  table {
-    font-size: 100%
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px;
   }
 
   pre {
@@ -220,9 +216,8 @@ function load() {
     top: 0;
     padding: 10px;
     background-color: #E6E6D6;
-    font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
-    font-size: 8pt
+    font-size: 13px
   }
 
   #show_detail_line {
@@ -237,7 +232,6 @@ function load() {
   }
 
   #header_row {
-    font-weight: 700;
     color: #fff;
     background-color: #777
   }
@@ -245,7 +239,7 @@ function load() {
   #result_table td {
     border: 1px solid #777;
     padding: 2px;
-    min-width: 50px;
+    min-width: 70px;
     width: 100%
   }
   
@@ -254,7 +248,7 @@ function load() {
   }
 
   #total_row {
-    font-weight: 700
+    font-weight: bold
   }
 
   .passClass,
@@ -461,34 +455,38 @@ function load() {
 </p>
 <table id='result_table'>
   <tr id='header_row'>
-    <td>
+    <th>
       <span class="lang-cn">测试组/测试用例</span>
       <span class="lang-en">Test Group/Test case</span>
-    </td>
-    <td>
+    </th>
+    <th>
       <span class="lang-cn">计数</span>
       <span class="lang-en">Count</span>
-    </td>
-    <td>
+    </th>
+    <th>
       <span class="lang-cn">通过</span>
-      <span class="lang-en">Pass</span>
-    </td>
-    <td>
+      <span class="lang-en">Passed</span>
+    </th>
+    <th>
       <span class="lang-cn">失败</span>
-      <span class="lang-en">Fail</span>
-    </td>
-    <td>
+      <span class="lang-en">Failed</span>
+    </th>
+    <th>
       <span class="lang-cn">错误</span>
-      <span class="lang-en">Error</span>
-    </td>
-    <td>
+      <span class="lang-en">Erroneous</span>
+    </th>
+    <th>
       <span class="lang-cn">跳过</span>
-      <span class="lang-en">Skip</span>
-    </td>
-    <td>
+      <span class="lang-en">Skipped</span>
+    </th>
+    <th>
+      <span class="lang-cn">统计</span>
+      <span class="lang-en">Statistics</span>
+    </th>
+    <th>
       <span class="lang-cn">查看</span>
       <span class="lang-en">View</span>
-    </td>
+    </th>
   </tr>
   {test_list}
   <tr id='total_row'>
@@ -497,10 +495,11 @@ function load() {
     <span class="lang-en">Total</span>
     </td>
     <td>{count}</td>
-    <td>{Pass}</td>
-    <td>{fail}</td>
-    <td>{error}</td>
-    <td>{skip}</td>
+    <td class="passCase">{Pass}</td>
+    <td class="failCase">{fail}</td>
+    <td class="errorCase">{error}</td>
+    <td class="skipCase">{skip}</td>
+    <td style="text-align:right;">{statistics:.2%}</td>
     <td>&nbsp;</td>
   </tr>
 </table>
@@ -510,10 +509,11 @@ function load() {
 <tr class='{style}'>
   <td>{desc}</td>
   <td>{count}</td>
-  <td>{Pass}</td>
-  <td>{fail}</td>
-  <td>{error}</td>
-  <td>{skip}</td>
+  <td class="passCase">{Pass}</td>
+  <td class="failCase">{fail}</td>
+  <td class="errorCase">{error}</td>
+  <td class="skipCase">{skip}</td>
+  <td style="text-align:right;">{statistics:.2%}</td>
   <td>
     <a href="javascript:showClassDetail('{cid}',{count})">
       <span class="lang-cn">细节</span>
@@ -528,12 +528,12 @@ function load() {
   <td class='{style}'>
     <div class='testcase'>{desc}</div>
   </td>
-  <td class='{style}' colspan='6' align='center'>
+  <td class='{style}' colspan='7' align='center'>
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_{tid}')">{status}</a>
   </td>
 </tr>
 <tr id='div_{tid}' class="hiddenRow">
-  <td colspan='7'>
+  <td colspan='8'>
     <div class="popup_window">
       <div style='text-align: right; color:red;cursor:pointer'>
         <a onfocus='this.blur();' onclick="document.getElementById('div_{tid}').className = 'hiddenRow' ">[x]</a>
@@ -550,7 +550,7 @@ function load() {
   <td class='{style}'>
     <div class='testcase'>{desc}</div>
   </td>
-  <td class='{style}' colspan='6' align='center'>{status}</td>
+  <td class='{style}' colspan='7' align='center'>{status}</td>
 </tr>
 """
 

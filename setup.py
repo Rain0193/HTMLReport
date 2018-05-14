@@ -26,18 +26,30 @@ setup(
     author=__author__,
     author_email='liushilive@outlook.com',
     url='https://github.com/liushilive/HTMLReport',
+    project_urls={
+        'The report template': 'https://liushilive.github.io/report/report/#en',
+        '报告样板': 'https://liushilive.github.io/report/report/#cn'
+    },
     packages=find_packages(),
     package_dir={'HTMLReport': 'HTMLReport'},
     include_package_data=True,
     license="MIT license",
     zip_safe=False,
-    keywords='HtmlTestRunner TestRunner Html Reports',
+    keywords='HtmlTestRunner test runner html reports unittest',
     classifiers=[
         'Development Status :: 6 - Mature',
         'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Testing :: Unit',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Software Development :: User Interfaces',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: Chinese (Simplified)',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
     test_suite='tests'
 )

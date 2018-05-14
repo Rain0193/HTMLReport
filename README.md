@@ -4,6 +4,10 @@
 
 仅支持**Python 3.x**
 
+* [The report template](https://liushilive.github.io/report/report/#en)
+
+* [报告样板](https://liushilive.github.io/report/report/#cn)
+
 ## 安装
 
 要安装 HTMLReport，请在终端中运行此命令

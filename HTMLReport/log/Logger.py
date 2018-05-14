@@ -76,10 +76,7 @@ class GeneralLogger(object):
                 name = self._main_thread_id + '.' + current_id
 
         if name not in self._loggers:
-            if is_stream:
-                self.set_logger(name, is_stream)
-            else:
-                self.set_logger(name)
+            self.set_logger(name, is_stream)
         return self._loggers[name]
 
     def set_logger(self, name, is_stream=False):

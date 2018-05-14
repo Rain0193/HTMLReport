@@ -245,6 +245,7 @@ class TestRunner(TemplateMixin, TestSuite):
                 fail=nf,
                 error=ne,
                 skip=ns,
+                statistics=np / (np + nf + ne + ns),
                 cid='c{}'.format(cid + 1),
             )
             rows.append(row)
@@ -258,7 +259,9 @@ class TestRunner(TemplateMixin, TestSuite):
             Pass=result.success_count,
             fail=result.failure_count,
             skip=result.skip_count,
-            error=result.error_count
+            error=result.error_count,
+            statistics=result.success_count / (
+                        result.success_count + result.failure_count + result.error_count + result.skip_count)
         )
         return report
 
