@@ -23,7 +23,7 @@ class TestRunner(TemplateMixin, TestSuite):
 
     def __init__(self, report_file_name: str = None, log_file_name: str = None, output_path: str = None,
                  title: str = None,
-                 description: str = None, thread_count: int = 1,
+                 description: str = None, thread_count: int = 1, thread_start_wait: float = 0,
                  sequential_execution: bool = False, lang: str = "cn"):
         """测试执行器
 
@@ -31,8 +31,9 @@ class TestRunner(TemplateMixin, TestSuite):
         :param log_file_name: 日志文件名，如果未赋值，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
         :param output_path: 报告保存文件夹名，默认“report”
         :param title: 报告标题，默认“测试报告”
-        :param description: # 报告描述，默认“无测试描述”
+        :param description: 报告描述，默认“无测试描述”
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
+        :param thread_start_wait: 各线程启动延迟，默认 0 s
         :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False。
                 如果用例中存在 tearDownClass ，建议设置为True，否则 tearDownClass 将会在所有用例线程执行完后才会执行。
         :param lang: ("cn", "en") 支持中文与英文报告输出，默认采用中文
@@ -48,6 +49,7 @@ class TestRunner(TemplateMixin, TestSuite):
                 self.LANG == 'cn' and self.DEFAULT_DESCRIPTION or self.DEFAULT_DESCRIPTION_en)
 
         self.thread_count = thread_count
+        self.thread_start_wait = thread_start_wait
         self.sequential_execution = sequential_execution
 
         SaveImages.report_path = report_path = os.path.join(output_path or "report")
@@ -83,6 +85,7 @@ class TestRunner(TemplateMixin, TestSuite):
                             getattr(result, '_moduleSetUpFailed', False)):
                         continue
                 pool.submit(test_case, result)
+                time.sleep(self.thread_start_wait)
         self._tearDownPreviousClass(None, result)
         self._handleModuleTearDown(result)
 
