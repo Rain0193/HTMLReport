@@ -8,7 +8,7 @@ report_path = ""
 imageList = {}
 
 
-def AddImage(base64_data: base64, alt="", name: str = "image"):
+def AddImage(base64_data: base64, alt: str = "", name: str = "image"):
     """添加截图到报告
 
     :param base64_data:base64格式的图片文本

@@ -25,15 +25,17 @@ class TestRunner(TemplateMixin, TestSuite):
                  title: str = None,
                  description: str = None, thread_count: int = 1,
                  sequential_execution: bool = False, lang: str = "cn"):
-        """
+        """测试执行器
+
         :param report_file_name: 报告文件名，如果未赋值，将采用“test+时间戳”
         :param log_file_name: 日志文件名，如果未赋值，将采用报告文件名，如果报告文件名也没有，将采用“test+时间戳”
         :param output_path: 报告保存文件夹名，默认“report”
         :param title: 报告标题，默认“测试报告”
         :param description: # 报告描述，默认“无测试描述”
         :param thread_count: 并发线程数量（无序执行测试），默认数量 1
-        :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False。如果用例中存在 tearDownClass ，建议设置为True，否则 tearDownClass 将会在所有用例线程执行完后才会执行。
-        :param lang： ("cn", "en") 支持中文与英文报告输出，默认采用中文
+        :param sequential_execution: 是否按照套件添加(addTests)顺序执行， 会等待一个addTests执行完成，再执行下一个，默认 False。
+                如果用例中存在 tearDownClass ，建议设置为True，否则 tearDownClass 将会在所有用例线程执行完后才会执行。
+        :param lang: ("cn", "en") 支持中文与英文报告输出，默认采用中文
         """
         super().__init__()
         if lang in ("cn", "en"):
@@ -87,8 +89,10 @@ class TestRunner(TemplateMixin, TestSuite):
     def run(self, test, debug=False):
         """
         运行给定的测试用例或测试套件。
-        """
 
+        :param test: 测试用例或套件
+        :param debug: 调试模式下不会产生测试报告文件，但会产生日志文件
+        """
         result = Result(self.LANG)
         if self.LANG == "cn":
             self.main_logger.info("预计并发线程数：" + str(self.thread_count))
@@ -139,13 +143,14 @@ class TestRunner(TemplateMixin, TestSuite):
                      skip=result.skip_count,
                      error=result.error_count
                      )
-        self._generateReport(result)
+        if not debug:
+            self._generateReport(result)
         self.main_logger.info(s)
         return result
 
     @staticmethod
     def _sortResult(result_list):
-        # unittest似乎不以任何特定的顺序运行。
+        # unittest不以任何特定的顺序运行。
         # 在这里，至少我们想把它们按类分组。
         remap = {}
         classes = []

@@ -15,12 +15,16 @@ class Result(TestResult):
     """
 
     def __init__(self, LANG, verbosity=2):
-        TestResult.__init__(self)
-        super().__init__(verbosity)
+        TestResult.__init__(self, verbosity=verbosity)
+        super().__init__(verbosity=verbosity)
         self.success_count = 0
         self.failure_count = 0
         self.skip_count = 0
         self.error_count = 0
+        self.success_set = set()
+        self.failure_set = set()
+        self.skip_set = set()
+        self.error_set = set()
         self.stderr_steams = StringIO()
         self.stderr_steams.write("\n")
         self.stdout_steams = StringIO()
@@ -62,6 +66,15 @@ class Result(TestResult):
         self.result_tmp[current_id]['test_output'] = HandlerFactory.get_stream_value()
         self.result.append(self.result_tmp.pop(current_id))
 
+        if current_id in self.success_set:
+            self.success_set.remove(current_id)
+        if current_id in self.failure_set:
+            self.failure_set.remove(current_id)
+        if current_id in self.skip_set:
+            self.skip_set.remove(current_id)
+        if current_id in self.error_set:
+            self.error_set.remove(current_id)
+
     def addSkip(self, test, reason):
         self.skip_count += 1
         TestResult.addSkip(self, test, reason)
@@ -78,9 +91,11 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 3
+        if current_id not in self.skip_set:
+            self.skip_count += 1
+            self.skip_set.add(current_id)
 
     def addSuccess(self, test):
-        self.success_count += 1
         TestResult.addSuccess(self, test)
         self.stdout_steams.write('Pass\t')
         self.stdout_steams.write(str(test))
@@ -93,9 +108,11 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 0
+        if current_id not in self.success_set:
+            self.success_count += 1
+            self.success_set.add(current_id)
 
     def addError(self, test, err):
-        self.error_count += 1
         TestResult.addError(self, test, err)
         _, _exc_str = self.errors[-1]
         self.stderr_steams.write('Error\t')
@@ -110,9 +127,11 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 2
+        if current_id not in self.error_set:
+            self.error_count += 1
+            self.error_set.add(current_id)
 
     def addFailure(self, test, err):
-        self.failure_count += 1
         TestResult.addFailure(self, test, err)
         _, _exc_str = self.failures[-1]
         self.stderr_steams.write('Fail\t')
@@ -127,3 +146,6 @@ class Result(TestResult):
 
         current_id = str(threading.current_thread().ident)
         self.result_tmp[current_id]["result_code"] = 1
+        if current_id not in self.failure_set:
+            self.failure_count += 1
+            self.failure_set.add(current_id)
